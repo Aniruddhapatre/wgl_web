@@ -195,25 +195,40 @@ const ProjectAdmin = () => {
   };
 
   // Delete project from Firestore
-  const deleteProject = async () => {
-    if (!selectedProject) return;
-    
-    if (window.confirm("Are you sure you want to delete this project?")) {
-      try {
-        setLoading(true);
-        await deleteDoc(doc(db, "projects", selectedProject.id));
-        
-        // Update local state
-        setProjects(projects.filter((p) => p.id !== selectedProject.id));
-        setSelectedProject(null);
-      } catch (error) {
-        console.error("Error deleting project:", error);
-        alert("Failed to delete project. Please try again.");
-      } finally {
-        setLoading(false);
+const deleteProject = async (id, images = []) => {
+  if (!id) return;
+
+  if (window.confirm("Are you sure you want to delete this project?")) {
+    try {
+      setLoading(true);
+
+      // 1️⃣ Delete images from Cloudinary (optional, so you don’t keep unused files)
+      for (const imgUrl of images) {
+        const publicId = imgUrl.split("/").pop().split(".")[0]; // extract public_id
+        await fetch("/api/sign-cloudinary-delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ publicId }),
+        });
       }
+
+      // 2️⃣ Delete from Firestore
+      await deleteDoc(doc(db, "projects", id));
+
+      // 3️⃣ Update local state
+      setProjects((prev) => prev.filter((p) => p.id !== id));
+
+      // If this was selectedProject, clear it
+      if (selectedProject?.id === id) setSelectedProject(null);
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      alert("Failed to delete project. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  };
+  }
+};
+
 
   // Navigate through images
   const nextImage = () => {
@@ -246,6 +261,7 @@ const ProjectAdmin = () => {
           <Plus className="w-4 h-4 mr-1" />
           Add Project
         </button>
+        
       </div>
 
       {projects.length === 0 && !loading ? (

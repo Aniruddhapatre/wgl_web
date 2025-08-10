@@ -75,7 +75,7 @@ export default function Loader() {
 
         @media (max-width: 600px) {
           #loader h1 {
-            font-size: 5vw;
+            font-size: 40px;
             line-height: 1;
           }
         }
