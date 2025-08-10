@@ -13,8 +13,10 @@ import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase
 import { db } from "../api/firebase";
 
 // Cloudinary configuration
-const cloudName = "dnvinnnku"; // Replace with your Cloudinary cloud name
-const uploadPreset = "wgl_website"; // Replace with your upload preset
+const cloudName = "dycy7hsw7"
+const uploadPreset = "wgl_images";
+// const cloudName = "dnvinnnku"; 
+// const uploadPreset = "wgl_website"; 
 
 const ProjectAdmin = () => {
   const [projects, setProjects] = useState([]);
