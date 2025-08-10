@@ -110,22 +110,12 @@ const Navbar = () => {
                       </button>
                       <button
                         className="block w-full text-left px-4 py-2 hover:bg-green-100"
-                        onClick={() => handleNavClick("/internship")}
+                        onClick={() => handleNavClick("/InternshipPage")}
                       >
-                        Internship
+                        Join Us
                       </button>
-                      <button
-                        className="block w-full text-left px-4 py-2 hover:bg-green-100"
-                        onClick={() => handleNavClick("/volunteer")}
-                      >
-                        Volunteer
-                      </button>
-                      <button
-                        className="block w-full text-left px-4 py-2 hover:bg-green-100"
-                        onClick={() => handleNavClick("/career")}
-                      >
-                        Career
-                      </button>
+                      
+                      
                     </div>
                   )}
                 </li>

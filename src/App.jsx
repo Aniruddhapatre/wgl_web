@@ -88,11 +88,14 @@ const App = () => (
         {/* <Route path="/blogs" element={<Myblogs />} /> */}
         {/* <Route path="/bgadmin" element={<AdminPage />} /> */}
 
-        <Route path="/internship" element={<InternshipPage />} />
+        <Route path="/InternshipPage" element={<InternshipPage />} />
         <Route path="/volunteer" element={<VolunteerPage />} />
         <Route path="/career" element={<CareerPage />} />
 
         <Route path="/blogs" element={<BlogList />} />
+        <Route path="/JoinUS" element={<InternshipPage />} />
+        <Route path="/InternshipPage" element={<InternshipPage />} />
+
         <Route path="/blogs/:id" element={<BlogPost />} />
 
         <Route path="/admin" element={<Admin />} />
