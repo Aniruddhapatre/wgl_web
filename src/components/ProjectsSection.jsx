@@ -367,7 +367,7 @@ const ProjectsSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-3xl sm:text-4xl font-bold text-lime-300 text-center">
-            Our Projects
+            Our Work
           </h2>
           <p className="text-gray-300 mt-2 max-w-xl mx-auto text-center">
             Discover our ongoing initiatives to restore and protect our

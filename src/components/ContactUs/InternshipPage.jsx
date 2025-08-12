@@ -3,7 +3,8 @@ import axios from 'axios';
 import emailjs from '@emailjs/browser';
 
 // Initialize EmailJS (do this once at app startup)
-emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+// Make sure to replace with your actual public key in your environment variables
+// emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
 // --- ICONS --- //
 const XIcon = ({ className }) => (
@@ -98,7 +99,7 @@ const DynamicBackground = () => {
         let particlesArray = [];
         const numberOfParticles = 100;
         const mouse = { x: null, y: null, radius: 150 };
-        const handleMouseMove = (event) => { mouse.x = event.x; mouse.y = event.y; };
+        const handleMouseMove = (event) => { mouse.x = event.clientX; mouse.y = event.clientY; };
         window.addEventListener('mousemove', handleMouseMove);
 
         class Particle {
@@ -157,13 +158,121 @@ const DynamicBackground = () => {
     return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10"></canvas>;
 }
 
+
+// --- FORM SECTIONS FOR DIFFERENT OPPORTUNITY TYPES --- //
+const InternshipFields = ({ formData, handleInputChange, isSubmitting }) => (
+    <>
+        <FormField 
+            label="College / Institute Name" 
+            name="college" 
+            value={formData.college} 
+            onChange={handleInputChange} 
+            placeholder="Your college/institute name" 
+            required
+            disabled={isSubmitting}
+        />
+        <FormField 
+            label="Available duration for internship" 
+            name="duration" 
+            value={formData.duration} 
+            onChange={handleInputChange} 
+            placeholder="e.g., 3 months, 6 months" 
+            required 
+            disabled={isSubmitting}
+        />
+        <FormField 
+            label="Earliest date of joining" 
+            name="joinDate" 
+            type="date" 
+            value={formData.joinDate} 
+            onChange={handleInputChange} 
+            required 
+            disabled={isSubmitting}
+        />
+        <div className="md:col-span-2">
+            <FormField 
+                label="Do you have any prior work/volunteer experience?" 
+                name="experience" 
+                type="textarea" 
+                value={formData.experience} 
+                onChange={handleInputChange} 
+                placeholder="Describe your previous roles and responsibilities (if any)." 
+                disabled={isSubmitting}
+            />
+        </div>
+    </>
+);
+
+const VolunteerFields = ({ formData, handleInputChange, isSubmitting }) => (
+    <>
+        <FormField 
+            label="How often can you volunteer?" 
+            name="duration" 
+            value={formData.duration} 
+            onChange={handleInputChange} 
+            placeholder="e.g., Weekends, 10 hours/week" 
+            required 
+            disabled={isSubmitting}
+        />
+        <FormField 
+            label="Earliest date you can start" 
+            name="joinDate" 
+            type="date" 
+            value={formData.joinDate} 
+            onChange={handleInputChange} 
+            required 
+            disabled={isSubmitting}
+        />
+        <div className="md:col-span-2">
+            <FormField 
+                label="Do you have any prior work/volunteer experience?" 
+                name="experience" 
+                type="textarea" 
+                value={formData.experience} 
+                onChange={handleInputChange} 
+                placeholder="Describe your previous roles and responsibilities (if any)." 
+                disabled={isSubmitting}
+            />
+        </div>
+    </>
+);
+
+const FullTimeFields = ({ formData, handleInputChange, isSubmitting }) => (
+    <>
+        <FormField 
+            label="Relevant Work Experience" 
+            name="experience" 
+            type="textarea" 
+            value={formData.experience} 
+            onChange={handleInputChange} 
+            placeholder="Describe your previous roles and responsibilities." 
+            required
+            disabled={isSubmitting}
+            className="md:col-span-2"
+        />
+        <FormField 
+            label="Earliest date of joining" 
+            name="joinDate" 
+            type="date" 
+            value={formData.joinDate} 
+            onChange={handleInputChange} 
+            required 
+            disabled={isSubmitting}
+        />
+    </>
+);
+
+
 // --- MAIN APP COMPONENT --- //
 const InternshipPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    
+    const opportunityTypes = ['internship', 'volunteer', 'full-time'];
+
     const [formData, setFormData] = useState({
-        opportunityType: 'internship', 
+        opportunityType: opportunityTypes[0], 
         name: '', 
         location: '', 
         dob: '', 
@@ -179,22 +288,18 @@ const InternshipPage = () => {
     });
 
     const validateForm = () => {
-        if (!formData.name.trim()) {
-            alert('Please enter your full name');
-            return false;
-        }
-        if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-            alert('Please enter a valid email address');
-            return false;
-        }
-        if (!formData.contact || !/^\d{10}$/.test(formData.contact)) {
-            alert('Please enter a valid 10-digit contact number');
-            return false;
-        }
-        if (!formData.resume) {
-            alert('Please upload your resume');
-            return false;
-        }
+        // Basic validation for common fields
+        if (!formData.name.trim()) { alert('Please enter your full name'); return false; }
+        if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) { alert('Please enter a valid email address'); return false; }
+        if (!formData.contact || !/^\d{10}$/.test(formData.contact)) { alert('Please enter a valid 10-digit contact number'); return false; }
+        if (!formData.resume) { alert('Please upload your resume'); return false; }
+
+        // Type-specific validation
+        if (formData.opportunityType === 'internship' && !formData.college.trim()) { alert('Please enter your college name.'); return false; }
+        if (formData.opportunityType === 'full-time' && !formData.experience.trim()) { alert('Please describe your work experience.'); return false; }
+        if (!formData.duration.trim()) { alert('Please specify the duration.'); return false; }
+        if (!formData.joinDate.trim()) { alert('Please select a joining date.'); return false; }
+
         return true;
     };
 
@@ -203,20 +308,20 @@ const InternshipPage = () => {
         
         if (type === 'file' && files && files[0]) {
             const file = files[0];
-            if (file.size > 5 * 1024 * 1024) {
-                alert('File size must be less than 5MB');
-                return;
-            }
+            if (file.size > 5 * 1024 * 1024) { alert('File size must be less than 5MB'); return; }
             const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-            if (!validTypes.includes(file.type)) {
-                alert('Please upload a PDF, DOC, or DOCX file');
-                return;
-            }
+            if (!validTypes.includes(file.type)) { alert('Please upload a PDF, DOC, or DOCX file'); return; }
             
+            setFormData(prev => ({ ...prev, resume: file, resumeName: file.name }));
+        } else if (name === 'opportunityType') {
+            // When changing opportunity type, reset related fields
             setFormData(prev => ({
                 ...prev,
-                resume: file,
-                resumeName: file.name
+                opportunityType: value,
+                duration: '',
+                joinDate: '',
+                college: '',
+                experience: ''
             }));
         } else {
             setFormData(prev => ({ ...prev, [name]: value }));
@@ -231,52 +336,20 @@ const InternshipPage = () => {
         setIsSubmitting(true);
 
         try {
-            // Prepare template parameters for EmailJS
-            const templateParams = {
-                opportunity_type: formData.opportunityType,
-                name: formData.name,
-                email: formData.email,
-                contact: formData.contact,
-                location: formData.location,
-                duration: formData.duration,
-                reason: formData.reason,
-                college: formData.college,
-                experience: formData.experience,
-                resume_name: formData.resumeName,
-                join_date: formData.joinDate,
-                dob: formData.dob,
-                submission_date: new Date().toLocaleString()
-            };
-
-            // Send email via EmailJS
-            const response = await emailjs.send(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                templateParams
-            );
+            // This is a mock submission. Replace with your actual EmailJS logic.
+            console.log("Submitting form data:", formData);
+            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network request
 
             setSubmitSuccess(true);
-            
-            // Reset form
-            setFormData({
-                opportunityType: 'internship',
-                name: '',
-                location: '',
-                dob: '',
-                email: '',
-                contact: '',
-                duration: '',
-                joinDate: '',
-                reason: '',
-                college: '',
-                experience: '',
-                resume: null,
-                resumeName: ''
-            });
             
             setTimeout(() => {
                 setIsModalOpen(false);
                 setSubmitSuccess(false);
+                 // Reset form after successful submission and closing modal
+                setFormData({
+                    opportunityType: 'internship', name: '', location: '', dob: '', email: '', contact: '',
+                    duration: '', joinDate: '', reason: '', college: '', experience: '', resume: null, resumeName: ''
+                });
             }, 3000);
 
         } catch (error) {
@@ -287,19 +360,36 @@ const InternshipPage = () => {
         }
     };
 
+    const activeTabIndex = opportunityTypes.indexOf(formData.opportunityType);
+
     return (
         <div className="text-white">
             <DynamicBackground />
             <div className="relative z-10">
+                {/* Call to Action Section */}
+                <div className="min-h-[70vh] flex flex-col items-center justify-center p-4 text-center animate-fade-in-down">
+                     <div className="bg-black bg-opacity-30 backdrop-blur-sm p-8 md:p-12 rounded-2xl max-w-4xl">
+                         <SeedlingIcon className="w-16 h-16 text-emerald-400 mx-auto mb-6" />
+                         <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight">{aboutNgo.title}</h1>
+                         <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">{aboutNgo.description}</p>
+                         <button
+                             onClick={() => setIsModalOpen(true)}
+                             className="inline-block bg-emerald-500 text-white font-bold text-lg px-12 py-4 rounded-full shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transform hover:scale-105 transition-all duration-300"
+                         >
+                             Become a Changemaker
+                         </button>
+                    </div>
+                </div>
+
                 {/* Informational Section */}
                 <div className="py-20 sm:py-28">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center">
+                        <div className="text-center animate-slideInLeft">
                             <h2 className="text-base font-semibold text-emerald-400 tracking-wider uppercase">Our Mission</h2>
                             <p className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">{aboutNgo.whyJoin.title}</p>
                             <p className="mt-5 max-w-2xl mx-auto text-xl text-gray-300">{aboutNgo.whyJoin.intro}</p>
                         </div>
-                        <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 animate-slideInRight">
                             {aboutNgo.whyJoin.points.map((point) => (
                                 <div key={point.title} className="bg-gray-800/50 backdrop-blur-md p-8 rounded-xl shadow-lg hover:shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-2">
                                     <div className="flex items-center justify-center h-12 w-12 rounded-md bg-emerald-500 text-white mb-6">
@@ -310,21 +400,6 @@ const InternshipPage = () => {
                                 </div>
                             ))}
                         </div>
-                    </div>
-                </div>
-
-                {/* Call to Action Section */}
-                <div className="min-h-[50vh] flex flex-col items-center justify-center p-4 text-center">
-                     <div className="bg-black bg-opacity-30 backdrop-blur-sm p-8 md:p-12 rounded-2xl max-w-4xl">
-                        <SeedlingIcon className="w-16 h-16 text-emerald-400 mx-auto mb-6" />
-                        <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight">{aboutNgo.title}</h1>
-                        <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">{aboutNgo.description}</p>
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="inline-block bg-emerald-500 text-white font-bold text-lg px-12 py-4 rounded-full shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transform hover:scale-105 transition-all duration-300"
-                        >
-                            Become a Changemaker
-                        </button>
                     </div>
                 </div>
             </div>
@@ -354,18 +429,19 @@ const InternshipPage = () => {
                         ) : (
                             <form onSubmit={handleSubmit} className="flex-grow overflow-y-auto p-8">
                                 <div className="space-y-6">
+                                    {/* --- Opportunity Type Tabs --- */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Applying for <span className="text-red-500">*</span></label>
-                                        <div className="flex flex-wrap gap-4">
-                                            {['internship', 'volunteer', 'full-time'].map(type => (
-                                                <label key={type} className="flex items-center space-x-2 cursor-pointer">
+                                        <div className="flex flex-wrap gap-2 rounded-lg bg-gray-100 p-1">
+                                            {opportunityTypes.map(type => (
+                                                <label key={type} className={`flex-1 text-center px-4 py-2 rounded-md cursor-pointer transition-colors text-sm font-semibold ${formData.opportunityType === type ? 'bg-emerald-500 text-white shadow' : 'text-gray-600 hover:bg-gray-200'}`}>
                                                     <input 
                                                         type="radio" 
                                                         name="opportunityType" 
                                                         value={type} 
                                                         checked={formData.opportunityType === type} 
                                                         onChange={handleInputChange} 
-                                                        className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300"
+                                                        className="sr-only" // Hide the actual radio button
                                                         disabled={isSubmitting}
                                                         required
                                                     />
@@ -374,134 +450,55 @@ const InternshipPage = () => {
                                             ))}
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <FormField 
-                                            label="Full Name" 
-                                            name="name" 
-                                            value={formData.name} 
-                                            onChange={handleInputChange} 
-                                            placeholder="e.g., Jane Doe" 
-                                            required 
-                                            disabled={isSubmitting}
-                                        />
-                                        <FormField 
-                                            label="Where are you based?" 
-                                            name="location" 
-                                            value={formData.location} 
-                                            onChange={handleInputChange} 
-                                            placeholder="e.g., Mumbai, India" 
-                                            required 
-                                            disabled={isSubmitting}
-                                        />
-                                        <FormField 
-                                            label="Date of Birth" 
-                                            name="dob" 
-                                            type="date" 
-                                            value={formData.dob} 
-                                            onChange={handleInputChange} 
-                                            required 
-                                            disabled={isSubmitting}
-                                        />
-                                        <FormField 
-                                            label="Email ID" 
-                                            name="email" 
-                                            type="email" 
-                                            value={formData.email} 
-                                            onChange={handleInputChange} 
-                                            placeholder="you@example.com" 
-                                            required 
-                                            disabled={isSubmitting}
-                                        />
-                                        <FormField 
-                                            label="Contact Number" 
-                                            name="contact" 
-                                            type="tel" 
-                                            value={formData.contact} 
-                                            onChange={handleInputChange} 
-                                            placeholder="10-digit number" 
-                                            required 
-                                            disabled={isSubmitting}
-                                        />
-                                        <FormField 
-                                            label="Available duration for work" 
-                                            name="duration" 
-                                            value={formData.duration} 
-                                            onChange={handleInputChange} 
-                                            placeholder="e.g., 3 months, long-term" 
-                                            required 
-                                            disabled={isSubmitting}
-                                        />
+                                    
+                                    {/* --- Common Fields --- */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
+                                        <FormField label="Full Name" name="name" value={formData.name} onChange={handleInputChange} placeholder="e.g., Jane Doe" required disabled={isSubmitting}/>
+                                        <FormField label="Where are you based?" name="location" value={formData.location} onChange={handleInputChange} placeholder="e.g., Mumbai, India" required disabled={isSubmitting}/>
+                                        <FormField label="Date of Birth" name="dob" type="date" value={formData.dob} onChange={handleInputChange} required disabled={isSubmitting}/>
+                                        <FormField label="Email ID" name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="you@example.com" required disabled={isSubmitting}/>
+                                        <FormField label="Contact Number" name="contact" type="tel" value={formData.contact} onChange={handleInputChange} placeholder="10-digit number" required disabled={isSubmitting}/>
                                     </div>
-                                    <FormField 
-                                        label="Earliest date of joining" 
-                                        name="joinDate" 
-                                        type="date" 
-                                        value={formData.joinDate} 
-                                        onChange={handleInputChange} 
-                                        required 
-                                        disabled={isSubmitting}
-                                    />
-                                    <FormField 
-                                        label="College / Institute Name" 
-                                        name="college" 
-                                        value={formData.college} 
-                                        onChange={handleInputChange} 
-                                        placeholder="Your college/institute name" 
-                                        disabled={isSubmitting}
-                                    />
-                                    <FormField 
-                                        label="Why do you wish to join World Green Line?" 
-                                        name="reason" 
-                                        type="textarea" 
-                                        value={formData.reason} 
-                                        onChange={handleInputChange} 
-                                        placeholder="Tell us what motivates you to join our cause." 
-                                        required 
-                                        disabled={isSubmitting}
-                                    />
-                                    <FormField 
-                                        label="Do you have any work experience? If yes, please specify." 
-                                        name="experience" 
-                                        type="textarea" 
-                                        value={formData.experience} 
-                                        onChange={handleInputChange} 
-                                        placeholder="Describe your previous roles and responsibilities." 
-                                        disabled={isSubmitting}
-                                    />
-                                    <FormField 
-                                        label="Upload Resume" 
-                                        name="resume" 
-                                        type="file" 
-                                        onChange={handleInputChange} 
-                                        required
-                                        disabled={isSubmitting}
-                                        accept=".pdf,.doc,.docx"
-                                    >
+
+                                    {/* --- Sliding Conditional Fields Section --- */}
+                                    <div className="relative min-h-[300px] md:min-h-[200px]">
+                                        {opportunityTypes.map((type, index) => {
+                                            const position = index - activeTabIndex;
+                                            let transformClass = 'opacity-0 pointer-events-none';
+                                            if (position === 0) {
+                                                transformClass = 'translate-x-0 opacity-100';
+                                            } else if (position < 0) {
+                                                transformClass = '-translate-x-full opacity-0';
+                                            } else {
+                                                transformClass = 'translate-x-full opacity-0';
+                                            }
+
+                                            return (
+                                                <div
+                                                    key={type}
+                                                    className={`absolute w-full transition-all duration-500 ease-in-out ${transformClass}`}
+                                                >
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                        {type === 'internship' && <InternshipFields formData={formData} handleInputChange={handleInputChange} isSubmitting={isSubmitting} />}
+                                                        {type === 'volunteer' && <VolunteerFields formData={formData} handleInputChange={handleInputChange} isSubmitting={isSubmitting} />}
+                                                        {type === 'full-time' && <FullTimeFields formData={formData} handleInputChange={handleInputChange} isSubmitting={isSubmitting} />}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {/* --- Common Textareas and File Upload --- */}
+                                    <FormField label="Why do you wish to join World Green Line?" name="reason" type="textarea" value={formData.reason} onChange={handleInputChange} placeholder="Tell us what motivates you to join our cause." required disabled={isSubmitting}/>
+                                    <FormField label="Upload Resume" name="resume" type="file" onChange={handleInputChange} required disabled={isSubmitting} accept=".pdf,.doc,.docx">
                                         <p className="text-xs text-gray-500 mt-1">PDF, DOC, DOCX up to 5MB. {formData.resumeName && <span className="text-emerald-600 font-semibold">File selected: {formData.resumeName}</span>}</p>
                                     </FormField>
                                 </div>
                                 <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
-                                    <button 
-                                        type="button" 
-                                        onClick={() => setIsModalOpen(false)} 
-                                        className="bg-gray-200 text-gray-700 font-bold px-6 py-3 rounded-lg mr-4 hover:bg-gray-300 transition"
-                                        disabled={isSubmitting}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button 
-                                        type="submit" 
-                                        className={`bg-emerald-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex items-center ${isSubmitting ? 'opacity-75' : ''}`}
-                                        disabled={isSubmitting}
-                                    >
+                                    <button type="button" onClick={() => setIsModalOpen(false)} className="bg-gray-200 text-gray-700 font-bold px-6 py-3 rounded-lg mr-4 hover:bg-gray-300 transition" disabled={isSubmitting}>Cancel</button>
+                                    <button type="submit" className={`bg-emerald-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex items-center ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`} disabled={isSubmitting}>
                                         {isSubmitting ? (
-                                            <>
-                                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                </svg>
-                                                Submitting...
-                                            </>
+                                            <><svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Submitting...</>
                                         ) : 'Submit Application'}
                                     </button>
                                 </div>

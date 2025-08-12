@@ -30,7 +30,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <section className="relative text-white px-4 sm:px-16 py-16 bg-[#042d21]/70 backdrop-blur-lg">
+    <section className="relative text-white px-4 sm:px-16 py-16 ">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="text-center mb-12">

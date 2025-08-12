@@ -77,12 +77,7 @@ const Navbar = () => {
                       >
                         Blogs
                       </button>
-                      <button
-                        className="block w-full text-left px-4 py-2 hover:bg-green-100"
-                        onClick={() => navigate("/more")}
-                      >
-                        more
-                      </button>
+                      
                     </div>
                   )}
                 </li>

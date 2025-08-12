@@ -49,15 +49,15 @@ const HomeSection = () => {
 
         <div className="mt-6 flex gap-4">
           <button
-            onClick={() => {
-              const section = document.getElementById("projects");
+            onClick={() => { navigate("/InternshipPage")
+              
               section?.scrollIntoView({ behavior: "smooth" });
             }}
             className="relative inline-block group sm:px-6 sm:py-4 px-2  font-semibold sm:rounded-2xl rounded-xl
                text-base sm:text-lg border border-green-700 bg-gradient-to-r from-green-600 to-green-700 shadow-lg overflow-hidden"
           >
             <span className="relative z-10 text-white tracking-wide transition-colors duration-300 group-hover:text-green-800">
-              Explore Our Projects
+             Join with Us
             </span>
             <span className="absolute inset-0 bg-white translate-y-full rounded-full transition-all duration-500 group-hover:translate-y-0 group-hover:rounded-none z-0" />
           </button>
