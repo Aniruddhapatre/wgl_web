@@ -273,7 +273,7 @@ const ReviewsPage = () => {
                     {item.tags[0]}
                   </div>
 
-                  <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 via-black/60 to-transparent text-white backdrop-blur-sm">
+                  <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 via-black/40 to-transparent text-white backdrop-blur-sm">
                     <p className="text-sm font-light italic text-gray-200 leading-snug mb-3">
                       "{item.testimonial}"
                     </p>

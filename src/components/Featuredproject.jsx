@@ -152,7 +152,7 @@ export default function FeaturedProject() {
                   <img
                     src={mediaItems[currentIndex]?.url}
                     alt="Featured media content"
-                    className="w-full h-full object-contain bg-gray-900"
+                    className="w-full h-full object-cover bg-black"
                     loading="lazy"
                     onError={(e) => {
                       e.target.onerror = null;

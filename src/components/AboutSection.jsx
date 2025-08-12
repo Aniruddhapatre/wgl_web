@@ -1,39 +1,35 @@
 import React from "react";
 import { Heart, PackageSearch, FlaskConical, Users } from "lucide-react";
-
+// funcanality is done just add color
 const AboutSection = () => {
   const values = [
     {
       icon: <Heart className="w-6 h-6" />,
       title: "Compassion",
       description: "We care deeply about our planet and all its inhabitants.",
-      borderClass: "border-lime-300 ",
-      borderHoverClass: "border-lime-100",
-      iconClass: "text-lime-400 group-hover:text-lime-500"
+      cardClass: "border-l-4 border-lime-300 hover:border-lime-100",
+      iconClass: "text-lime-300 group-hover:text-red-500",
     },
     {
       icon: <PackageSearch className="w-6 h-6" />,
       title: "Innovation",
       description: "We find creative solutions to environmental challenges.",
-      borderClass: "border-cyan-300",
-      borderHoverClass: "border-cyan-400",
-      iconClass: "text-cyan-400 group-hover:text-cyan-500"
+      cardClass: "border-l-4 border-cyan-300 hover:border-cyan-400",
+      iconClass: "text-cyan-400 group-hover:text-cyan-500",
     },
     {
       icon: <FlaskConical className="w-6 h-6" />,
       title: "Sustainability",
       description: "We create long-lasting positive environmental impact.",
-      borderClass: "border-yellow-300",
-      borderHoverClass: "border-yellow-400",
-      iconClass: "text-yellow-400 group-hover:text-yellow-500"
+      cardClass: "border-l-4 border-yellow-300 hover:border-yellow-400",
+      iconClass: "text-yellow-400 group-hover:text-yellow-500",
     },
     {
       icon: <Users className="w-6 h-6" />,
       title: "Community",
       description: "We empower local communities to be environmental stewards.",
-      borderClass: "border-purple-300",
-      borderHoverClass: "border-purple-400",
-      iconClass: "text-purple-400 group-hover:text-purple-500"
+      cardClass: "border-l-4 border-purple-300 hover:border-purple-400",
+      iconClass: "text-purple-400 group-hover:text-purple-500",
     },
   ];
 
@@ -79,11 +75,13 @@ const AboutSection = () => {
             {values.map((value, index) => (
               <div
                 key={index}
-                className={`group relative bg-[#09523A] rounded-lg p-4 sm:p-6 h-full shadow-md transition-all duration-300 border-l-4 ${value.borderClass} hover:${value.borderHoverClass}`}
+                className={`group relative bg-[#09523A] rounded-lg p-4 sm:p-6 h-full shadow-md transition-all duration-300 ${value.cardClass} cursor-default`}
               >
                 {/* Icon + Title */}
                 <div className="flex flex-row sm:flex-col items-center sm:items-start gap-2 mb-2">
-                  <div className={`${value.iconClass} animate-[float_3s_ease-in-out_infinite] transition-colors duration-300`}>
+                  <div
+                    className={`${value.iconClass} animate-[float_3s_ease-in-out_infinite] transition-colors duration-300`}
+                  >
                     {value.icon}
                   </div>
                   <h4 className="text-base font-semibold text-white">

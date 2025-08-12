@@ -6,16 +6,16 @@ const ImpactCard = ({ value, label, desc }) => {
     <div
       // The 'group' class is essential for the hover effects to work on child elements.
       // Reduced height from h-48 to h-40 and padding from p-6 to p-4
-      className="group relative rounded-lg p-4 text-center border border-lime-900/50 
+      className="group relative rounded-lg p-4 text-center border-none shadow-lg 
                  overflow-hidden transition-all duration-500 ease-in-out
                  bg-[#0c815b] h-40 flex flex-col justify-center" 
     >
-      {/* This is the dark overlay that fades away to reveal the light */}
+      {/* This is the dark overlay that fades away to reveal the light
       <div 
         className="absolute inset-0 bg-gradient-to-t from-green-800 via-green-950 to-green-950
                    transition-all duration-500 ease-in-out 
                    group-hover:opacity-0"
-      />
+      /> */}
       {/* This is the glowing effect. It's a radial gradient that starts transparent
           and becomes visible and larger on hover. */}
       <div 
@@ -34,21 +34,21 @@ const ImpactCard = ({ value, label, desc }) => {
       <div className="relative z-10 flex flex-col justify-center items-center h-full">
         <h3 
           // Reduced font size for better fit in the smaller card
-          className="text-3xl lg:text-4xl font-bold text-gray-400 
+          className="text-3xl lg:text-4xl font-bold text-white 
                      transition-all duration-500 ease-in-out
                      group-hover:text-lime-300 group-hover:scale-110 
-                     group-hover:[text-shadow:0_0_25px_theme(colors.lime.400)]"
+                     group-hover:[text-shadow:0_0_25px_theme(colors.lime.300)]"
         >
           {value}
         </h3>
-        <p className="text-sm font-semibold mt-2 text-lime-400 transition-colors duration-500">
+        <p className="text-sm font-semibold mt-2 text-lime-300 transition-colors duration-500">
           {label}
         </p>
 
         {/* The description is hidden by default and fades in on hover. */}
         <div className="max-h-0 opacity-0 transition-all duration-500 ease-in-out 
                       group-hover:max-h-20 group-hover:opacity-100 group-hover:mt-2">
-          <p className="text-xs text-gray-300">{desc}</p>
+          <p className="text-xs text-gray-100">{desc}</p>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@ export default function ImpactSection() {
       </div>
 
       {/* Impact Cards - Now using the new ImpactCard component */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12 text-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12 text-center cursor-default">
         {[
           {
             value: "5,000+",
