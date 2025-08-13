@@ -60,7 +60,6 @@ body {
   overflow-x: hidden;
   height: 100vh;
   margin: 0;
-<<<<<<< HEAD
   background-color: #04382A;
   
  
@@ -78,7 +77,6 @@ body {
   /* background: linear-gradient(to right, #134C2F, #144D31, #165635); */
 background-image: linear-gradient(
    180deg,
->>>>>>> 3945b2981c3790a318deccb706b4522556d26d5b
     hsl(168deg 87% 21%) 1%,
     hsl(168deg 83% 20%) 9%,
     hsl(168deg 78% 18%) 18%,
