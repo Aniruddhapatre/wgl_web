@@ -7,6 +7,18 @@ const path = require('path');
 const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
+import express from "express";
+import serverless from "serverless-http";
+
+
+
+const app2 = express();
+
+app2.get("/", (req, res) => {
+  res.send("Backend is running on Vercel 🚀");
+});
+
+export const handler = serverless(app);
 
 const app = express();
 

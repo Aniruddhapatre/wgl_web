@@ -60,6 +60,20 @@ body {
   overflow-x: hidden;
   height: 100vh;
   margin: 0;
+  background-color: #04382A;
+  
+ 
+ 
+  
+  
+ /* background: linear-gradient(to right, #054534, #0F3D25, #0B432D); */
+
+
+
+  
+  /*background-image: linear-gradient(
+   /* 180deg,
+=======
   /* background: linear-gradient(to right, #134C2F, #144D31, #165635); */
 background-image: linear-gradient(
    180deg,
