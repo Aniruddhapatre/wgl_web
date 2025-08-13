@@ -30,6 +30,7 @@ const ProjectAdmin = () => {
     type: "forest",
     img: "",
     images: [],
+    workWith: "",
   });
   const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -156,6 +157,7 @@ const ProjectAdmin = () => {
         type: "forest",
         img: "",
         images: [],
+        workWith: "",
       });
     } catch (error) {
       console.error("Error adding project:", error);
@@ -180,6 +182,7 @@ const ProjectAdmin = () => {
         type: selectedProject.type,
         img: selectedProject.img,
         images: selectedProject.images,
+        workWith: selectedProject.workWith,
         updatedAt: new Date().toISOString(),
       });
 
@@ -197,40 +200,39 @@ const ProjectAdmin = () => {
   };
 
   // Delete project from Firestore
-const deleteProject = async (id, images = []) => {
-  if (!id) return;
+  const deleteProject = async (id, images = []) => {
+    if (!id) return;
 
-  if (window.confirm("Are you sure you want to delete this project?")) {
-    try {
-      setLoading(true);
+    if (window.confirm("Are you sure you want to delete this project?")) {
+      try {
+        setLoading(true);
 
-      // 1️⃣ Delete images from Cloudinary (optional, so you don’t keep unused files)
-      for (const imgUrl of images) {
-        const publicId = imgUrl.split("/").pop().split(".")[0]; // extract public_id
-        await fetch("/api/sign-cloudinary-delete", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ publicId }),
-        });
+        // 1️⃣ Delete images from Cloudinary (optional, so you don't keep unused files)
+        for (const imgUrl of images) {
+          const publicId = imgUrl.split("/").pop().split(".")[0]; // extract public_id
+          await fetch("/api/sign-cloudinary-delete", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ publicId }),
+          });
+        }
+
+        // 2️⃣ Delete from Firestore
+        await deleteDoc(doc(db, "projects", id));
+
+        // 3️⃣ Update local state
+        setProjects((prev) => prev.filter((p) => p.id !== id));
+
+        // If this was selectedProject, clear it
+        if (selectedProject?.id === id) setSelectedProject(null);
+      } catch (error) {
+        console.error("Error deleting project:", error);
+        alert("Failed to delete project. Please try again.");
+      } finally {
+        setLoading(false);
       }
-
-      // 2️⃣ Delete from Firestore
-      await deleteDoc(doc(db, "projects", id));
-
-      // 3️⃣ Update local state
-      setProjects((prev) => prev.filter((p) => p.id !== id));
-
-      // If this was selectedProject, clear it
-      if (selectedProject?.id === id) setSelectedProject(null);
-    } catch (error) {
-      console.error("Error deleting project:", error);
-      alert("Failed to delete project. Please try again.");
-    } finally {
-      setLoading(false);
     }
-  }
-};
-
+  };
 
   // Navigate through images
   const nextImage = () => {
@@ -263,7 +265,6 @@ const deleteProject = async (id, images = []) => {
           <Plus className="w-4 h-4 mr-1" />
           Add Project
         </button>
-        
       </div>
 
       {projects.length === 0 && !loading ? (
@@ -295,6 +296,9 @@ const deleteProject = async (id, images = []) => {
                 )}
                 <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2">
                   <h3 className="text-white font-bold">{project.title}</h3>
+                  {project.workWith && (
+                    <p className="text-gray-300 text-xs">{project.workWith}</p>
+                  )}
                   <p className="text-gray-300 text-sm">
                     {project.status} - {project.progress}%
                   </p>
@@ -353,6 +357,19 @@ const deleteProject = async (id, images = []) => {
                   }
                   className="w-full bg-[#2d3748] focus:ring-2 focus:ring-lime-400 text-white p-2 rounded"
                   required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 mb-1">Collaboration/Work With</label>
+                <input
+                  type="text"
+                  value={newProject.workWith}
+                  onChange={(e) =>
+                    setNewProject({ ...newProject, workWith: e.target.value })
+                  }
+                  className="w-full bg-[#2d3748] focus:ring-2 focus:ring-lime-400 text-white p-2 rounded"
+                  placeholder="e.g. Collaboration with ONGC"
                 />
               </div>
 
@@ -554,6 +571,22 @@ const deleteProject = async (id, images = []) => {
                     </div>
 
                     <div>
+                      <label className="block text-gray-300 mb-1">Collaboration/Work With</label>
+                      <input
+                        type="text"
+                        value={selectedProject.workWith || ''}
+                        onChange={(e) =>
+                          setSelectedProject({
+                            ...selectedProject,
+                            workWith: e.target.value,
+                          })
+                        }
+                        className="w-full bg-gray-700 text-white p-2 rounded"
+                        placeholder="e.g. Collaboration with ONGC"
+                      />
+                    </div>
+
+                    <div>
                       <label className="block text-gray-300 mb-1">Status</label>
                       <select
                         value={selectedProject.status}
@@ -741,7 +774,7 @@ const deleteProject = async (id, images = []) => {
 
             <div className="p-4 border-t border-gray-700 flex justify-between">
               <button
-                onClick={deleteProject}
+                onClick={() => deleteProject(selectedProject.id, [...selectedProject.images, selectedProject.img])}
                 disabled={loading}
                 className={`flex items-center px-4 py-2 rounded ${
                   loading ? "bg-gray-600 cursor-not-allowed" : "bg-red-600 hover:bg-red-700 text-white"

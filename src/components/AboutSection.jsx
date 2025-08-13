@@ -2,36 +2,37 @@ import React from "react";
 import { Heart, PackageSearch, FlaskConical, Users } from "lucide-react";
 // funcanality is done just add color
 const AboutSection = () => {
-  const values = [
-    {
-      icon: <Heart className="w-6 h-6" />,
-      title: "Compassion",
-      description: "We care deeply about our planet and all its inhabitants.",
-      cardClass: "border-l-4 border-lime-300 hover:border-lime-100",
-      iconClass: "text-lime-300 group-hover:text-red-500",
-    },
-    {
-      icon: <PackageSearch className="w-6 h-6" />,
-      title: "Innovation",
-      description: "We find creative solutions to environmental challenges.",
-      cardClass: "border-l-4 border-cyan-300 hover:border-cyan-400",
-      iconClass: "text-cyan-400 group-hover:text-cyan-500",
-    },
-    {
-      icon: <FlaskConical className="w-6 h-6" />,
-      title: "Sustainability",
-      description: "We create long-lasting positive environmental impact.",
-      cardClass: "border-l-4 border-yellow-300 hover:border-yellow-400",
-      iconClass: "text-yellow-400 group-hover:text-yellow-500",
-    },
-    {
-      icon: <Users className="w-6 h-6" />,
-      title: "Community",
-      description: "We empower local communities to be environmental stewards.",
-      cardClass: "border-l-4 border-purple-300 hover:border-purple-400",
-      iconClass: "text-purple-400 group-hover:text-purple-500",
-    },
-  ];
+const values = [
+  {
+    icon: <Heart className="w-6 h-6" />,
+    title: "Compassion",
+    description: "We care deeply about our planet and all its inhabitants.",
+    cardClass: "border-l-4 border-lime-500 hover:border-lime-200 transition-colors duration-200",
+    iconClass: "text-lime-500 group-hover:text-lime-200 transition-colors duration-200",
+  },
+  {
+    icon: <PackageSearch className="w-6 h-6" />,
+    title: "Innovation",
+    description: "We find creative solutions to environmental challenges.",
+    cardClass: "border-l-4 border-cyan-500 hover:border-cyan-200 transition-colors duration-200",
+    iconClass: "text-cyan-500 group-hover:text-cyan-200 transition-colors duration-200",
+  },
+  {
+    icon: <FlaskConical className="w-6 h-6" />,
+    title: "Sustainability",
+    description: "We create long-lasting positive environmental impact.",
+    cardClass: "border-l-4 border-yellow-500 hover:border-yellow-200 transition-colors duration-200",
+    iconClass: "text-yellow-500 group-hover:text-yellow-200 transition-colors duration-200",
+  },
+  {
+    icon: <Users className="w-6 h-6" />,
+    title: "Community",
+    description: "We empower local communities to be environmental stewards.",
+    cardClass: "border-l-4 border-purple-500 hover:border-purple-200 transition-colors duration-200",
+    iconClass: "text-purple-500 group-hover:text-purple-200 transition-colors duration-200",
+  },
+];
+
 
   return (
     <section className="relative text-white px-4 sm:px-16 py-16">
@@ -49,7 +50,7 @@ const AboutSection = () => {
           <div className="relative group">
             <div className="absolute -right-1 sm:-right-2 -bottom-1 sm:-bottom-2 w-full h-full bg-gradient-to-br from-[#146434] to-[#21d368] rounded-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 blur-md"></div>
 
-            <div className="relative z-10 bg-[#09523A] p-5 sm:p-10 h-full rounded-xl shadow-lg border border-green-600 transition-all duration-500">
+            <div className="relative z-10 bg-[#09513A] p-5 sm:p-10 h-full rounded-xl shadow-sm border border-green-600 transition-all duration-500">
               <h3 className="text-xl sm:text-2xl font-semibold text-lime-400 mb-4">
                 Our Mission
               </h3>
@@ -75,7 +76,7 @@ const AboutSection = () => {
             {values.map((value, index) => (
               <div
                 key={index}
-                className={`group relative bg-[#09523A] rounded-lg p-4 sm:p-6 h-full shadow-md transition-all duration-300 ${value.cardClass} cursor-default`}
+                className={`group relative bg-[#09513A] rounded-lg p-4 sm:p-6 h-full shadow-md transition-all duration-300 ${value.cardClass} cursor-default`}
               >
                 {/* Icon + Title */}
                 <div className="flex flex-row sm:flex-col items-center sm:items-start gap-2 mb-2">

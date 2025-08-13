@@ -1,43 +1,89 @@
 import { CheckCircle, Leaf, Droplets, Globe, Handshake } from "lucide-react";
 
-// A new component for the glowing cards to keep the code clean.
+// // A new component for the glowing cards to keep the code clean.
+// const ImpactCard = ({ value, label, desc }) => {
+//   return (
+//     <div
+//       // The 'group' class is essential for the hover effects to work on child elements.
+//       // Reduced height from h-48 to h-40 and padding from p-6 to p-4
+//       className="group relative rounded-lg p-4 text-center border-none shadow-lg 
+//                  overflow-hidden transition-all duration-500 ease-in-out
+//                  bg-[#0c815b] h-40 flex flex-col justify-center" 
+//     >
+//       {/* This is the dark overlay that fades away to reveal the light
+//       <div 
+//         className="absolute inset-0 bg-gradient-to-t from-green-800 via-green-950 to-green-950
+//                    transition-all duration-500 ease-in-out 
+//                    group-hover:opacity-0"
+//       /> */}
+//       {/* This is the glowing effect. It's a radial gradient that starts transparent
+//           and becomes visible and larger on hover. */}
+//       <div 
+//         className="absolute inset-0 bg-radial-gradient from-lime-300/30 via-lime-400/10 to-transparent 
+//                    opacity-0 transition-all duration-500 ease-in-out 
+//                    scale-50 group-hover:opacity-100 group-hover:scale-125"
+//       />
+      
+//       {/* This pseudo-element creates a spotlight effect from the top on hover */}
+//       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-1/2 
+//                      bg-lime-300/20 rounded-full blur-3xl
+//                      opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+//       />
+
+//       {/* The content is positioned relative to the container. */}
+//       <div className="relative z-10 flex flex-col justify-center items-center h-full">
+//         <h3 
+//           // Reduced font size for better fit in the smaller card
+//           className="text-3xl lg:text-4xl font-bold text-white 
+//                      transition-all duration-500 ease-in-out
+//                      group-hover:text-lime-300 group-hover:scale-110 
+//                      group-hover:[text-shadow:0_0_25px_theme(colors.lime.300)]"
+//         >
+//           {value}
+//         </h3>
+//         <p className="text-sm font-semibold mt-2 text-lime-300 transition-colors duration-500">
+//           {label}
+//         </p>
+
+//         {/* The description is hidden by default and fades in on hover. */}
+//         <div className="max-h-0 opacity-0 transition-all duration-500 ease-in-out 
+//                       group-hover:max-h-20 group-hover:opacity-100 group-hover:mt-2">
+//           <p className="text-xs text-gray-100">{desc}</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
 const ImpactCard = ({ value, label, desc }) => {
   return (
     <div
-      // The 'group' class is essential for the hover effects to work on child elements.
-      // Reduced height from h-48 to h-40 and padding from p-6 to p-4
       className="group relative rounded-lg p-4 text-center border-none shadow-lg 
                  overflow-hidden transition-all duration-500 ease-in-out
                  bg-[#0c815b] h-40 flex flex-col justify-center" 
     >
-      {/* This is the dark overlay that fades away to reveal the light
-      <div 
-        className="absolute inset-0 bg-gradient-to-t from-green-800 via-green-950 to-green-950
-                   transition-all duration-500 ease-in-out 
-                   group-hover:opacity-0"
-      /> */}
-      {/* This is the glowing effect. It's a radial gradient that starts transparent
-          and becomes visible and larger on hover. */}
       <div 
         className="absolute inset-0 bg-radial-gradient from-lime-300/30 via-lime-400/10 to-transparent 
                    opacity-0 transition-all duration-500 ease-in-out 
                    scale-50 group-hover:opacity-100 group-hover:scale-125"
       />
       
-      {/* This pseudo-element creates a spotlight effect from the top on hover */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-1/2 
                      bg-lime-300/20 rounded-full blur-3xl
                      opacity-0 group-hover:opacity-100 transition-opacity duration-500"
       />
 
-      {/* The content is positioned relative to the container. */}
       <div className="relative z-10 flex flex-col justify-center items-center h-full">
         <h3 
-          // Reduced font size for better fit in the smaller card
           className="text-3xl lg:text-4xl font-bold text-white 
                      transition-all duration-500 ease-in-out
-                     group-hover:text-lime-300 group-hover:scale-110 
-                     group-hover:[text-shadow:0_0_25px_theme(colors.lime.300)]"
+                     group-hover:text-lime-300 
+                     group-hover:[text-shadow:0_0_25px_theme(colors.lime.300)]
+                     animate-breath group-hover:animate-none"
+          style={{
+            animation: 'breath 2s ease-in-out infinite',
+          }}
         >
           {value}
         </h3>
@@ -45,12 +91,23 @@ const ImpactCard = ({ value, label, desc }) => {
           {label}
         </p>
 
-        {/* The description is hidden by default and fades in on hover. */}
         <div className="max-h-0 opacity-0 transition-all duration-500 ease-in-out 
                       group-hover:max-h-20 group-hover:opacity-100 group-hover:mt-2">
           <p className="text-xs text-gray-100">{desc}</p>
         </div>
       </div>
+
+      {/* Add the breath animation style */}
+      <style jsx>{`
+        @keyframes breath {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.1);
+          }
+        }
+      `}</style>
     </div>
   );
 };
@@ -104,7 +161,7 @@ export default function ImpactSection() {
       </div>
 
       {/* Goals & Assessment (Unchanged) */}
-      <div className="grid md:grid-cols-2 gap-8 rounded-xl bg-[#09513A] border border-green-600 shadow-lg p-6">
+      <div className="grid md:grid-cols-2 gap-8 rounded-xl bg-[#09503A] border border-green-700 shadow-lg p-6">
         {/* Sustainable Goals */}
         <div className="rounded-xl p-6 ">
           <h4 className="text-lg font-semibold mb-4 text-lime-300">
@@ -143,7 +200,7 @@ export default function ImpactSection() {
         </div>
 
         {/* Impact Assessment */}
-        <div className="bg-[#07583F] rounded-xl p-6 border border-green-600 shadow-lg">
+        <div className="bg-[#075840] rounded-xl p-6 border border-green-700 shadow-lg">
           <h4 className="text-lg font-semibold text-lime-300 mb-4">
             Environmental Impact Assessment
           </h4>
@@ -158,7 +215,7 @@ export default function ImpactSection() {
                 <span className="text-sm font-medium text-white">
                   {item.label}
                 </span>
-                <span className="text-sm font-medium text-green-300">
+                <span className="text-sm font-medium text-white">
                   {item.value}%
                 </span>
               </div>

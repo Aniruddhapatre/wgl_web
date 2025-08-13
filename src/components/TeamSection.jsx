@@ -156,7 +156,7 @@ const TeamSection = () => {
                 className={`px-5 py-2 rounded-full text-sm font-semibold border-2 transition-all duration-300 ease-in-out transform hover:scale-105 ${
                   selectedField === field
                     ? 'bg-lime-400 text-gray-900 border-lime-400'
-                    : 'bg-transparent text-lime-300 border-lime-600 hover:bg-lime-400/20 hover:border-lime-400'
+                    : 'bg-transparent text-white border-lime-600 hover:bg-lime-300/20 hover:border-lime-400'
                 }`}
               >
                 {field}
@@ -169,7 +169,7 @@ const TeamSection = () => {
             {/* Navigation Buttons */}
             <button
               onClick={handlePrev}
-              className="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 disabled:opacity-50"
+              className="absolute  left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 disabled:opacity-50"
               disabled={filteredTeam.length <= 1}
             >
               <ChevronLeft className="w-6 h-6" />

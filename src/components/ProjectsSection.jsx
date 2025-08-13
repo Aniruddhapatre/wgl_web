@@ -52,7 +52,12 @@ const ImagePopup = ({ project, onClose }) => {
       <div className="backdrop-blur bg-black/60 border border-white/40 rounded-lg w-full shadow-2xl max-w-6xl lg:max-h-[95vh] max-h-[50vh] overflow-hidden transition-all duration-300 flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-center p-2 sm:p-4 border-b border-white/20">
-          <h3 className="text-xl font-bold text-lime-300">{project.title}</h3>
+          <div>
+            <h3 className="text-xl font-bold text-lime-300">{project.title}</h3>
+            {project.workWith && (
+              <p className="text-gray-300 text-xs">{project.workWith}</p>
+            )}
+          </div>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-700 transition-colors duration-200"
@@ -228,9 +233,16 @@ const AllProjectsPopup = ({ projects = [], onClose, onProjectClick }) => {
                   </div>
                   <div className="p-4 flex-grow bg-white/10 backdrop-blur-md rounded-b-md border-t border-white/10">
                     <div className="flex justify-between items-start">
-                      <h3 className="font-bold text-lime-300">
-                        {project.title}
-                      </h3>
+                      <div>
+                        <h3 className="font-bold text-lime-300">
+                          {project.title}
+                        </h3>
+                        {project.workWith && (
+                          <p className="text-gray-300 text-xs">
+                            {project.workWith}
+                          </p>
+                        )}
+                      </div>
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-900 text-green-300 h-fit">
                         {project.status}
                       </span>
@@ -433,7 +445,7 @@ const ProjectsSection = () => {
                     key={project.id}
                     className={`
                       ${isMobile ? "flex-shrink-0 w-[85vw] snap-center" : ""}
-                      bg-green-900 rounded-lg overflow-hidden cursor-pointer 
+                      bg-[#114429] rounded-lg overflow-hidden cursor-pointer 
                       md:hover:scale-105 transition-transform
                     `}
                     onClick={() => setSelectedProject(project)}
@@ -452,18 +464,18 @@ const ProjectsSection = () => {
                             <h3 className="font-bold text-lime-300">
                               {project.title}
                             </h3>
-                            {project.tag && (
-                              <p className="text-gray-300 text-xs">
-                                {project.tag}
-                              </p>
+                            {project.workWith && (
+                              <h3 className="rounded-xl border-none mt-2 text-xs font-bold h-fit">
+                                {project.workWith}
+                              </h3>
                             )}
                           </div>
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-xl text-xs font-medium bg-green-900 text-green-100 h-fit">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-xl text-xs font-medium bg-green-900 text-white h-fit">
                             {project.status}
                           </span>
                         </div>
 
-                        <p className="text-gray-300 text-sm line-clamp-2 min-h-[2.5em]">
+                        <p className="text-gray-100 text-sm line-clamp-2 min-h-[2.5em]">
                           {project.description}
                         </p>
                       </div>
@@ -517,7 +529,10 @@ const ProjectsSection = () => {
             <div className="text-right mt-6 mr-10 hidden md:block">
               <button
                 onClick={() => setShowAllProjects(true)}
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center px-4 py-2 border border-green-700 
+  bg-gradient-to-r from-green-500 to-green-600 
+  hover:from-green-600 hover:to-green-700 
+   rounded-lg transition-all duration-200 text-white"
               >
                 View All Projects
               </button>

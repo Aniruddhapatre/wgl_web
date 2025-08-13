@@ -54,7 +54,7 @@ const HomeSection = () => {
               section?.scrollIntoView({ behavior: "smooth" });
             }}
             className="relative inline-block group sm:px-6 sm:py-4 px-2  font-semibold sm:rounded-2xl rounded-xl
-               text-base sm:text-lg border border-green-700 bg-gradient-to-r from-green-600 to-green-700 shadow-lg overflow-hidden"
+               text-base sm:text-lg border border-green-700 bg-gradient-to-r from-green-500 to-green-600 shadow-lg overflow-hidden"
           >
             <span className="relative z-10 text-white tracking-wide transition-colors duration-300 group-hover:text-green-800">
              Join with Us

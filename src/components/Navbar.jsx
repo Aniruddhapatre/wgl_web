@@ -28,7 +28,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 py-3 bg-green-800 text-white shadow-md">
+    <nav className="sticky top-0 z-50 py-3 bg-[#064E3B] text-white shadow-md">
       <div className="container mx-auto relative">
         <div className="flex justify-between lg:px-5 sm:px-6 px-4 items-center">
           {/* Logo with Home Link */}
@@ -54,7 +54,7 @@ const Navbar = () => {
                   className="px-1 py-2 text-sm xl:text-base transition-all"
                 >
                   {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-300 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#16A34A] transition-all duration-300 group-hover:w-full"></span>
                 </button>
               </li>
             ))}
@@ -74,7 +74,7 @@ const Navbar = () => {
         {/* Mobile Drawer */}
         {mobileDrawerOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
-            <div className="fixed right-0 top-0 h-full w-64 bg-green-900 text-white shadow-lg p-6 transition-transform transform">
+            <div className="fixed right-0 top-0 h-full w-64 bg-[#064D39] text-white shadow-lg p-6 transition-transform transform">
               <div className="flex justify-between mb-6">
                 <h2 className="text-xl font-bold">Menu</h2>
                 <button 
