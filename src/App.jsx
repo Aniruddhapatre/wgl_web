@@ -37,7 +37,7 @@ import ParticleBackground from "./components/ParticleBackground";
 const HomePage = () => (
   <div className="mx-auto">
     <ParticleBackground/>
-     <FloatingBubbles />
+     {/* <FloatingBubbles /> */}
     <section id="home">
       <HomeSection />
     </section>

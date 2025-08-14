@@ -147,7 +147,7 @@ const TeamSection = () => {
             <div className="h-1 w-20 bg-lime-500 mx-auto mt-4 rounded-full"></div>
           </div>
 
-          {/* Filter Buttons */}
+          {/* Filter Buttons
           <div className="flex flex-wrap justify-center items-center gap-2 md:gap-4 mb-12">
             {fields.map((field) => (
               <button
@@ -162,7 +162,7 @@ const TeamSection = () => {
                 {field}
               </button>
             ))}
-          </div>
+          </div> */}
 
           {/* Custom Carousel */}
           <div className="relative max-w-7xl mx-auto h-[450px] flex items-center justify-center">

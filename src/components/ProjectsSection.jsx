@@ -31,6 +31,13 @@ const ImagePopup = ({ project, onClose }) => {
     return () => (document.body.style.overflow = "auto");
   }, []);
 
+  // New: Handle click outside the popup content
+  const handleOutsideClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   const nextImage = () => {
     setCurrentImageIndex((prev) =>
       prev === project.images.length - 1 ? 0 : prev + 1
@@ -48,7 +55,10 @@ const ImagePopup = ({ project, onClose }) => {
   const needsTruncation = project.description?.length > 150;
 
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-black/10 flex items-center justify-center z-50 p-3">
+    <div
+      className="fixed inset-0 backdrop-blur-sm bg-black/10 flex items-center justify-center z-50 p-3"
+      onClick={handleOutsideClick} // Added click-outside handler
+    >
       <div className="backdrop-blur bg-black/60 border border-white/40 rounded-lg w-full shadow-2xl max-w-6xl lg:max-h-[95vh] max-h-[50vh] overflow-hidden transition-all duration-300 flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-center p-2 sm:p-4 border-b border-white/20">
@@ -199,8 +209,18 @@ const AllProjectsPopup = ({ projects = [], onClose, onProjectClick }) => {
     return () => (document.body.style.overflow = "auto");
   }, []);
 
+  // New: Handle click outside the popup content
+  const handleOutsideClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div
+      className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      onClick={handleOutsideClick} // Added click-outside handler
+    >
       <div className="backdrop-blur bg-black/60 rounded-lg w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b border-neutral-700">

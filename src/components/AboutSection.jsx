@@ -6,21 +6,21 @@ const values = [
   {
     icon: <Heart className="w-6 h-6" />,
     title: "Compassion",
-    description: "We care deeply about our planet and all its inhabitants.",
+    description: "We care deeply for mother earth and all living beings",
     cardClass: "border-l-4 border-lime-500 hover:border-lime-200 transition-colors duration-200",
     iconClass: "text-lime-500 group-hover:text-lime-200 transition-colors duration-200",
   },
   {
     icon: <PackageSearch className="w-6 h-6" />,
     title: "Innovation",
-    description: "We find creative solutions to environmental challenges.",
+    description: "We share innovative ideas on environamental conservation",
     cardClass: "border-l-4 border-cyan-500 hover:border-cyan-200 transition-colors duration-200",
     iconClass: "text-cyan-500 group-hover:text-cyan-200 transition-colors duration-200",
   },
   {
     icon: <FlaskConical className="w-6 h-6" />,
     title: "Sustainability",
-    description: "We create long-lasting positive environmental impact.",
+    description: "We work on sustainable solutions that help protect nature.",
     cardClass: "border-l-4 border-yellow-500 hover:border-yellow-200 transition-colors duration-200",
     iconClass: "text-yellow-500 group-hover:text-yellow-200 transition-colors duration-200",
   },
@@ -55,18 +55,13 @@ const values = [
                 Our Mission
               </h3>
               <p className="text-gray-200 mb-6">
-                World Green Line is dedicated to creating a sustainable future
-                through environmental conservation, community engagement, and
-                education. We believe in the power of collective action to
-                restore our planet's natural resources.
+                World green Line aims to promote environmental conservation by educating the society on their responsibilities towards nature through ongoing initiatives like afforestation, waste management, water body conservation, innovative agriculture, and optimal use of natural resources.
               </p>
               <h3 className="text-xl sm:text-2xl font-semibold text-lime-400 mb-4">
-                Our Vision
+                What we do
               </h3>
               <p className="text-gray-200">
-                A world where communities thrive in harmony with nature, where
-                forests flourish, water sources remain clean, and future
-                generations inherit a healthy planet.
+                To be the leading NGO, bringing together society, government, and businesses to protect the environment, overcoming all challenges and preserving nature’s balance.
               </p>
             </div>
           </div>
