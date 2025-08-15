@@ -2,23 +2,9 @@ export const navItems = [
   { label: "Home", href: "#home" },
   { label: "About Us", href: "#about" },
   { label: "Our Work", href: "#projects" },
-  { 
-    label: "Publications", 
-    href: "/blogs",
-    // subMenu: [
-    //   { label: "Our Impact", href: "#impact" },
-    //   { label: "Blogs", href: "/blogs" },
-    // ],
-  },
-  { label: "Our Team", href: "#team" },
-  // { label: "Reviews", href: "#reviews" },
-  { label: "Contact", href: "#contact",
-    //  subMenu: [
-    //   // { label: "Internship", href: "/internship" },
-    //   // { label: "Volunteer", href: "/volunteer" },
-    //   // { label: "Career", href: "/career" },
-    // ],
-  },
+  { label: "Publications", href: "/blogs"},
+  { label: "Our Team", href: "/team" },
+  { label: "Contact", href: "#contact"},
 ];
 
 

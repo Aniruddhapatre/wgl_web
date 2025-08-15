@@ -23,7 +23,9 @@ const ContactSection = () => {
           form.current.reset();
         },
         () => {
-          alert("Failed to send message. Please check your credentials or try again later.");
+          alert(
+            "Failed to send message. Please check your credentials or try again later."
+          );
         }
       );
   };
@@ -37,10 +39,11 @@ const ContactSection = () => {
   return (
     <section id="contact" className="no-cursor text-white px-4 sm:px-16 py-16">
       <div className="max-w-6xl mx-auto">
-
         {/* "Join Us" section */}
         <div className="text-center mb-16 pb-10 border-b border-lime-900/50">
-          <h3 className="text-3xl font-bold text-white mb-3">Ready to Make a Difference?</h3>
+          <h3 className="text-3xl font-bold text-white mb-3">
+            Ready to Make a Difference?
+          </h3>
           <a
             href="/join-us"
             onClick={handleJoinClick}
@@ -49,7 +52,9 @@ const ContactSection = () => {
             <Briefcase className="w-5 h-5" /> Join Our Team
           </a>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            If you're passionate about our cause, let us know what position you're interested in by using the form below. We're always looking for dedicated individuals to join our team.
+            If you're passionate about our cause, let us know what position
+            you're interested in by using the form below. We're always looking
+            for dedicated individuals to join our team.
           </p>
         </div>
 
@@ -65,7 +70,7 @@ const ContactSection = () => {
           <div className="space-y-6">
             <iframe
               title="Our Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3670.574294833715!2d72.50784411496756!3d23.0743769211514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84ddfa4b7eb7%3A0x8f3fd1fa94485f8a!2sCurovis%20Healthcare%20Pvt.%20Ltd.!5e0!3m2!1sen!2sin!4v1628337961325!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3655.133885919172!2d86.17646727396578!3d23.635375793185133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f423b4970852b5%3A0x651c3222646543d4!2sWorld%20Green%20Line!5e0!3m2!1sen!2sin!4v1755244548671!5m2!1sen!2sin"
               width="100%"
               height="300"
               style={{ border: 0 }}
@@ -78,17 +83,26 @@ const ContactSection = () => {
               <div className="flex items-start gap-3">
                 <MapPin className="text-lime-400 mt-0.5 h-6 w-6 shrink-0" />
                 <p>
-                  'B' Block, Safal Mondeal Business Park-2, Near Gurudwara,
-                  Bodakdev, S.G. Highway, Ahmedabad-380054, Gujarat
+                  Shiv Shakti Nagar, Near Shiv Mandir <br />
+                  Chas, Bokaro, Jharkhand, <br />
+                  India - 827013
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <Phone className="text-lime-400 mt-0.5 w-6 h-6 shrink-0" />
-                <p>+1 800 603 6035</p>
-              </div>
+            <Phone className="text-lime-400 mt-0.5 w-6 h-6 shrink-0" />
+            <a href="tel:+91 9006613222" 
+               className="hover:text-lime-400 transition-colors duration-200">
+              +91 900 661 3222
+            </a>
+          </div>
               <div className="flex items-start gap-3">
                 <Mail className="text-lime-400 mt-0.5 w-6 h-6 shrink-0" />
-                <p>info@curovis.co.in</p>
+                <a
+                  href="mailto:info@lotus"
+                  className="hover:text-lime-400 transition-colors duration-200"
+                >
+                  info@worldgreenline.org
+                </a>
               </div>
             </div>
           </div>

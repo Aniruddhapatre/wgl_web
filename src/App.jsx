@@ -20,18 +20,12 @@ import ContactSection from "./components/ContactSection";
 import Admin from "./components/Admin";
 import Dashboard from "./components/admin/Dashboard";
 import PrivateRoute from "./components/admin/PrivateRoute";
-// import BlogAdmin from "./components/admin/BlogAdmin";
 import Featuredproject from "./components/Featuredproject";
 import FeaturedGalleryAdmin from "./components/FeaturedGalleryAdmin";
-// import AdminPage from "./pages/AdminPage";
-// import Myblogs from "./components/myblogs";
 import BlogPost from "./components/BlogPost";
 import BlogList from "./components/BlogList";
 import BlogsAdmin from "./components/BlogsAdmin";
-
 import InternshipPage from "./components/ContactUs/InternshipPage";
-import VolunteerPage from "./components/ContactUs/VolunteerPage";
-import CareerPage from "./components/ContactUs/CareerPage";
 import ParticleBackground from "./components/ParticleBackground";
 
 const HomePage = () => (
@@ -49,9 +43,6 @@ const HomePage = () => (
     <Featuredproject />
     <section id="impact">
       <ImpactSection />
-    </section>
-    <section id="team">
-      <TeamSection />
     </section>
     <section id="Reviews">
       <ReviewsPage />
@@ -87,19 +78,11 @@ const App = () => (
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/donate" element={<DonatePage />} />
-        {/* <Route path="/blogs" element={<Myblogs />} /> */}
-        {/* <Route path="/bgadmin" element={<AdminPage />} /> */}
-
-        <Route path="/InternshipPage" element={<InternshipPage />} />
-        <Route path="/volunteer" element={<VolunteerPage />} />
-        <Route path="/career" element={<CareerPage />} />
-
+        <Route path="/team" element={<TeamSection/>} />
         <Route path="/blogs" element={<BlogList />} />
         <Route path="/JoinUS" element={<InternshipPage />} />
         <Route path="/InternshipPage" element={<InternshipPage />} />
-
         <Route path="/blogs/:id" element={<BlogPost />} />
-
         <Route path="/admin" element={<Admin />} />
 
         {/* Protected Dashboard with nested routes */}
@@ -112,7 +95,6 @@ const App = () => (
           }
         >
           <Route path="projects" element={<ProjectAdmin />} />
-          {/* <Route path="blogs" element={<Myblogs />} /> */}
           <Route path="blogs" element={<BlogsAdmin/>} />
           <Route path="featured-gallery" element={<FeaturedGalleryAdmin />} />
           {/* Add more nested routes here */}
