@@ -196,11 +196,13 @@ const ImagePopup = ({ project, onClose }) => {
     </div>
   );
 };
-
+//
 const typeColors = {
-  forest: "bg-green-500",
-  water: "bg-blue-500",
-  infra: "bg-yellow-500",
+  // welfare: "bg-gradient-to-r from-red-400 to-pink-500",
+  water: "bg-gradient-to-r from-sky-400 to-blue-500",
+  environment: "bg-gradient-to-r from-green-500 to-emerald-600",
+  waste: "bg-gradient-to-r from-lime-400 to-green-500",
+  awareness: "bg-gradient-to-r from-indigo-400 to-purple-500",
 };
 
 const AllProjectsPopup = ({ projects = [], onClose, onProjectClick }) => {
@@ -273,9 +275,9 @@ const AllProjectsPopup = ({ projects = [], onClose, onProjectClick }) => {
                     <div className="mt-4">
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-xs text-gray-400">Progress</span>
-                        <span className="text-xs font-medium text-white">
+                        {/* <span className="text-xs font-medium text-white">
                           {project.progress}%
-                        </span>
+                        </span> */}
                       </div>
                       <div className="w-full bg-gray-700 rounded-full h-1.5">
                         <div
@@ -505,9 +507,9 @@ const ProjectsSection = () => {
                           <span className="text-xs text-gray-400">
                             Progress
                           </span>
-                          <span className="text-xs font-medium text-white">
+                          {/* <span className="text-xs font-medium text-white">
                             {project.progress}%
-                          </span>
+                          </span> */}
                         </div>
                         <div className="w-full bg-gray-700 rounded-full h-1.5">
                           <div

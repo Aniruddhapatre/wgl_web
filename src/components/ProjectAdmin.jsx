@@ -9,14 +9,21 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../api/firebase";
 
 // Cloudinary configuration
-const cloudName = "dycy7hsw7"
+const cloudName = "dycy7hsw7";
 const uploadPreset = "wgl_images";
-// const cloudName = "dnvinnnku"; 
-// const uploadPreset = "wgl_website"; 
+// const cloudName = "dnvinnnku";
+// const uploadPreset = "wgl_website";
 
 const ProjectAdmin = () => {
   const [projects, setProjects] = useState([]);
@@ -82,16 +89,16 @@ const ProjectAdmin = () => {
   // Handle image upload
   const handleImageUpload = async (e, isMainImage = false) => {
     const files = Array.from(e.target.files);
-    
+
     if (files.length === 0) return;
 
     try {
       setLoading(true);
       setImageError(false);
-      
+
       // Upload all images to Cloudinary
       const uploadedUrls = await Promise.all(
-        files.map(file => uploadImageToCloudinary(file))
+        files.map((file) => uploadImageToCloudinary(file))
       );
 
       if (selectedProject) {
@@ -138,14 +145,15 @@ const ProjectAdmin = () => {
       setLoading(true);
       const projectToAdd = {
         ...newProject,
-        images: newProject.images.length > 0 ? newProject.images : [newProject.img],
+        images:
+          newProject.images.length > 0 ? newProject.images : [newProject.img],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
 
       // Add to Firestore
       const docRef = await addDoc(collection(db, "projects"), projectToAdd);
-      
+
       // Update local state
       setProjects([...projects, { ...projectToAdd, id: docRef.id }]);
       setShowAddForm(false);
@@ -154,7 +162,7 @@ const ProjectAdmin = () => {
         description: "",
         status: "Planned",
         progress: 0,
-        type: "forest",
+        type: "water",
         img: "",
         images: [],
         workWith: "",
@@ -170,7 +178,7 @@ const ProjectAdmin = () => {
   // Update project in Firestore
   const updateProject = async () => {
     if (!selectedProject) return;
-    
+
     try {
       setLoading(true);
       const projectRef = doc(db, "projects", selectedProject.id);
@@ -236,15 +244,16 @@ const ProjectAdmin = () => {
 
   // Navigate through images
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      (prevIndex + 1) % (selectedProject?.images?.length || 1)
+    setCurrentImageIndex(
+      (prevIndex) => (prevIndex + 1) % (selectedProject?.images?.length || 1)
     );
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      (prevIndex - 1 + (selectedProject?.images?.length || 1)) % 
-      (selectedProject?.images?.length || 1)
+    setCurrentImageIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + (selectedProject?.images?.length || 1)) %
+        (selectedProject?.images?.length || 1)
     );
   };
 
@@ -269,7 +278,9 @@ const ProjectAdmin = () => {
 
       {projects.length === 0 && !loading ? (
         <div className="text-center py-10">
-          <p className="text-gray-400">No projects found. Add your first project!</p>
+          <p className="text-gray-400">
+            No projects found. Add your first project!
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -316,7 +327,11 @@ const ProjectAdmin = () => {
                 </button>
                 <button
                   onClick={() => {
-                    if (window.confirm("Are you sure you want to delete this project?")) {
+                    if (
+                      window.confirm(
+                        "Are you sure you want to delete this project?"
+                      )
+                    ) {
                       deleteProject(project.id);
                     }
                   }}
@@ -361,7 +376,9 @@ const ProjectAdmin = () => {
               </div>
 
               <div>
-                <label className="block text-gray-300 mb-1">Collaboration/Work With</label>
+                <label className="block text-gray-300 mb-1">
+                  Collaboration/Work With
+                </label>
                 <input
                   type="text"
                   value={newProject.workWith}
@@ -382,8 +399,8 @@ const ProjectAdmin = () => {
                   }
                   className="w-full bg-gray-700 text-white p-2 rounded"
                 >
-                  <option value="Planned">Planned</option>
-                  <option value="In Progress">In Progress</option>
+                  <option value="Upcoming">Upcoming</option>
+                  {/* <option value="In Progress">In Progress</option> */}
                   <option value="Ongoing">Ongoing</option>
                   <option value="Completed">Completed</option>
                 </select>
@@ -398,9 +415,16 @@ const ProjectAdmin = () => {
                   }
                   className="w-full bg-gray-700 text-white p-2 rounded"
                 >
-                  <option value="forest">Forest</option>
+                  {/* <option value="forest">Forest</option>
                   <option value="water">Water</option>
-                  <option value="infra">Infrastructure</option>
+                  <option value="infra">Infrastructure</option> */}
+                  {/* <option value="welfare">Community Welfare</option> */}
+                  <option value="water">Water & Sanitation</option>
+                  <option value="environment">
+                    Environment & Biodiversity
+                  </option>
+                  <option value="waste">Waste Management & Cleanliness</option>
+                  <option value="awareness">Awareness & Education</option>
                 </select>
               </div>
 
@@ -571,10 +595,12 @@ const ProjectAdmin = () => {
                     </div>
 
                     <div>
-                      <label className="block text-gray-300 mb-1">Collaboration/Work With</label>
+                      <label className="block text-gray-300 mb-1">
+                        Collaboration/Work With
+                      </label>
                       <input
                         type="text"
-                        value={selectedProject.workWith || ''}
+                        value={selectedProject.workWith || ""}
                         onChange={(e) =>
                           setSelectedProject({
                             ...selectedProject,
@@ -598,8 +624,8 @@ const ProjectAdmin = () => {
                         }
                         className="w-full bg-gray-700 text-white p-2 rounded"
                       >
-                        <option value="Planned">Planned</option>
-                        <option value="In Progress">In Progress</option>
+                        <option value="Upcoming">Upcoming</option>
+                        {/* <option value="In Progress">In Progress</option> */}
                         <option value="Ongoing">Ongoing</option>
                         <option value="Completed">Completed</option>
                       </select>
@@ -617,9 +643,18 @@ const ProjectAdmin = () => {
                         }
                         className="w-full bg-gray-700 text-white p-2 rounded"
                       >
-                        <option value="forest">Forest</option>
+                        {/* <option value="forest">Forest</option>
                         <option value="water">Water</option>
-                        <option value="infra">Infrastructure</option>
+                        <option value="infra">Infrastructure</option> */}
+                        {/* <option value="welfare">Community Welfare</option> */}
+                        <option value="water">Water & Sanitation</option>
+                        <option value="environment">
+                          Environment & Biodiversity
+                        </option>
+                        <option value="waste">
+                          Waste Management & Cleanliness
+                        </option>
+                        <option value="awareness">Awareness & Education</option>
                       </select>
                     </div>
 
@@ -728,7 +763,9 @@ const ProjectAdmin = () => {
                       </div>
                     ) : (
                       <div className="w-full h-48 bg-gray-700 flex items-center justify-center rounded mb-4">
-                        <span className="text-gray-400">No additional images</span>
+                        <span className="text-gray-400">
+                          No additional images
+                        </span>
                       </div>
                     )}
                     <div className="flex flex-wrap gap-2 mb-2">
@@ -774,10 +811,17 @@ const ProjectAdmin = () => {
 
             <div className="p-4 border-t border-gray-700 flex justify-between">
               <button
-                onClick={() => deleteProject(selectedProject.id, [...selectedProject.images, selectedProject.img])}
+                onClick={() =>
+                  deleteProject(selectedProject.id, [
+                    ...selectedProject.images,
+                    selectedProject.img,
+                  ])
+                }
                 disabled={loading}
                 className={`flex items-center px-4 py-2 rounded ${
-                  loading ? "bg-gray-600 cursor-not-allowed" : "bg-red-600 hover:bg-red-700 text-white"
+                  loading
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-red-600 hover:bg-red-700 text-white"
                 }`}
               >
                 <Trash2 className="w-4 h-4 mr-1" />
@@ -789,7 +833,9 @@ const ProjectAdmin = () => {
                   onClick={() => setSelectedProject(null)}
                   disabled={loading}
                   className={`px-4 py-2 rounded ${
-                    loading ? "bg-gray-600 cursor-not-allowed" : "bg-gray-600 hover:bg-gray-500 text-white"
+                    loading
+                      ? "bg-gray-600 cursor-not-allowed"
+                      : "bg-gray-600 hover:bg-gray-500 text-white"
                   }`}
                 >
                   Cancel
@@ -798,7 +844,9 @@ const ProjectAdmin = () => {
                   onClick={updateProject}
                   disabled={loading}
                   className={`px-4 py-2 rounded ${
-                    loading ? "bg-gray-600 cursor-not-allowed" : "bg-green-600 hover:bg-green-700 text-white"
+                    loading
+                      ? "bg-gray-600 cursor-not-allowed"
+                      : "bg-green-600 hover:bg-green-700 text-white"
                   }`}
                 >
                   {loading ? "Saving..." : "Save Changes"}
