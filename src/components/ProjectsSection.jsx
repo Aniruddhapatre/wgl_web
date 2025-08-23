@@ -205,6 +205,13 @@ const typeColors = {
   awareness: "bg-gradient-to-r from-indigo-400 to-purple-500",
 };
 
+// Status color mapping
+  const statusColors = {
+    Upcoming: "bg-gradient-to-r from-yellow-500 to-yellow-600",
+    Ongoing: "bg-gradient-to-r from-blue-500 to-blue-600",
+    Completed: "bg-gradient-to-r from-green-500 to-green-600",
+  };
+
 const AllProjectsPopup = ({ projects = [], onClose, onProjectClick }) => {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -265,7 +272,15 @@ const AllProjectsPopup = ({ projects = [], onClose, onProjectClick }) => {
                           </p>
                         )}
                       </div>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-900 text-green-300 h-fit">
+                      {/* <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-900 text-green-300 h-fit">
+                        {project.status}
+                      </span> */}
+                      {/* Updated status badge with color coding */}
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium text-white h-fit ${
+                          statusColors[project.status] || "bg-gray-600"
+                        }`}
+                      >
                         {project.status}
                       </span>
                     </div>
@@ -322,29 +337,36 @@ const ProjectsSection = () => {
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Status color mapping
+  const statusColors = {
+    Upcoming: "bg-gradient-to-r from-yellow-500 to-yellow-600",
+    Ongoing: "bg-gradient-to-r from-blue-500 to-blue-600",
+    Completed: "bg-gradient-to-r from-green-500 to-green-600",
+  };
+
   // Fetch projects from Firestore
   useEffect(() => {
-// In ProjectsSection.js, update the fetchProjects function
-const fetchProjects = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "projects"));
-    const projectsData = [];
-    querySnapshot.forEach((doc) => {
-      projectsData.push({ id: doc.id, ...doc.data() });
-    });
-    
-    // Sort projects by order field (default to 0 if not set)
-    const sortedProjects = projectsData.sort((a, b) => 
-      (a.order || 0) - (b.order || 0)
-    );
-    
-    setProjects(sortedProjects);
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+    // In ProjectsSection.js, update the fetchProjects function
+    const fetchProjects = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "projects"));
+        const projectsData = [];
+        querySnapshot.forEach((doc) => {
+          projectsData.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Sort projects by order field (default to 0 if not set)
+        const sortedProjects = projectsData.sort(
+          (a, b) => (a.order || 0) - (b.order || 0)
+        );
+
+        setProjects(sortedProjects);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchProjects();
   }, []);
@@ -499,7 +521,15 @@ const fetchProjects = async () => {
                               </h3>
                             )}
                           </div>
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-xl text-xs font-medium bg-green-900 text-white h-fit">
+                          {/* <span className="inline-flex items-center px-2 py-0.5 rounded-xl text-xs font-medium bg-green-900 text-white h-fit">
+                            {project.status}
+                          </span> */}
+                          {/* Updated status badge with color coding */}
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium text-white h-fit ${
+                              statusColors[project.status] || "bg-gray-600"
+                            }`}
+                          >
                             {project.status}
                           </span>
                         </div>
