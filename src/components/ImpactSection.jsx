@@ -350,7 +350,7 @@ export default function ImpactSection() {
 
           {/* Impact Assessment */}
           <div className="bg-[#075840] rounded-xl p-6 border  border-green-700 shadow-lg text-center">
-            <h4 className="text-lg font-semibold text-lime-300 mb-4">
+            <h4 className="text-sm font-semibold text-lime-300 mb-4">
               Environmental Impact Assessment
             </h4> 
             {[

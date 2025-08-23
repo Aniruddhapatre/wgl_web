@@ -274,7 +274,7 @@ const AllProjectsPopup = ({ projects = [], onClose, onProjectClick }) => {
                     </p>
                     <div className="mt-4">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-gray-400">Progress</span>
+                        {/* <span className="text-xs text-gray-400">Progress</span> */}
                         {/* <span className="text-xs font-medium text-white">
                           {project.progress}%
                         </span> */}
@@ -324,20 +324,27 @@ const ProjectsSection = () => {
 
   // Fetch projects from Firestore
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "projects"));
-        const projectsData = [];
-        querySnapshot.forEach((doc) => {
-          projectsData.push({ id: doc.id, ...doc.data() });
-        });
-        setProjects(projectsData);
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+// In ProjectsSection.js, update the fetchProjects function
+const fetchProjects = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "projects"));
+    const projectsData = [];
+    querySnapshot.forEach((doc) => {
+      projectsData.push({ id: doc.id, ...doc.data() });
+    });
+    
+    // Sort projects by order field (default to 0 if not set)
+    const sortedProjects = projectsData.sort((a, b) => 
+      (a.order || 0) - (b.order || 0)
+    );
+    
+    setProjects(sortedProjects);
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
     fetchProjects();
   }, []);
@@ -504,9 +511,7 @@ const ProjectsSection = () => {
 
                       <div className="mt-4">
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-gray-400">
-                            Progress
-                          </span>
+                          {/* <span className="text-xs text-gray-400"> Progress </span> */}
                           {/* <span className="text-xs font-medium text-white">
                             {project.progress}%
                           </span> */}

@@ -119,27 +119,19 @@ export default function BlogPost() {
   };
 
   if (isLoading) return (
-    <div className="bg-neutral-900 min-h-screen flex items-center justify-center">
+    <div className=" min-h-screen flex items-center justify-center">
       <div className="text-white text-xl">Loading post...</div>
     </div>
   );
 
   if (!post) return (
-    <div className="bg-neutral-900 min-h-screen flex items-center justify-center">
+    <div className=" min-h-screen flex items-center justify-center">
       <div className="text-white text-xl">Post not found</div>
     </div>
   );
 
   return (
     <div className="min-h-screen bg-neutral-900 relative">
-      {/* <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;500;700&display=swap');
-        .font-syne { font-family: 'Syne', sans-serif; }
-        .font-inter { font-family: 'Inter', sans-serif; }
-        .prose-invert a { color: #4ade80; }
-        .prose-invert a:hover { text-decoration: underline; }
-      `}</style> */}
-
       {showShareButton && (
         <button 
           onClick={handleShare}
@@ -240,7 +232,7 @@ export default function BlogPost() {
             </div>
           </div>
 
-          <div className="border-t border-green-500/20 pt-8 mb-8">
+          {/* <div className="border-t border-green-500/20 pt-8 mb-8">
             <h2 className="text-2xl font-bold text-white mb-6">Comments ({post.comments?.length || 0})</h2>
             <div className="space-y-4 mb-8">
               {post.comments?.length > 0 ? (
@@ -277,7 +269,7 @@ export default function BlogPost() {
                 Post Comment
               </button>
             </form>
-          </div>
+          </div> */}
         </article>
       </div>
     </div>
