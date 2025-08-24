@@ -9,19 +9,7 @@ const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 const serverless = require("serverless-http");
 
-
-
-
 const app = express();
-
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK", time: new Date().toISOString() });
-});
-
-// Export for Vercel
-module.exports = app;
-module.exports.handler = serverless(app);
-
 
 // ===================
 // Configurations
@@ -43,7 +31,6 @@ try {
   });
 } catch (error) {
   console.error('Failed to initialize Razorpay:', error);
-  process.exit(1);
 }
 
 // Cloudinary
@@ -57,7 +44,6 @@ try {
   console.log('Cloudinary configured successfully');
 } catch (error) {
   console.error('Cloudinary configuration failed:', error);
-  process.exit(1);
 }
 
 const CLOUDINARY_MEDIA_FOLDER = 'media_gallery';
@@ -85,7 +71,7 @@ const mediaUpload = multer({
   limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedTypes = [
-      'image/jpeg', 'image/png', 'image/gif', 
+      'image/jpeg', 'image/png', 'image/gif',
       'video/mp4', 'video/quicktime', 'video/x-msvideo'
     ];
     if (allowedTypes.includes(file.mimetype)) cb(null, true);
@@ -101,8 +87,23 @@ const getEmailJSConfig = () => ({
 });
 
 // ===================
-// Razorpay Endpoints
+// Routes
 // ===================
+
+// Health check
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    services: {
+      cloudinary: !!cloudinary.config().api_key,
+      razorpay: !!process.env.RAZORPAY_KEY_ID,
+      emailjs: !!process.env.VITE_EMAILJS_SERVICE_ID
+    }
+  });
+});
+
+// Razorpay
 app.post('/create-order', async (req, res) => {
   try {
     const { amount, currency = 'INR', receipt = 'donation_receipt' } = req.body;
@@ -118,9 +119,7 @@ app.post('/verify-payment', (req, res) => {
   res.json({ success: true });
 });
 
-// ===================
-// Application Endpoint
-// ===================
+// Application endpoint
 app.post('/submit-application', docUpload.single('resume'), async (req, res) => {
   try {
     const { serviceId, templateId, publicKey } = getEmailJSConfig();
@@ -158,12 +157,9 @@ app.post('/submit-application', docUpload.single('resume'), async (req, res) => 
   }
 });
 
-// ===================
-// Media Gallery Endpoints
-// ===================
+// Media Gallery
 app.get('/api/media', async (req, res) => {
   try {
-    console.log('Fetching media from Cloudinary...');
     const [images, videos] = await Promise.all([
       cloudinary.api.resources({ type: 'upload', prefix: `${CLOUDINARY_MEDIA_FOLDER}/`, max_results: 500, resource_type: 'image' }),
       cloudinary.api.resources({ type: 'upload', prefix: `${CLOUDINARY_MEDIA_FOLDER}/`, max_results: 500, resource_type: 'video' })
@@ -178,7 +174,6 @@ app.get('/api/media', async (req, res) => {
       created_at: item.created_at
     })));
   } catch (err) {
-    console.error('Cloudinary API error:', err);
     res.status(500).json({ error: 'Failed to fetch media', details: err.message });
   }
 });
@@ -215,28 +210,13 @@ app.delete('/api/media/:public_id', async (req, res) => {
   }
 });
 
-// ===================
-// Health Check
-// ===================
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    services: {
-      cloudinary: !!cloudinary.config().api_key,
-      razorpay: !!process.env.RAZORPAY_KEY_ID,
-      emailjs: !!process.env.VITE_EMAILJS_SERVICE_ID
-    }
-  });
-});
-
-// Error Handling
+// Error handler
 app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: err.message });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// ===================
+// Export for Vercel
+// ===================
+module.exports = app;
+module.exports.handler = serverless(app);
