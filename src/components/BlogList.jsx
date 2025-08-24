@@ -56,18 +56,10 @@ const BlogCard = ({ post }) => {
       </div>
       <div className="relative z-10 bg-gray-900/50 backdrop-blur-sm border-t border-green-500/20 p-3 flex justify-between items-center">
         <div className="flex items-center gap-4 text-sm text-gray-300">
-          <div className="flex items-center gap-2">
-            <MessageCircle size={18} />
-            <span>{post.comments ? post.comments.length : 0}</span>
+          <div className={`flex items-center gap-2 text-sm px-3 py-1 rounded-full ${post.isLiked ? 'text-pink-500 bg-pink-500/10' : 'text-gray-300'}`}>
+            <Heart size={18} className={`${post.isLiked ? 'fill-current' : ''}`} />
+            <span>{post.likes || 0}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Hand size={18} />
-            <span>{post.claps || 0}</span>
-          </div>
-        </div>
-        <div className={`flex items-center gap-2 text-sm px-3 py-1 rounded-full ${post.isLiked ? 'text-pink-500 bg-pink-500/10' : 'text-gray-300'}`}>
-          <Heart size={18} className={`${post.isLiked ? 'fill-current' : ''}`} />
-          <span>{post.likes || 0}</span>
         </div>
       </div>
     </Link>
@@ -125,6 +117,8 @@ export default function BlogList() {
       result = result.filter(post => 
         post.title.toLowerCase().includes(term) || 
         post.content.toLowerCase().includes(term) ||
+        post.author.toLowerCase().includes(term) ||
+        post.category.toLowerCase().includes(term) ||
         (post.tags && post.tags.some(tag => tag.toLowerCase().includes(term)))
       );
     }
@@ -144,7 +138,7 @@ export default function BlogList() {
 
   if (isLoading) {
     return (
-      <div className="bg-neutral-900 min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-white text-xl">Loading posts...</div>
       </div>
     );
@@ -152,42 +146,17 @@ export default function BlogList() {
 
   return (
     <div className="min-h-screen">
-      {/* <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;500;700&display=swap');
-        .font-syne { font-family: 'Syne', sans-serif; }
-        .font-inter { font-family: 'Inter', sans-serif; }
-      `}</style> */}
-
       <div className="container mx-auto px-4 py-16 sm:py-24">
-         <div className="text-center mb-12">
+        <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-white mb-4">THE DEFINITIVE PODCAST DIRECTORY LIST</h1>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto">
             Podcast directories are the most common way listeners find new content, so it's important to list your podcast in all the most popular apps.
           </p>
         </div>
+        
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
-          {/* <h1 className="text-2xl md:text-4xl font-extrabold text-white">Our <span className="text-green-400">Blog</span></h1> */}
-          
-          <div className="relative w-full md:w-72">
-            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <input
-              type="text"
-              placeholder="Search articles..."
-              className="w-full text-white pl-10 pr-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
 
-        {/* Category Filters */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Filter size={20} className="text-green-400" />
-            <h3 className="font-medium text-gray-300">Filter by:</h3>
-          </div>
-          
-          <div className="flex flex-wrap gap-2 mb-6">
+           <div className="flex flex-wrap gap-2">
             {categories.map(category => (
               <button
                 key={category}
@@ -203,7 +172,20 @@ export default function BlogList() {
             ))}
           </div>
 
-          {/* Tag Filters */}
+           <div className="relative w-full md:w-96">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="text"
+              placeholder="Search by title, author, category, tags..."
+              className="w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
+       
+        {/* <div className="mb-8">
           {allTags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               <button
@@ -231,7 +213,7 @@ export default function BlogList() {
               ))}
             </div>
           )}
-        </div>
+        </div> */}
 
         <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {filteredPosts.length > 0 ? (

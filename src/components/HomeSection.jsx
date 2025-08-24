@@ -1,18 +1,10 @@
 import bgImage from "/images/img4.avif";
-
-// import bgVideo from "/videos/riverraft2.mp4"
-// import bgVideo from "../assets/earth.mp4";
-// import waves from "../assets/waves.mp4"
-// import forest from "../assets/forest.mp4"
-// import earth2 from "../assets/earth2.mp4"
-// import banaras from "../assets/banaras.mp4"
-
 import { useNavigate, useLocation } from "react-router-dom";
 
-const useVideo = true; // 👉 Change this to false to show image instead of video
+const useVideo = true; //Change this to false to show image instead of video
 
 const HomeSection = () => {
-  const navigate = useNavigate(); // ✅ missing before
+  const navigate = useNavigate();
 
   return (
     <section id="home" className="w-full h-screen relative overflow-hidden">
@@ -35,7 +27,7 @@ const HomeSection = () => {
       )}
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/5 z-10" />
+      <div className="absolute inset-0 z-10" />
 
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col justify-center top-28 items-start text-left text-white px-6 md:px-32 ">
@@ -43,20 +35,17 @@ const HomeSection = () => {
           From River Streams to Vast Forests, <br /> We make a change
         </h1>
         <p className="text-base sm:text-lg lg:text-xl max-w-2xl">
-          Join us in building a sustainable future through innovation and community action. Let’s protect our planet for future generations.
+          Join us in building a sustainable future through innovation and
+          community action. Let’s protect our planet for future generations.
         </p>
 
         <div className="mt-6 flex gap-4">
           <button
-            onClick={() => { navigate("/InternshipPage")
-              
-              section?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="relative inline-block group sm:px-6 sm:py-4 px-2  font-semibold sm:rounded-2xl rounded-xl
-               text-base sm:text-lg border border-green-700 bg-gradient-to-r from-green-500 to-green-600 shadow-lg overflow-hidden"
+            onClick={() => navigate("/InternshipPage")}
+            className="relative inline-block group sm:px-6 sm:py-4 px-2  font-semibold sm:rounded-2xl rounded-xl text-base sm:text-lg border border-green-700 bg-gradient-to-r from-green-500 to-green-600 shadow-lg overflow-hidden"
           >
             <span className="relative z-10 text-white tracking-wide transition-colors duration-300 group-hover:text-green-800">
-             Join with Us
+              Join Our Team
             </span>
             <span className="absolute inset-0 bg-white translate-y-full rounded-full transition-all duration-500 group-hover:translate-y-0 group-hover:rounded-none z-0" />
           </button>

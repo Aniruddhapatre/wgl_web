@@ -7,6 +7,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  GripVertical
 } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -16,17 +17,19 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  orderBy,
+  query
 } from "firebase/firestore";
 import { db } from "../api/firebase";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // Cloudinary configuration
 const cloudName = "dycy7hsw7";
 const uploadPreset = "wgl_images";
-// const cloudName = "dnvinnnku";
-// const uploadPreset = "wgl_website";
 
 const ProjectAdmin = () => {
   const [projects, setProjects] = useState([]);
+  const [orderedProjects, setOrderedProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProject, setNewProject] = useState({
@@ -38,6 +41,7 @@ const ProjectAdmin = () => {
     img: "",
     images: [],
     workWith: "",
+    order: 0
   });
   const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -53,7 +57,14 @@ const ProjectAdmin = () => {
         querySnapshot.forEach((doc) => {
           projectsData.push({ id: doc.id, ...doc.data() });
         });
-        setProjects(projectsData);
+        
+        // Sort projects by order field
+        const sortedProjects = projectsData.sort((a, b) => 
+          (a.order || 0) - (b.order || 0)
+        );
+        
+        setProjects(sortedProjects);
+        setOrderedProjects(sortedProjects);
       } catch (error) {
         console.error("Error loading projects:", error);
       } finally {
@@ -63,6 +74,42 @@ const ProjectAdmin = () => {
 
     fetchProjects();
   }, []);
+
+  // Handle drag and drop to reorder projects
+  // const handleDragEnd = async (result) => {
+  //   if (!result.destination) return;
+    
+  //   const items = Array.from(orderedProjects);
+  //   const [reorderedItem] = items.splice(result.source.index, 1);
+  //   items.splice(result.destination.index, 0, reorderedItem);
+    
+  //   // Update the order field for all projects
+  //   const updatedProjects = items.map((project, index) => ({
+  //     ...project,
+  //     order: index
+  //   }));
+    
+  //   setOrderedProjects(updatedProjects);
+    
+  //   // Update each project in Firestore with the new order
+  //   try {
+  //     setLoading(true);
+  //     const updatePromises = updatedProjects.map(async (project) => {
+  //       const projectRef = doc(db, "projects", project.id);
+  //       await updateDoc(projectRef, {
+  //         order: project.order
+  //       });
+  //     });
+      
+  //     await Promise.all(updatePromises);
+  //     setProjects(updatedProjects);
+  //   } catch (error) {
+  //     console.error("Error updating project order:", error);
+  //     alert("Failed to update project order. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // Upload image to Cloudinary
   const uploadImageToCloudinary = async (file) => {
@@ -147,6 +194,7 @@ const ProjectAdmin = () => {
         ...newProject,
         images:
           newProject.images.length > 0 ? newProject.images : [newProject.img],
+        order: projects.length, // Set order to the end of the list
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -155,7 +203,9 @@ const ProjectAdmin = () => {
       const docRef = await addDoc(collection(db, "projects"), projectToAdd);
 
       // Update local state
-      setProjects([...projects, { ...projectToAdd, id: docRef.id }]);
+      const updatedProjects = [...projects, { ...projectToAdd, id: docRef.id }];
+      setProjects(updatedProjects);
+      setOrderedProjects(updatedProjects);
       setShowAddForm(false);
       setNewProject({
         title: "",
@@ -166,6 +216,7 @@ const ProjectAdmin = () => {
         img: "",
         images: [],
         workWith: "",
+        order: 0
       });
     } catch (error) {
       console.error("Error adding project:", error);
@@ -191,13 +242,16 @@ const ProjectAdmin = () => {
         img: selectedProject.img,
         images: selectedProject.images,
         workWith: selectedProject.workWith,
+        order: selectedProject.order || 0,
         updatedAt: new Date().toISOString(),
       });
 
       // Update local state
-      setProjects(
-        projects.map((p) => (p.id === selectedProject.id ? selectedProject : p))
+      const updatedProjects = projects.map((p) => 
+        p.id === selectedProject.id ? selectedProject : p
       );
+      setProjects(updatedProjects);
+      setOrderedProjects(updatedProjects);
       setSelectedProject(null);
     } catch (error) {
       console.error("Error updating project:", error);
@@ -215,9 +269,9 @@ const ProjectAdmin = () => {
       try {
         setLoading(true);
 
-        // 1️⃣ Delete images from Cloudinary (optional, so you don't keep unused files)
+        // 1️⃣ Delete images from Cloudinary (optional)
         for (const imgUrl of images) {
-          const publicId = imgUrl.split("/").pop().split(".")[0]; // extract public_id
+          const publicId = imgUrl.split("/").pop().split(".")[0];
           await fetch("/api/sign-cloudinary-delete", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -229,7 +283,9 @@ const ProjectAdmin = () => {
         await deleteDoc(doc(db, "projects", id));
 
         // 3️⃣ Update local state
-        setProjects((prev) => prev.filter((p) => p.id !== id));
+        const updatedProjects = projects.filter((p) => p.id !== id);
+        setProjects(updatedProjects);
+        setOrderedProjects(updatedProjects);
 
         // If this was selectedProject, clear it
         if (selectedProject?.id === id) setSelectedProject(null);
@@ -313,6 +369,7 @@ const ProjectAdmin = () => {
                   <p className="text-gray-300 text-sm">
                     {project.status} - {project.progress}%
                   </p>
+                  <p className="text-gray-300 text-xs">Order: {project.order || 0}</p>
                 </div>
               </div>
               <div className="p-4 flex justify-between">
@@ -400,7 +457,6 @@ const ProjectAdmin = () => {
                   className="w-full bg-gray-700 text-white p-2 rounded"
                 >
                   <option value="Upcoming">Upcoming</option>
-                  {/* <option value="In Progress">In Progress</option> */}
                   <option value="Ongoing">Ongoing</option>
                   <option value="Completed">Completed</option>
                 </select>
@@ -415,10 +471,6 @@ const ProjectAdmin = () => {
                   }
                   className="w-full bg-gray-700 text-white p-2 rounded"
                 >
-                  {/* <option value="forest">Forest</option>
-                  <option value="water">Water</option>
-                  <option value="infra">Infrastructure</option> */}
-                  {/* <option value="welfare">Community Welfare</option> */}
                   <option value="water">Water & Sanitation</option>
                   <option value="environment">
                     Environment & Biodiversity
@@ -625,7 +677,6 @@ const ProjectAdmin = () => {
                         className="w-full bg-gray-700 text-white p-2 rounded"
                       >
                         <option value="Upcoming">Upcoming</option>
-                        {/* <option value="In Progress">In Progress</option> */}
                         <option value="Ongoing">Ongoing</option>
                         <option value="Completed">Completed</option>
                       </select>
@@ -643,10 +694,6 @@ const ProjectAdmin = () => {
                         }
                         className="w-full bg-gray-700 text-white p-2 rounded"
                       >
-                        {/* <option value="forest">Forest</option>
-                        <option value="water">Water</option>
-                        <option value="infra">Infrastructure</option> */}
-                        {/* <option value="welfare">Community Welfare</option> */}
                         <option value="water">Water & Sanitation</option>
                         <option value="environment">
                           Environment & Biodiversity
@@ -691,6 +738,27 @@ const ProjectAdmin = () => {
                         }
                         className="w-full bg-gray-700 text-white p-2 rounded h-24"
                       />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-300 mb-1">
+                        Display Order
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={selectedProject.order || 0}
+                        onChange={(e) =>
+                          setSelectedProject({
+                            ...selectedProject,
+                            order: parseInt(e.target.value),
+                          })
+                        }
+                        className="w-full bg-gray-700 text-white p-2 rounded"
+                      />
+                      <p className="text-gray-400 text-sm mt-1">
+                        Lower numbers appear first on the website
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -861,3 +929,5 @@ const ProjectAdmin = () => {
 };
 
 export default ProjectAdmin;
+
+
