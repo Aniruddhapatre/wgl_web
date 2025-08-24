@@ -14,10 +14,11 @@ const serverless = require("serverless-http");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Backend is running on Vercel 🚀");
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK", time: new Date().toISOString() });
 });
 
+// Export for Vercel
 module.exports = app;
 module.exports.handler = serverless(app);
 
