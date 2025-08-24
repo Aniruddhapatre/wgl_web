@@ -215,6 +215,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: err.message });
 });
 
+app.get("/", (req, res) => {
+  res.send("Backend is running on Vercel ✅");
+});
+
+
 // ===================
 // Export for Vercel
 // ===================
