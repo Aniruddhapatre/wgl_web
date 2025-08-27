@@ -239,8 +239,7 @@ app.use((err, req, res, next) => {
 const frontendPath = path.join(__dirname, "..", "dist");
 app.use(express.static(frontendPath));
 
-// Catch-all route (MUST be last)
-app.get("/.*/", (req, res) => {
+app.get("/:path*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
