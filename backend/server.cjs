@@ -7,20 +7,20 @@ const path = require('path');
 const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
-const serverless = require("serverless-http");
+// const serverless = require("serverless-http");
 
 
 
 
 const app = express();
 
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK", time: new Date().toISOString() });
-});
+// app.get("/health", (req, res) => {
+//   res.status(200).json({ status: "OK", time: new Date().toISOString() });
+// });
 
-// Export for Vercel
-module.exports = app;
-module.exports.handler = serverless(app);
+// // Export for Vercel
+// module.exports = app;
+// module.exports.handler = serverless(app);
 
 
 // ===================
@@ -235,6 +235,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: err.message });
 });
 
+// Serve React build
+// ===================
+app.use(express.static(path.join(__dirname, '../dist')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
