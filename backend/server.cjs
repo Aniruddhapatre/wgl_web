@@ -240,7 +240,7 @@ const frontendPath = path.join(__dirname, "..", "dist");
 app.use(express.static(frontendPath));
 
 // Catch-all route (MUST be last)
-app.get("/*", (req, res) => {
+app.get("/.*/", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
