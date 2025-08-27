@@ -1,68 +1,169 @@
-import React, { useState, useEffect } from 'react';
-import { ref, onValue } from "firebase/database";
-import { blogsDatabase } from './firebase2';
-import { ChevronRight, Leaf, Zap, Sun, Heart, MessageCircle, Search, Filter, Hand, Share2, Inspect, Lightbulb } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { ref, onValue, set } from "firebase/database";
+import { blogsDatabase } from "./firebase2";
+import {
+  Leaf,
+  Heart,
+  Search,
+  Hand,
+  Share2,
+  Lightbulb,
+  Trash2,
+  Users
+} from "lucide-react";
+import { Link } from "react-router-dom";
+// import ParticleBackground from "./ParticleBackground";
 
 const BlogCard = ({ post }) => {
-  // Define gradient colors based on category
-  const getCategoryGradient = (category) => {
-    switch(category) {
-      case 'REFORESTATION':
-        return 'from-green-500/20 to-emerald-900/50';
-      case 'RENEWABLE ENERGY':
-        return 'from-yellow-500/20 to-amber-900/50';
-      case 'OCEAN CONSERVATION':
-        return 'from-blue-500/20 to-sky-900/50';
-      case 'URBAN ECOLOGY':
-        return 'from-teal-500/20 to-cyan-900/50';
+  // Function to extract plain text from HTML
+  const getPlainText = (htmlContent) => {
+    if (!htmlContent) return '';
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlContent;
+    return tempDiv.textContent || tempDiv.innerText || '';
+  };
+
+  // Function to truncate text with ellipsis
+  const truncateText = (text, maxLength = 150) => {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+  
+  // Normalize category for consistent comparison
+  const normalizedCategory = (post.category || '').toUpperCase();
+
+  // Define category colors
+  const getCategoryColor = (category) => {
+    switch (category) {
+      case "RURAL UPLIFTMENT":
+        return "bg-orange-500 text-white";
+      case "HEALTHCARE AND SANITATION":
+        return "bg-blue-500 text-white";
+      case "WASTE MANAGEMENT":
+        return "bg-gray-500 text-white";
+      case "ENVIRONMENT":
+        return "bg-green-500 text-white";
       default:
-        return 'from-purple-500/20 to-indigo-900/50';
+        return "bg-purple-500 text-white";
     }
   };
 
+  // Get icon based on category
+  const getCategoryIcon = (category) => {
+    switch (category) {
+      case "RURAL UPLIFTMENT":
+        return <Users size={16} />;
+      case "HEALTHCARE AND SANITATION":
+        return <Heart size={16} />;
+      case "WASTE MANAGEMENT":
+        return <Trash2 size={16} />;
+      case "ENVIRONMENT":
+        return <Leaf size={16} />;
+      default:
+        return <Lightbulb size={16} />;
+    }
+  };
+
+  // Handle appreciation (clap) with cooldown to prevent multiple clicks
+  const [lastClapTime, setLastClapTime] = useState(0);
+  
+  const handleAppreciation = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Prevent multiple clicks within 2 seconds
+    const now = Date.now();
+    if (now - lastClapTime < 2000) return;
+    
+    setLastClapTime(now);
+    
+    // Update the clap count in Firebase
+    const updatedClaps = (post.claps || 0) + 1;
+    const postRef = ref(blogsDatabase, `posts/${post.id}`);
+    
+    set(postRef, {
+      ...post,
+      claps: updatedClaps
+    }).catch(error => {
+      console.error("Error updating claps:", error);
+    });
+  };
+
   return (
-    <Link to={`/blogs/${post.id}`} className="group relative overflow-hidden rounded-2xl bg-gray-900 text-white shadow-2xl duration-500 ease-in-out transform hover:scale-105 hover:shadow-green-400/40 flex flex-col">
-      <div className="absolute inset-0 bg-gradient-to-br opacity-50 group-hover:opacity-70 transition-opacity duration-500 z-10">
-        <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryGradient(post.category)}`} />
+    <div className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+      <div className="h-48 overflow-hidden">
+        <img
+          src={post.imageUrl}
+          alt={post.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
       </div>
-      <div className="flex-grow relative z-20">
-        <img src={post.imageUrl} alt={post.title} className="absolute inset-0 h-full w-full object-cover opacity-30 duration-500 ease-in-out group-hover:opacity-50 group-hover:scale-110" />
-        <div className="relative flex h-full flex-col justify-end p-6 md:p-8">
-          <div className="mb-4 flex items-center gap-2">
-            {post.category === 'REFORESTATION' && <Leaf size={20} className="text-green-400" />}
-            {post.category === 'RENEWABLE ENERGY' && <Zap size={20} className="text-yellow-400" />}
-            {post.category === 'OCEAN CONSERVATION' && <Sun size={20} className="text-orange-400" />}
-            {post.category === 'URBAN ECOLOGY' && <Leaf size={20} className="text-teal-400" />}
-            <p className="text-sm font-bold uppercase tracking-widest text-green-400">{post.category}</p>
+      
+      <div className="p-5 flex flex-col flex-grow">
+        <div className="mb-3">
+          <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(normalizedCategory)}`}>
+            {getCategoryIcon(normalizedCategory)}
+            {post.category}
+          </span>
+        </div>
+        
+        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+          {post.title}
+        </h3>
+        
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">
+          {truncateText(getPlainText(post.content))}
+        </p>
+        
+        <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
+          <div className="flex flex-col">
+            <span className="text-sm font-medium text-gray-900">
+              {post.author}
+            </span>
+            <span className="text-xs text-gray-500">
+              {post.date}
+            </span>
           </div>
-          <h3 className="text-2xl md:text-3xl font-extrabold leading-tight mb-4">{post.title}</h3>
-          <div className="flex flex-wrap gap-2 mb-3">
-            {post.tags?.slice(0, 3).map((tag, index) => (
-              <span key={index} className="text-xs px-2 py-1 bg-gray-800/50 rounded-full text-gray-300">
-                #{tag}
-              </span>
-            ))}
-          </div>
-          <div className="border-t border-green-400/30 pt-4 text-sm opacity-80">
-            <span>By {post.author}</span>
-            <span className="mx-2">|</span>
-            <span>{post.date}</span>
-          </div>
-          <div className="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-500/20 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:scale-110 group-hover:rotate-45">
-            <ChevronRight size={24} className="transition-transform duration-500 group-hover:translate-x-1" />
+          
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 text-xs text-gray-500">
+              <Heart size={16} className={post.isLiked ? "fill-red-500 text-red-500" : ""} />
+              <span>{post.likes || 0}</span>
+            </div>
+            
+            <div 
+              className="flex items-center gap-1 text-xs text-gray-500 cursor-pointer"
+              onClick={handleAppreciation}
+              title="Show appreciation"
+            >
+              <Hand size={16} className={post.isLiked ? "text-blue-500" : ""} />
+              <span>{post.claps || 0}</span>
+            </div>
+            
+            <button 
+              className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (navigator.share) {
+                  navigator.share({
+                    title: post.title,
+                    text: getPlainText(post.content),
+                    url: window.location.origin + `/blogs/${post.id}`,
+                  });
+                } else {
+                  navigator.clipboard.writeText(window.location.origin + `/blogs/${post.id}`);
+                  alert("Link copied to clipboard!");
+                }
+              }}
+            >
+              <Share2 size={16} className="text-gray-500" />
+            </button>
           </div>
         </div>
       </div>
-      <div className="relative z-10 bg-gray-900/50 backdrop-blur-sm border-t border-green-500/20 p-3 flex justify-between items-center">
-        <div className="flex items-center gap-4 text-sm text-gray-300">
-          <div className={`flex items-center gap-2 text-sm px-3 py-1 rounded-full ${post.isLiked ? 'text-pink-500 bg-pink-500/10' : 'text-gray-300'}`}>
-            <Heart size={18} className={`${post.isLiked ? 'fill-current' : ''}`} />
-            <span>{post.likes || 0}</span>
-          </div>
-        </div>
-      </div>
-    </Link>
+    </div>
   );
 };
 
@@ -70,31 +171,29 @@ export default function BlogList() {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState('ALL');
-  const [activeTag, setActiveTag] = useState('ALL');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeCategory, setActiveCategory] = useState("ALL");
+  const [activeTag, setActiveTag] = useState("ALL");
   const [allTags, setAllTags] = useState([]);
 
-  // Get all unique categories and tags
   useEffect(() => {
-    const postsRef = ref(blogsDatabase, 'posts');
-    
+    const postsRef = ref(blogsDatabase, "posts");
+
     const unsubscribe = onValue(postsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const postsArray = Object.keys(data).map(key => ({
+        const postsArray = Object.keys(data).map((key) => ({
           id: key,
-          ...data[key]
+          ...data[key],
         }));
-        
+
         setPosts(postsArray);
         setFilteredPosts(postsArray);
-        
-        // Extract all unique tags
+
         const tags = new Set();
-        postsArray.forEach(post => {
+        postsArray.forEach((post) => {
           if (post.tags) {
-            post.tags.forEach(tag => tags.add(tag));
+            post.tags.forEach((tag) => tags.add(tag));
           }
         });
         setAllTags(Array.from(tags));
@@ -108,33 +207,42 @@ export default function BlogList() {
     return () => unsubscribe();
   }, []);
 
-  // Filter posts based on search, category and tag
   useEffect(() => {
     let result = [...posts];
-    
+
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      result = result.filter(post => 
-        post.title.toLowerCase().includes(term) || 
-        post.content.toLowerCase().includes(term) ||
-        post.author.toLowerCase().includes(term) ||
-        post.category.toLowerCase().includes(term) ||
-        (post.tags && post.tags.some(tag => tag.toLowerCase().includes(term)))
+      result = result.filter(
+        (post) =>
+          post.title.toLowerCase().includes(term) ||
+          (post.content && post.content.toLowerCase().includes(term)) ||
+          post.author.toLowerCase().includes(term) ||
+          post.category.toLowerCase().includes(term) ||
+          (post.tags &&
+            post.tags.some((tag) => tag.toLowerCase().includes(term)))
       );
     }
-    
-    if (activeCategory !== 'ALL') {
-      result = result.filter(post => post.category === activeCategory);
+
+    if (activeCategory !== "ALL") {
+      result = result.filter((post) => post.category.toUpperCase() === activeCategory.toUpperCase());
     }
-    
-    if (activeTag !== 'ALL') {
-      result = result.filter(post => post.tags && post.tags.includes(activeTag));
+
+    if (activeTag !== "ALL") {
+      result = result.filter(
+        (post) => post.tags && post.tags.includes(activeTag)
+      );
     }
-    
+
     setFilteredPosts(result);
   }, [searchTerm, activeCategory, activeTag, posts]);
 
-  const categories = ['ALL', 'REFORESTATION', 'RENEWABLE ENERGY', 'OCEAN CONSERVATION', 'URBAN ECOLOGY'];
+  const categories = [
+    "ALL",
+    "RURAL UPLIFTMENT",
+    "HEALTHCARE AND SANITATION",
+    "WASTE MANAGEMENT",
+    "ENVIRONMENT",
+  ];
 
   if (isLoading) {
     return (
@@ -145,26 +253,29 @@ export default function BlogList() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-16 sm:py-24">
+    <div className="min-h-screen relative">
+       {/* <ParticleBackground /> */}
+      <div className="container mx-auto px-4 py-16 sm:py-24 relative z-10">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">THE DEFINITIVE PODCAST DIRECTORY LIST</h1>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Podcast directories are the most common way listeners find new content, so it's important to list your podcast in all the most popular apps.
+          <h1 className="text-5xl font-bold text-lime-300 mb-4">
+            Blogs
+          </h1>
+          <p className="text-gray-200 text-lg max-w-3xl mx-auto">
+            Discover the latest insights and stories about environmental conservation, 
+            sustainability, and eco-friendly practices from around the world.
           </p>
         </div>
-        
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
 
-           <div className="flex flex-wrap gap-2">
-            {categories.map(category => (
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   activeCategory === category
-                    ? 'bg-green-500 text-gray-900'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? "bg-green-500 text-white shadow-md"
+                    : "bg-white text-gray-700 hover:bg-gray-100 shadow-sm"
                 }`}
               >
                 {category}
@@ -172,57 +283,31 @@ export default function BlogList() {
             ))}
           </div>
 
-           <div className="relative w-full md:w-96">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+          <div className="relative w-full md:w-96">
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={18}
+            />
             <input
               type="text"
               placeholder="Search by title, author, category, tags..."
-              className="w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full bg-white text-gray-800 border border-gray-200 pl-10 pr-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-       
-        {/* <div className="mb-8">
-          {allTags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setActiveTag('ALL')}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                  activeTag === 'ALL'
-                    ? 'bg-green-500 text-gray-900'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                }`}
-              >
-                All Tags
-              </button>
-              {allTags.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => setActiveTag(tag)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                    activeTag === tag
-                      ? 'bg-green-500 text-gray-900'
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                  }`}
-                >
-                  #{tag}
-                </button>
-              ))}
-            </div>
-          )}
-        </div> */}
-
-        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
-              <BlogCard key={post.id} post={post} />
+              <Link to={`/blogs/${post.id}`} key={post.id}>
+                <BlogCard post={post} />
+              </Link>
             ))
           ) : (
-            <div className="col-span-full text-center text-gray-500 py-16">
-              {searchTerm || activeCategory !== 'ALL' || activeTag !== 'ALL' 
+            <div className="col-span-full text-center text-gray-500 py-16 bg-white rounded-xl shadow-sm">
+              {searchTerm || activeCategory !== "ALL" || activeTag !== "ALL"
                 ? "No posts match your filters. Try adjusting your search."
                 : "No blog posts available yet. Check back soon!"}
             </div>

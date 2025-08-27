@@ -26,11 +26,11 @@ import BlogPost from "./components/BlogPost";
 import BlogList from "./components/BlogList";
 import BlogsAdmin from "./components/BlogsAdmin";
 import InternshipPage from "./components/ContactUs/InternshipPage";
-import ParticleBackground from "./components/ParticleBackground";
+// import ParticleBackground from "./components/ParticleBackground";
 
 const HomePage = () => (
   <div className="mx-auto">
-    <ParticleBackground/>
+    {/* <ParticleBackground/> */}
     <section id="home">
       <HomeSection />
     </section>

@@ -48,7 +48,7 @@ const values = [
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
           {/* Mission & Vision Card */}
           <div className="relative group">
-            <div className="absolute -right-1 sm:-right-2 -bottom-1 sm:-bottom-2 w-full h-full bg-gradient-to-br from-[#146434] to-[#21d368] rounded-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 blur-md"></div>
+            <div className="absolute -right-1 sm:-right-2 -bottom-1 sm:-bottom-2 w-full h-full bg-gradient-to-br from-[#146434] to-[#21d368] rounded-xl opacity-0 scale-95 group-hover:opacity-30 group-hover:scale-100 transition-all duration-500 blur-md"></div>
 
             <div className="relative z-10 bg-[#09513A] p-5 sm:p-10 h-full rounded-xl shadow-sm border border-green-600 transition-all duration-500">
               <h3 className="text-xl sm:text-2xl font-semibold text-lime-400 mb-4">

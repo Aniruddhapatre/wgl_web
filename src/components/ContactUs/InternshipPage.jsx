@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import emailjs from "@emailjs/browser";
-import ParticleBackground from "../ParticleBackground"; // Adjust the path if needed
+// import ParticleBackground from "../ParticleBackground";
 
 // --- ICONS --- //
 const XIcon = ({ className }) => (
@@ -975,7 +975,7 @@ const InternshipPage = () => {
     <div className="relative text-white min-h-screen ">
       {/* Particle Background Effect */}
       <div className="absolute inset-0">
-        <ParticleBackground />
+        {/* <ParticleBackground /> */}
       </div>
       <div className="relative z-10">
         {/* Call to Action Section */}

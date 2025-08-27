@@ -1,3 +1,5 @@
+import React, { useRef, useState } from "react";
+
 const ImpactCard = ({ value, label, desc }) => {
   return (
     <div
@@ -58,6 +60,77 @@ const ImpactCard = ({ value, label, desc }) => {
   );
 };
 
+// A component that applies the 3D tilt effect with default tilt
+const TiltImage = ({ src, alt, className }) => {
+  const itemRef = useRef(null);
+  // Set default tilted state (left-down tilt)
+  const [transformStyle, setTransformStyle] = useState({
+    transform: "rotateX(-5deg) rotateY(-5deg)",
+    transformStyle: "preserve-3d",
+    boxShadow: "0 30px 20px rgba(0, 0, 0, 0.3)",
+  });
+
+  const handleMouseMove = (e) => {
+    const item = itemRef.current;
+    if (!item) return;
+
+    const rect = item.getBoundingClientRect();
+    const positionPxX = e.clientX - rect.left;
+    const positionX = (positionPxX / item.offsetWidth) * 100;
+
+    const positionPyY = e.clientY - rect.top;
+    const positionY = (positionPyY / item.offsetHeight) * 100;
+
+    // Calculate rotation from default tilted position
+    const rX = -5 + 0.5 * (50 - positionY); // Start from -5deg default
+    const rY = -5 + -0.5 * (50 - positionX); // Start from -5deg default
+
+    setTransformStyle({
+      transform: `rotateX(${rX}deg) rotateY(${rY}deg)`,
+      transition: "0.2s",
+      transformStyle: "preserve-3d",
+      perspective: "100rem",
+      boxShadow: "0 30px 20px rgba(0, 0, 0, 0.3)",
+    });
+  };
+
+  const handleMouseOut = () => {
+    // Reset to default tilted state
+    setTransformStyle({
+      transform: "rotateX(0deg) rotateY(-20deg)",
+      transition: "0.5s",
+      transformStyle: "preserve-3d",
+      boxShadow: "0 30px 20px rgba(0, 0, 0, 0.3)",
+    });
+  };
+
+  return (
+    <div
+      ref={itemRef}
+      className="w-full max-w-md sm:max-w-lg mx-auto"
+      onMouseMove={handleMouseMove}
+      onMouseOut={handleMouseOut}
+      style={{
+        transformStyle: "preserve-3d",
+        perspective: "100rem",
+      }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        className={`${className} transition-all duration-300`}
+        style={{
+          ...transformStyle,
+          transform: transformStyle.transform,
+          transformStyle: "preserve-3d",
+          borderRadius: "1rem",
+          boxShadow: transformStyle.boxShadow,
+        }}
+      />
+    </div>
+  );
+};
+
 export default function ImpactSection() {
   return (
     <section className=" text-white py-16 px-4 sm:px-16">
@@ -78,22 +151,22 @@ export default function ImpactSection() {
             {
               value: "7,000+",
               label: "Trees Planted",
-              desc: "Native species planted across various regions",
+              desc: "Local trees planted to bring back nature",
             },
             {
-              value: "12",
-              label: "Water Bodies Restored",
-              desc: "Ponds and lakes revitalized for communities",
+              value: "61+",
+              label: "Tonnes Waste Recycled",
+              desc: "Waste collected and reused to clean up water areas",
             },
             {
               value: "25,000+",
               label: "People Benefited",
-              desc: "Through clean water and green spaces",
+              desc: "Helping communities with clean water and green spaces",
             },
             {
               value: "30+",
               label: "Schools Engaged",
-              desc: "In environmental education programs",
+              desc: "Inspiring students to care for the environment",
             },
           ].map((item, idx) => (
             <ImpactCard
@@ -118,13 +191,11 @@ export default function ImpactSection() {
             </p>
             <div className="pt-4 grid grid-cols-3 gap-y-4 gap-x-6">
               <div className="flex items-center gap-3">
-                {/* <div className="flex items-center gap-3"> */}
                 <img
                   src="images\sdg\Sustainable_Development_Goal_01NoPoverty.svg"
                   alt="Clean Water and Sanitation"
                   className="sm:w-36 sm:h-36 object-cover rounded-xl sm:hover:scale-105 transition-transform duration-300 ease-in-out"
                 />
-                {/* <span className="text-sm">Clean Water and Sanitation</span> */}
               </div>
               <div className="flex items-center gap-3">
                 <img
@@ -132,7 +203,6 @@ export default function ImpactSection() {
                   alt="Clean Water and Sanitation"
                   className="sm:w-36 sm:h-36 object-cover rounded-xl sm:hover:scale-105 transition-transform duration-300 ease-in-out"
                 />
-                {/* <span className="text-sm">Climate Action</span> */}
               </div>
               <div className="flex items-center gap-3">
                 <img
@@ -140,7 +210,6 @@ export default function ImpactSection() {
                   alt="Clean Water and Sanitation"
                   className="sm:w-36 sm:h-36 object-cover rounded-xl sm:hover:scale-105 transition-transform duration-300 ease-in-out"
                 />
-                {/* <span className="text-sm">Life on Land</span> */}
               </div>
               <div className="flex items-center gap-3">
                 <img
@@ -148,7 +217,6 @@ export default function ImpactSection() {
                   alt="Clean Water and Sanitation"
                   className="sm:w-36 sm:h-36 object-cover rounded-xl sm:hover:scale-105 transition-transform duration-300 ease-in-out"
                 />
-                {/* <span className="text-sm">Partnerships for the Goals</span> */}
               </div>
               <div className="flex items-center gap-3">
                 <img
@@ -156,7 +224,6 @@ export default function ImpactSection() {
                   alt="Clean Water and Sanitation"
                   className="sm:w-36 sm:h-36 object-cover rounded-xl sm:hover:scale-105 transition-transform duration-300 ease-in-out"
                 />
-                {/* <span className="text-sm">Partnerships for the Goals</span> */}
               </div>
               <div className="flex items-center gap-3">
                 <img
@@ -164,56 +231,16 @@ export default function ImpactSection() {
                   alt="Clean Water and Sanitation"
                   className="sm:w-36 sm:h-36 object-cover rounded-xl sm:hover:scale-105 transition-transform duration-300 ease-in-out"
                 />
-                {/* <span className="text-sm">Partnerships for the Goals</span> */}
               </div>
             </div>
           </div>
-
-          {/* Impact Assessment */}
-          {/* <div className="bg-[#075840] rounded-xl p-6 border  border-green-700 shadow-lg text-center">
-            <h4 className="text-sm font-semibold text-lime-300 mb-4">
-              Environmental Impact Assessment
-            </h4> 
-            {[
-              { label: "Carbon Sequestration", value: 85 },
-              { label: "Water Quality Improvement", value: 92 },
-              { label: "Biodiversity Enhancement", value: 78 },
-              { label: "Community Engagement", value: 95 },
-            ].map((item, idx) => (
-              <div key={idx} className="mb-4">
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-white">
-                    {item.label}
-                  </span>
-                  <span className="text-sm font-medium text-white">
-                    {item.value}%
-                  </span>
-                </div>
-                <div className="w-full bg-gray-600 rounded-full h-2">
-                  <div
-                    className="bg-green-500 h-2 rounded-full"
-                    style={{ width: `${item.value}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div> */}
-
-          < img
+          <TiltImage
             src="images\goals.jpg"
             alt="Environmental Impact"
-            className="w-full max-w-md sm:max-w-lg  mx-auto sm:mt-20 object-containn shadow rounded-2xl "
+            className="w-full max-w-md sm:max-w-lg mx-auto sm:mt-20 object-contain rounded-2xl"
           />
         </div>
       </div>
     </section>
   );
-}
-
-{
-  /* <img
-              src="public\images\global-goals.png"
-              alt="Environmental Impact"
-              className="w-full max-w-md sm:max-w-lg  bg-white mx-auto mt-4 object-contain rounded-lg"
-            /> */
 }
