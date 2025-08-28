@@ -26,6 +26,10 @@ import BlogPost from "./components/BlogPost";
 import BlogList from "./components/BlogList";
 import BlogsAdmin from "./components/BlogsAdmin";
 import InternshipPage from "./components/ContactUs/InternshipPage";
+import ArticlesList from "./components/articles/ArticlesList";
+import ArticlesPost from "./components/articles/ArticlesPost";
+import ArticlesAdmin from "./components/articles/ArticlesAdmin";
+import JoinUsSection from "./components/JoinUsSection";
 // import ParticleBackground from "./components/ParticleBackground";
 
 const HomePage = () => (
@@ -47,6 +51,9 @@ const HomePage = () => (
     <section id="Reviews">
       <ReviewsPage />
     </section>
+
+    <JoinUsSection />
+
     <section id="contact">
       <ContactSection />
     </section>
@@ -80,10 +87,15 @@ const App = () => (
         <Route path="/donate" element={<DonatePage />} />
         <Route path="/team" element={<TeamSection/>} />
         <Route path="/blogs" element={<BlogList />} />
+
         <Route path="/JoinUS" element={<InternshipPage />} />
+        
         <Route path="/InternshipPage" element={<InternshipPage />} />
         <Route path="/blogs/:id" element={<BlogPost />} />
         <Route path="/admin" element={<Admin />} />
+
+        <Route path="/Articles" element={<ArticlesList />} />
+        <Route path="/Articles/:id" element={<ArticlesPost />} />
 
         {/* Protected Dashboard with nested routes */}
         <Route
@@ -97,6 +109,7 @@ const App = () => (
           <Route path="projects" element={<ProjectAdmin />} />
           <Route path="blogs" element={<BlogsAdmin/>} />
           <Route path="featured-gallery" element={<FeaturedGalleryAdmin />} />
+          <Route path="articlesAdmin" element={<ArticlesAdmin/>} />
           {/* Add more nested routes here */}
         </Route>
       </Routes>

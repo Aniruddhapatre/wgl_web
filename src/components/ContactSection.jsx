@@ -1,12 +1,10 @@
-import { Mail, Phone, MapPin, Send, Briefcase } from "lucide-react";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import navigation hook
 import emailjs from "@emailjs/browser";
 
 const ContactSection = () => {
   const form = useRef();
   const formContainerRef = useRef(null);
-  const navigate = useNavigate(); // ✅ Initialize navigate
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -30,34 +28,9 @@ const ContactSection = () => {
       );
   };
 
-  // ✅ Redirect to another page instead of scrolling
-  const handleJoinClick = (e) => {
-    e.preventDefault();
-    navigate("/Joinus"); // Change to your route
-  };
-
   return (
     <section id="contact" className="no-cursor text-white px-4 sm:px-16 py-16">
       <div className="max-w-6xl mx-auto">
-        {/* "Join Us" section */}
-        <div className="text-center mb-16 pb-10 border-b border-lime-900/50">
-          <h3 className="text-3xl font-bold text-white mb-3">
-            Ready to Make a Difference?
-          </h3>
-          <a
-            href="/join-us"
-            onClick={handleJoinClick}
-            className="inline-flex items-center justify-center gap-2 py-3 px-8 bg-lime-400 text-green-900 font-semibold rounded-md hover:bg-lime-300 transition-all transform hover:scale-105 mb-6"
-          >
-            <Briefcase className="w-5 h-5" /> Join Our Team
-          </a>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            If you're passionate about our cause, let us know what position
-            you're interested in by using the form below. We're always looking
-            for dedicated individuals to join our team.
-          </p>
-        </div>
-
         {/* Contact heading */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-lime-400">Get in Touch</h2>
@@ -89,16 +62,18 @@ const ContactSection = () => {
                 </p>
               </div>
               <div className="flex items-start gap-3">
-            <Phone className="text-lime-400 mt-0.5 w-6 h-6 shrink-0" />
-            <a href="tel:+91 9006613222" 
-               className="hover:text-lime-400 transition-colors duration-200">
-              +91 900 661 3222
-            </a>
-          </div>
+                <Phone className="text-lime-400 mt-0.5 w-6 h-6 shrink-0" />
+                <a
+                  href="tel:+91 9006613222"
+                  className="hover:text-lime-400 transition-colors duration-200"
+                >
+                  +91 900 661 3222
+                </a>
+              </div>
               <div className="flex items-start gap-3">
                 <Mail className="text-lime-400 mt-0.5 w-6 h-6 shrink-0" />
                 <a
-                  href="mailto:info@lotus"
+                  href="mailto:info@worldgreenline.org"
                   className="hover:text-lime-400 transition-colors duration-200"
                 >
                   info@worldgreenline.org
@@ -135,13 +110,6 @@ const ContactSection = () => {
                 name="subject"
                 placeholder="Subject"
                 required
-                className="w-full p-3 rounded-md bg-green-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400"
-              />
-
-              <input
-                type="text"
-                name="position"
-                placeholder="Position of Interest (Optional)"
                 className="w-full p-3 rounded-md bg-green-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400"
               />
 

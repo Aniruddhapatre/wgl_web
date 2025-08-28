@@ -1,4 +1,4 @@
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "/images/logo.svg";
@@ -6,11 +6,13 @@ import { navItems } from "../constants";
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [publicationsOpen, setPublicationsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleNavClick = (href) => {
     setMobileDrawerOpen(false);
+    setPublicationsOpen(false);
 
     if (href.startsWith("#")) {
       const id = href.slice(1);
@@ -47,17 +49,50 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <ul className="hidden lg:flex lg:space-x-6 items-center">
-            {navItems.map((item, index) => (
-              <li key={index} className="relative group">
-                <button
-                  onClick={() => handleNavClick(item.href)}
-                  className="px-1 py-2 text-sm xl:text-base transition-all"
-                >
-                  {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#16A34A] transition-all duration-300 group-hover:w-full"></span>
-                </button>
-              </li>
-            ))}
+            {navItems.map((item, index) => {
+              if (item.label === "Publications") {
+                return (
+                  <li key={index} className="relative group">
+                    <button
+                      onClick={() => setPublicationsOpen(!publicationsOpen)}
+                      className="px-1 py-2 text-sm xl:text-base transition-all flex items-center"
+                    >
+                      {item.label}
+                      <ChevronDown size={16} className="ml-1" />
+                    </button>
+                    
+                    {publicationsOpen && (
+                      <div className="absolute left-0 mt-2 w-48 bg-[#064D39] rounded-md shadow-lg py-1 z-50">
+                        <button
+                          onClick={() => handleNavClick("/blogs")}
+                          className="block w-full text-left px-4 py-2 text-sm hover:bg-green-700"
+                        >
+                          Blogs
+                        </button>
+                        <button
+                          onClick={() => handleNavClick("/Articles")}
+                          className="block w-full text-left px-4 py-2 text-sm hover:bg-green-700"
+                        >
+                          Reports & Articles
+                        </button>
+                      </div>
+                    )}
+                  </li>
+                );
+              }
+              
+              return (
+                <li key={index} className="relative group">
+                  <button
+                    onClick={() => handleNavClick(item.href)}
+                    className="px-1 py-2 text-sm xl:text-base transition-all"
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#16A34A] transition-all duration-300 group-hover:w-full"></span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Mobile Menu Button */}
@@ -85,16 +120,48 @@ const Navbar = () => {
                 </button>
               </div>
               <ul className="flex flex-col space-y-4">
-                {navItems.map((item, index) => (
-                  <li key={index}>
-                    <button
-                      className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
-                      onClick={() => handleNavClick(item.href)}
-                    >
-                      {item.label}
-                    </button>
-                  </li>
-                ))}
+                {navItems.map((item, index) => {
+                  if (item.label === "Publications") {
+                    return (
+                      <li key={index} className="flex flex-col">
+                        <button
+                          className="flex justify-between items-center w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
+                          onClick={() => setPublicationsOpen(!publicationsOpen)}
+                        >
+                          <span>{item.label}</span>
+                          <ChevronDown size={16} />
+                        </button>
+                        {publicationsOpen && (
+                          <div className="pl-4 mt-2">
+                            <button
+                              className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
+                              onClick={() => handleNavClick("/blogs")}
+                            >
+                              Blogs
+                            </button>
+                            <button
+                              className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
+                              onClick={() => handleNavClick("/Articles")}
+                            >
+                              Reports & Articles
+                            </button>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  }
+                  
+                  return (
+                    <li key={index}>
+                      <button
+                        className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
+                        onClick={() => handleNavClick(item.href)}
+                      >
+                        {item.label}
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

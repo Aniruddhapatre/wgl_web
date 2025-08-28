@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../api/firebase";
-import { LogOut, FolderKanban, PenLine, GalleryHorizontal } from "lucide-react"; // Lucide Icons
+import { LogOut, FolderKanban, PenLine, GalleryHorizontal, FileText } from "lucide-react"; // Added FileText icon
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -36,7 +36,11 @@ export default function Sidebar() {
         </NavLink>
         <NavLink to="/dashboard/featured-gallery" className={linkClasses}>
           <GalleryHorizontal className="w-5 h-5" />
-          gallery
+          Gallery
+        </NavLink>
+        <NavLink to="/dashboard/articlesAdmin" className={linkClasses}> {/* Fixed this line */}
+          <FileText className="w-5 h-5" /> {/* Changed icon */}
+          Reports & Articles
         </NavLink>
       </nav>
 
