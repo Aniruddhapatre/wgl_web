@@ -1,29 +1,41 @@
-import { Mail, Phone, MapPin, Send } from "lucide-react";
-import { useRef } from "react";
+import { Mail, Phone, MapPin, Send, CheckCircle2, XCircle } from "lucide-react";
+import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 
 const ContactSection = () => {
   const form = useRef();
   const formContainerRef = useRef(null);
+  const [status, setStatus] = useState({ type: "", message: "" });
+  const [loading, setLoading] = useState(false);
 
   const sendEmail = (e) => {
     e.preventDefault();
+    setLoading(true);
+    setStatus({ type: "", message: "" });
+
     emailjs
       .sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        import.meta.env.VITE_EMAILJS_SERVICE_ID2,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID2,
         form.current,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY2
       )
       .then(
         () => {
-          alert("Message sent successfully!");
+          setStatus({
+            type: "success",
+            message:
+              "✅ Your message has been sent successfully! We’ll get back to you soon.",
+          });
+          setLoading(false);
           form.current.reset();
         },
         () => {
-          alert(
-            "Failed to send message. Please check your credentials or try again later."
-          );
+          setStatus({
+            type: "error",
+            message: "❌ Failed to send message. Please try again later.",
+          });
+          setLoading(false);
         }
       );
   };
@@ -47,7 +59,7 @@ const ContactSection = () => {
               width="100%"
               height="300"
               style={{ border: 0 }}
-              allowFullScreen=""
+              allowFullScreen
               loading="lazy"
               className="rounded-xl shadow-xl border border-lime-500"
             ></iframe>
@@ -114,7 +126,7 @@ const ContactSection = () => {
               />
 
               <textarea
-                rows="5"
+                rows="10"
                 name="message"
                 placeholder="Your Message / Comment"
                 required
@@ -123,14 +135,55 @@ const ContactSection = () => {
 
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 w-full py-3 bg-lime-400 text-green-900 font-semibold rounded-md hover:bg-lime-300 transition-all"
+                disabled={loading}
+                className={`flex items-center justify-center gap-2 w-full py-3 font-semibold rounded-md transition-all
+                  ${
+                    loading
+                      ? "bg-green-800 cursor-not-allowed"
+                      : "bg-lime-400 text-green-900 hover:bg-lime-300"
+                  }`}
               >
-                <Send className="w-4 h-4" /> Send Message
+                {loading ? (
+                  "Sending..."
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" /> Send Message
+                  </>
+                )}
               </button>
             </form>
           </div>
         </div>
       </div>
+
+      {/* Popup modal for status */}
+      {status.message && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur bg-black bg-opacity-60 z-50">
+          <div
+            className={`p-6 rounded-xl shadow-lg max-w-sm w-full text-center relative
+              ${
+                status.type === "success"
+                  ? "bg-green-800 text-lime-200"
+                  : "bg-red-800 text-red-200"
+              }`}
+          >
+            <div className="flex flex-col items-center gap-3">
+              {status.type === "success" ? (
+                <CheckCircle2 className="w-10 h-10" />
+              ) : (
+                <XCircle className="w-10 h-10" />
+              )}
+              <p className="text-lg font-medium">{status.message}</p>
+              <button
+                onClick={() => setStatus({ type: "", message: "" })}
+                className="mt-4 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
