@@ -3,13 +3,14 @@ import { initializeApp, getApps } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const blogsFirebaseConfig = {
-  apiKey: "AIzaSyDBTHL4hP2MC_936_XJA7yR-n7fVxaJlxI",
-  authDomain: "wglblogs.firebaseapp.com",
-  projectId: "wglblogs",
-  storageBucket: "wglblogs.appspot.com",
-  messagingSenderId: "413902630865",
-  appId: "1:413902630865:web:4dcc37fd520e70bcb5faf0",
-  measurementId: "G-5XXHJ6MCHC"
+  apiKey: "AIzaSyABMWUp0BRK8UiJYEhqBpjqFUSyz1InHl0",
+  authDomain: "wglblogs-a7667.firebaseapp.com",
+  projectId: "wglblogs-a7667",
+  storageBucket: "wglblogs-a7667.firebasestorage.app",
+  messagingSenderId: "696180432352",
+  appId: "1:696180432352:web:156f3d987c623304bc5f85",
+  measurementId: "G-P5F73L9QEF",
+  databaseURL: "https://wglblogs-a7667-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
 const blogsApp = getApps().find(app => app.name === "blogsApp") 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ref, set, onValue, remove, push } from "firebase/database";
-import { blogsDatabase } from '../firebase2';
+import { blogsDatabase } from '../firebase_article';
 import { ChevronRight, Leaf, Zap, Sun, X, Trash, Plus, Heart, MessageCircle, Trash2, Tag, Hand, Edit, Users, Lightbulb, FileText } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
