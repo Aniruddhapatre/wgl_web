@@ -6,15 +6,15 @@ import "swiper/css";
 const testimonialData = [
   {
     type: "img",
-    src: "https://cdn.dribbble.com/uploads/47172/original/d85ae8c7db2421e9a01ecac942978d4b.png?1685645079&format=webp&resize=400x498&vertical=center",
+    src: "images/reviews/r1.png",
     name: "Andrea Jelic",
     testimonial:
       "Their support changed our village's future. We now have hope, clean water, and unity.",
     tags: ["IT", "UI", "Web"],
   },
   {
-    type: "video",
-    src: "https://cdn.dribbble.com/uploads/47181/original/1e3a73a174484bef522b620c401cd00a.mp4?1685645427",
+    type: "img",
+    src: "images/reviews/r2.png",
     name: "Jesse Showalter",
     testimonial:
       "Amazing guidance and professional support throughout the journey.",
@@ -22,42 +22,28 @@ const testimonialData = [
   },
   {
     type: "img",
-    src: "https://cdn.dribbble.com/uploads/47171/original/daniele-buffa-3.png?1689174763&format=webp&resize=400x498&vertical=center",
+    src: "images/reviews/r3.png",
     name: "Daniele Buffa",
     testimonial: "Working with them made everything smooth and successful.",
     tags: ["Animation", "UI", "Visual"],
   },
   {
-    type: "video",
-    src: "video/test2.mp4",
-    name: "Rahul Sharma",
-    testimonial: "The training transformed our technical skills completely.",
-    tags: ["TECHNOLOGY", "Education"],
-  },
-  {
-    type: "video",
-    src: "video/test1.mp4",
+    type: "img",
+    src: "images/reviews/r4.png",
     name: "Victa Wille",
     testimonial: "Great collaboration and timely delivery of creative work.",
     tags: ["Mobile", "UI", "Web"],
   },
   {
-    type: "video",
-    src: "https://www.shutterstock.com/shutterstock/videos/1109539465/preview/stock-footage-ponkh-rajasthan-india-october-a-group-of-cheerful-young-indian-rural-boys-and-girls-or.webm",
-    name: "Priya Patel",
-    testimonial: "Our community has never been more empowered.",
-    tags: ["COMMUNITY", "Development"],
-  },
-  {
     type: "img",
-    src: "https://cdn.dribbble.com/uploads/47178/original/mercedes-bazan.png?1689174566&format=webp&resize=400x498&vertical=center",
+    src: "images/reviews/r5.png",
     name: "Mercedes Bazan",
     testimonial: "A talented team that delivered beyond expectations.",
     tags: ["Graphic Design", "Illustration"],
   },
   {
-    type: "video",
-    src: "https://www.shutterstock.com/shutterstock/videos/3462018801/preview/stock-footage--bilaspur-chhattisgarh-india-an-indian-old-man-standing-with-stick-in-his-hand-and.webm",
+    type: "img",
+    src: "images/reviews/r6.png",
     name: "Arjun Das",
     testimonial: "This program gave me skills I never thought I could learn.",
     tags: ["EDUCATION", "Empowerment"],
@@ -227,7 +213,7 @@ const ReviewsPage = () => {
                     <img
                       src={item.src}
                       alt={item.name}
-                      className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition duration-300"
+                      className="w-full h-full object-cover brightness-99 group-hover:brightness-100 transition duration-300"
                     />
                   ) : (
                     // small preview autoplay muted in card (OK bc it's muted)
@@ -236,15 +222,11 @@ const ReviewsPage = () => {
                       autoPlay
                       loop
                       muted
-                      className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition duration-300"
+                      className="w-full h-full object-cover brightness-99 group-hover:brightness-100 transition duration-300"
                     />
                   )}
 
-                  {/* <div className="absolute top-3 left-3 px-3 py-1 text-[11px] bg-emerald-300 text-black font-semibold rounded-full shadow">
-                    {item.tags[0]}
-                  </div> */}
-
-                  <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 via-black/40 to-transparent text-white backdrop-blur-sm">
+                  {/* <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 via-black/40 to-transparent text-white backdrop-blur-sm">
                     <p className="text-sm font-light italic text-gray-200 leading-snug mb-3">
                       "{item.testimonial}"
                     </p>
@@ -263,7 +245,7 @@ const ReviewsPage = () => {
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </SwiperSlide>
             ))}

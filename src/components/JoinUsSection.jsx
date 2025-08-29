@@ -22,7 +22,7 @@ const JoinUsSection = () => {
         >
           <Briefcase className="w-5 h-5" /> Join Our Team
         </button>
-        <p className="text-gray-300 max-w-2xl mx-auto">
+        <p className="text-gray-300 max-w-2xl sm:mx-auto mx-4">
           If you're passionate about our cause, let us know what position
           you're interested in by using the form below. We're always looking
           for dedicated individuals to join our team.

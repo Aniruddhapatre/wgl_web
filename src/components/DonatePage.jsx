@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Trees, Droplets, School, Mountain, Sprout } from "lucide-react";
-
 // --- ICONS --- //
 const CheckIcon = ({ className }) => (
   <svg
@@ -91,26 +90,24 @@ const whyDonateItems = [
   "Protect wildlife and biodiversity.",
 ];
 
-const impactItems = [
-  { amount: 500, 
-    text: "Plants 5 trees", 
-    icon: <Sprout className="w-6 h-6" /> },
-  {
-    amount: 1000,
-    text: "Clean water for a family",
-    icon: <Droplets className="w-6 h-6" />,
-  },
-  {
-    amount: 5000,
-    text: "Funds a school program",
-    icon: <School className="w-6 h-6" />,
-  },
-  {
-    amount: 10000,
-    text: "Restores 1 acre of forest",
-    icon: <Trees className="w-6 h-6" />,
-  },
-];
+// const impactItems = [
+//   { amount: 500, text: "Plants 5 trees", icon: <Sprout className="w-6 h-6" /> },
+//   {
+//     amount: 1000,
+//     text: "Clean water for a family",
+//     icon: <Droplets className="w-6 h-6" />,
+//   },
+//   {
+//     amount: 5000,
+//     text: "Funds a school program",
+//     icon: <School className="w-6 h-6" />,
+//   },
+//   {
+//     amount: 10000,
+//     text: "Restores 1 acre of forest",
+//     icon: <Trees className="w-6 h-6" />,
+//   },
+// ];
 
 // --- RAZORPAY INTEGRATION --- //
 const loadRazorpay = async () => {
@@ -167,28 +164,10 @@ const App = () => {
   const [hoveredIcon, setHoveredIcon] = useState(null);
 
   return (
-    <div className="min-h-screen  text-gray-800 font-sans p-4 sm:p-6 lg:p-8">
-      {/* <style>{`
-        @keyframes fall {
-          0% { 
-            transform: translateY(-10vh) translateX(0) rotate(0deg); 
-            opacity: 0; 
-          }
-          20% {
-            opacity: 1;
-          }
-          100% { 
-            transform: translateY(100vh) translateX(var(--translateX-end)) rotate(var(--rotate-end)); 
-            opacity: 0; 
-          }
-        }
-        .animate-fall {
-          animation-name: fall;
-          animation-timing-function: ease-in;
-          animation-fill-mode: forwards;
-        }
-      `}</style> */}
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen  text-gray-800 font-sans p-4 sm:p-6 lg:p-8 relative">
+      {/* Particle background effect */}
+
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <header className="text-center mb-8">
           <div className="flex justify-center items-center gap-3 mb-2">
@@ -197,10 +176,11 @@ const App = () => {
               World Green Line
             </h1>
           </div>
-         <p className="text-gray-300 max-w-xl mx-auto">
-           Your donation fuels our mission to build a greener, healthier planet.
-        </p>
-        <div className="w-20 h-1 bg-lime-300 mt-4 mx-auto rounded-full" />
+          <p className="text-gray-300 max-w-xl mx-auto">
+            Your donation fuels our mission to build a greener, healthier
+            planet.
+          </p>
+          <div className="w-20 h-1 bg-lime-300 mt-4 mx-auto rounded-full" />
         </header>
 
         {/* Main Content Grid */}
@@ -219,32 +199,22 @@ const App = () => {
               </ul>
             </div>
 
-            <div className="mt-auto">
-              <h2 className="text-3xl font-bold mb-4">See Your Impact</h2>
-              <div className="space-y-3">
-                {impactItems.map((item) => (
-                  <div
-                    key={item.amount}
-                    onMouseEnter={() => setHoveredIcon(item.icon)}
-                    onMouseLeave={() => setHoveredIcon(null)}
-                    className={`relative overflow-hidden flex items-center justify-between p-4 rounded-lg transition-all duration-300 ease-in-out cursor-pointer ${
-                      hoveredIcon === item.icon
-                        ? "bg-white/25 scale-105 shadow-xl"
-                        : "bg-white/10 opacity-80"
-                    }`}
-                  >
-                    <div className="flex items-center z-10">
-                      <span className="text-2xl mr-4">{item.icon}</span>
-                      <span className="font-semibold">
-                        ₹{item.amount.toLocaleString("en-IN")}
-                      </span>
-                    </div>
-                    <span className="text-sky-200 text-right z-10">
-                      {item.text}
-                    </span>
-                  </div>
-                ))}
-              </div>
+            <div className="mt-auto py-6">
+                <h2 className="text-3xl font-bold mb-4">
+                  Tax Exemption Details
+                </h2>
+                <div>
+                <p className="leading-relaxed">
+                  Your contribution is eligible for a{" "}
+                  <span className="font-semibold">50% tax exemption </span>
+                  under Section 80G of the Income Tax Act, 1961.
+                </p>
+                <p className="leading-relaxed mt-2">
+                  All donations are subject to the applicable Donation Terms
+                  &amp; Conditions of
+                  <span className="font-semibold"> World Green Line</span>.
+                </p>
+                </div>
             </div>
           </div>
 
@@ -265,13 +235,12 @@ const App = () => {
           </div>
         </div>
 
-        
-        <footer className="text-center mt-12 text-gray-500 text-sm">
+        {/* <footer className="text-center mt-12 text-gray-500 text-sm">
           <p>
             A registered non-profit organization. Donations are tax-deductible
             under Section 80G.
           </p>
-        </footer>
+        </footer> */}
       </div>
     </div>
   );
