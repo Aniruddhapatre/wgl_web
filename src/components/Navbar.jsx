@@ -1,4 +1,4 @@
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "/images/logo.svg";
@@ -6,13 +6,11 @@ import { navItems } from "../constants";
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [publicationsOpen, setPublicationsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleNavClick = (href) => {
     setMobileDrawerOpen(false);
-    setPublicationsOpen(false);
 
     if (href.startsWith("#")) {
       const id = href.slice(1);
@@ -33,12 +31,9 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 py-3 bg-[#064E3B] text-white shadow-md">
       <div className="container mx-auto relative">
         <div className="flex justify-between lg:px-5 sm:px-6 px-4 items-center">
-          {/* Logo with Home Link */}
+          {/* Logo */}
           <div className="flex items-center">
-            <button 
-              onClick={() => navigate("/")}
-              className="focus:outline-none"
-            >
+            <button onClick={() => navigate("/")} className="focus:outline-none">
               <img
                 src={logo}
                 alt="Logo"
@@ -53,34 +48,34 @@ const Navbar = () => {
               if (item.label === "Publications") {
                 return (
                   <li key={index} className="relative group">
+                    {/* Publications Button */}
                     <button
-                      onClick={() => setPublicationsOpen(!publicationsOpen)}
                       className="px-1 py-2 text-sm xl:text-base transition-all flex items-center"
                     >
                       {item.label}
-                      <ChevronDown size={16} className="ml-1" />
+                      {/* Green underline */}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#16A34A] transition-all duration-300 group-hover:w-full"></span>
                     </button>
-                    
-                    {publicationsOpen && (
-                      <div className="absolute left-0 mt-2 w-48 bg-[#064D39] rounded-md shadow-lg py-1 z-50">
-                        <button
-                          onClick={() => handleNavClick("/blogs")}
-                          className="block w-full text-left px-4 py-2 text-sm hover:bg-green-700"
-                        >
-                          Blogs
-                        </button>
-                        <button
-                          onClick={() => handleNavClick("/Articles")}
-                          className="block w-full text-left px-4 py-2 text-sm hover:bg-green-700"
-                        >
-                          Reports & Articles
-                        </button>
-                      </div>
-                    )}
+
+                    {/* Dropdown */}
+                    <div className="absolute left-0 mt-3 w-44 bg-[#064D39] rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transform -translate-y-2 transition-all duration-200">
+                      <button
+                        onClick={() => handleNavClick("/blogs")}
+                        className="block w-full text-left px-4 py-2 text-sm hover:bg-green-700"
+                      >
+                        Blogs
+                      </button>
+                      <button
+                        onClick={() => handleNavClick("/Articles")}
+                        className="block w-full text-left px-4 py-2 text-sm hover:bg-green-700"
+                      >
+                        Reports & Articles
+                      </button>
+                    </div>
                   </li>
                 );
               }
-              
+
               return (
                 <li key={index} className="relative group">
                   <button
@@ -88,6 +83,7 @@ const Navbar = () => {
                     className="px-1 py-2 text-sm xl:text-base transition-all"
                   >
                     {item.label}
+                    {/* Green underline */}
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#16A34A] transition-all duration-300 group-hover:w-full"></span>
                   </button>
                 </li>
@@ -97,7 +93,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden">
-            <button 
+            <button
               onClick={() => setMobileDrawerOpen(true)}
               className="focus:outline-none"
             >
@@ -105,14 +101,14 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-        
+
         {/* Mobile Drawer */}
         {mobileDrawerOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
             <div className="fixed right-0 top-0 h-full w-64 bg-[#064D39] text-white shadow-lg p-6 transition-transform transform">
               <div className="flex justify-between mb-6">
                 <h2 className="text-xl font-bold">Menu</h2>
-                <button 
+                <button
                   onClick={() => setMobileDrawerOpen(false)}
                   className="focus:outline-none"
                 >
@@ -124,33 +120,25 @@ const Navbar = () => {
                   if (item.label === "Publications") {
                     return (
                       <li key={index} className="flex flex-col">
-                        <button
-                          className="flex justify-between items-center w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
-                          onClick={() => setPublicationsOpen(!publicationsOpen)}
-                        >
-                          <span>{item.label}</span>
-                          <ChevronDown size={16} />
-                        </button>
-                        {publicationsOpen && (
-                          <div className="pl-4 mt-2">
-                            <button
-                              className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
-                              onClick={() => handleNavClick("/blogs")}
-                            >
-                              Blogs
-                            </button>
-                            <button
-                              className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
-                              onClick={() => handleNavClick("/Articles")}
-                            >
-                              Reports & Articles
-                            </button>
-                          </div>
-                        )}
+                        <span className="font-semibold">Publications</span>
+                        <div className="pl-4 mt-2">
+                          <button
+                            className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
+                            onClick={() => handleNavClick("/blogs")}
+                          >
+                            Blogs
+                          </button>
+                          <button
+                            className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
+                            onClick={() => handleNavClick("/Articles")}
+                          >
+                            Reports & Articles
+                          </button>
+                        </div>
                       </li>
                     );
                   }
-                  
+
                   return (
                     <li key={index}>
                       <button

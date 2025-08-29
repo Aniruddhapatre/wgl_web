@@ -52,16 +52,16 @@ const values = [
 
             <div className="relative z-10 bg-[#09513A] p-5 sm:p-10 h-full rounded-xl shadow-sm border border-green-600 transition-all duration-500">
               <h3 className="text-xl sm:text-2xl font-semibold text-lime-400 mb-4">
-                Our Mission
+                Our Vision
               </h3>
               <p className="text-gray-200 mb-6">
-                World green Line aims to promote environmental conservation by educating the society on their responsibilities towards nature through ongoing initiatives like afforestation, waste management, water body conservation, innovative agriculture, and optimal use of natural resources.
+               To be the leading NGO, bringing together society, government, and businesses to protect the environment, overcoming all challenges and preserving nature’s balance.
               </p>
               <h3 className="text-xl sm:text-2xl font-semibold text-lime-400 mb-4">
                 What we do
               </h3>
               <p className="text-gray-200">
-                To be the leading NGO, bringing together society, government, and businesses to protect the environment, overcoming all challenges and preserving nature’s balance.
+                World green Line aims to promote environmental conservation by educating the society on their responsibilities towards nature through ongoing initiatives like afforestation, waste management, water body conservation, innovative agriculture, and optimal use of natural resources.
               </p>
             </div>
           </div>

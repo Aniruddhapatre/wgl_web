@@ -165,8 +165,8 @@ export default function ImpactSection() {
             },
             {
               value: "30+",
-              label: "Schools Engaged",
-              desc: "Inspiring students to care for the environment",
+              label: "Villages Engaged",
+              desc: "in projects that bring people together towards progress",
             },
           ].map((item, idx) => (
             <ImpactCard

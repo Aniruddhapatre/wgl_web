@@ -68,15 +68,14 @@ const ContactSection = () => {
               <div className="flex items-start gap-3">
                 <MapPin className="text-lime-400 mt-0.5 h-6 w-6 shrink-0" />
                 <p>
-                  Shiv Shakti Nagar, Near Shiv Mandir <br />
-                  Chas, Bokaro, Jharkhand, <br />
+                  Shiv Shakti Nagar, Chas, Bokaro, Jharkhand, <br />
                   India - 827013
                 </p>
               </div>
               <div className="flex items-start gap-3">
                 <Phone className="text-lime-400 mt-0.5 w-6 h-6 shrink-0" />
                 <a
-                  href="tel:+91 9006613222"
+                  href="tel:+919006613222"
                   className="hover:text-lime-400 transition-colors duration-200"
                 >
                   +91 900 661 3222
@@ -101,22 +100,39 @@ const ContactSection = () => {
           >
             <form ref={form} onSubmit={sendEmail} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Full Name */}
                 <input
                   type="text"
                   name="from_name"
-                  placeholder="Your Name"
+                  placeholder="Full Name"
                   required
                   className="p-3 rounded-md bg-green-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400"
                 />
+
+                {/* Phone Number (10 digits) */}
                 <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
+                  type="tel"
+                  name="phone_number"
+                  placeholder="Phone Number"
                   required
+                  pattern="[0-9]{10}"
+                  title="Phone number must be exactly 10 digits"
                   className="p-3 rounded-md bg-green-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400"
                 />
               </div>
 
+              {/* Email (valid format) */}
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                title="Enter a valid email address (e.g. example@mail.com)"
+                className="w-full p-3 rounded-md bg-green-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400"
+              />
+
+              {/* Subject */}
               <input
                 type="text"
                 name="subject"
@@ -125,13 +141,14 @@ const ContactSection = () => {
                 className="w-full p-3 rounded-md bg-green-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400"
               />
 
+              {/* Message */}
               <textarea
                 name="message"
-                placeholder="Your Message / Comment"
-                required
-                className="w-full p-3 rounded-md bg-green-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400 h-28 sm:h-60"
+                placeholder="Your Message / Comment (Optional)"
+                className="w-full p-3 rounded-md bg-green-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400 h-28 sm:h-40"
               />
 
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
@@ -146,7 +163,7 @@ const ContactSection = () => {
                   "Sending..."
                 ) : (
                   <>
-                    <Send className="w-4 h-4" /> Send Message
+                    <Send className="w-5 h-5" /> Send Message
                   </>
                 )}
               </button>

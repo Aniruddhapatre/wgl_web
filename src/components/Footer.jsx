@@ -8,6 +8,7 @@ import {
   Phone,
   MapPin,
   X,
+  Youtube,
 } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { resourcesLinks, platformLinks } from "../constants";
@@ -77,6 +78,12 @@ const Footer = () => {
             >
               <Instagram size={20} />
             </a>
+             <a
+              href="https://www.youtube.com/channel/UCWh-uZA4MlCi13THFZk70vg"
+              className="text-gray-400 hover:text-lime-400"
+            >
+              <Youtube size={20} />
+            </a>
             <a
               href="https://www.linkedin.com/company/worldgreenline/"
               className="text-gray-400 hover:text-lime-400"
@@ -132,9 +139,7 @@ const Footer = () => {
           <div className="flex items-start gap-3">
             <MapPin className="text-lime-400 w-5 h-5" />
             <address className="text-gray-400 text-sm not-italic">
-              Shiv Shakti Nagar, Near Shiv Mandir
-              <br />
-              Chas, Bokaro, Jharkhand
+              Shiv Shakti Nagar, Chas, Bokaro, Jharkhand
               <br /> India - 827013
             </address>
           </div>

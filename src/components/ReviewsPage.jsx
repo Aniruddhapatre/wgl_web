@@ -14,7 +14,7 @@ const testimonialData = [
   },
   {
     type: "img",
-    src: "images/reviews/r2.png",
+    src: "images/reviews/r4.png",
     name: "Jesse Showalter",
     testimonial:
       "Amazing guidance and professional support throughout the journey.",
@@ -22,21 +22,21 @@ const testimonialData = [
   },
   {
     type: "img",
-    src: "images/reviews/r3.png",
+    src: "images/reviews/r2.png",
     name: "Daniele Buffa",
     testimonial: "Working with them made everything smooth and successful.",
     tags: ["Animation", "UI", "Visual"],
   },
   {
     type: "img",
-    src: "images/reviews/r4.png",
+    src: "images/reviews/r5.png",
     name: "Victa Wille",
     testimonial: "Great collaboration and timely delivery of creative work.",
     tags: ["Mobile", "UI", "Web"],
   },
   {
     type: "img",
-    src: "images/reviews/r5.png",
+    src: "images/reviews/r3.png",
     name: "Mercedes Bazan",
     testimonial: "A talented team that delivered beyond expectations.",
     tags: ["Graphic Design", "Illustration"],

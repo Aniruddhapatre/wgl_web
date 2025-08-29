@@ -112,7 +112,6 @@ export default function FeaturedProject() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-5 w-full">
           <div className="flex justify-center items-center gap-3 mb-2">
-            <Leaf className="text-green-600" size={32} />
             <h1 className="text-3xl sm:text-4xl font-bold text-lime-300">
               Daily Glimpses of World Green Line
             </h1>
