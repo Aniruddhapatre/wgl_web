@@ -24,8 +24,8 @@ import { db } from "../api/firebase";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // Cloudinary configuration
-const cloudName = "dycy7hsw7";
-const uploadPreset = "wgl_images";
+const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME ;
+const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
 const ProjectAdmin = () => {
   const [projects, setProjects] = useState([]);

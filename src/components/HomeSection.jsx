@@ -12,7 +12,7 @@ const HomeSection = () => {
       {useVideo ? (
         <video
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
-          src="https://res.cloudinary.com/dpsbx8enu/video/upload/v1754653988/riverraft2_lv90sh.mp4"
+          src="https://res.cloudinary.com/dycy7hsw7/video/upload/v1756470456/riverraft2_xwfm5p.mp4"
           autoPlay
           loop
           muted
