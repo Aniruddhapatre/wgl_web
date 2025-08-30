@@ -90,25 +90,6 @@ const whyDonateItems = [
   "Protect wildlife and biodiversity.",
 ];
 
-// const impactItems = [
-//   { amount: 500, text: "Plants 5 trees", icon: <Sprout className="w-6 h-6" /> },
-//   {
-//     amount: 1000,
-//     text: "Clean water for a family",
-//     icon: <Droplets className="w-6 h-6" />,
-//   },
-//   {
-//     amount: 5000,
-//     text: "Funds a school program",
-//     icon: <School className="w-6 h-6" />,
-//   },
-//   {
-//     amount: 10000,
-//     text: "Restores 1 acre of forest",
-//     icon: <Trees className="w-6 h-6" />,
-//   },
-// ];
-
 // --- RAZORPAY INTEGRATION --- //
 const loadRazorpay = async () => {
   return new Promise((resolve) => {
@@ -186,35 +167,71 @@ const App = () => {
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Panel: Information */}
-          <div className="bg-gradient-to-br from-blue-600 to-sky-800 text-white p-8 rounded-2xl shadow-lg flex flex-col">
-            <div>
-              <h2 className="text-3xl font-bold mb-4">Why Your Help Matters</h2>
-              <ul className="space-y-4 mb-8">
+          <div className="bg-gradient-to-br from-blue-600 to-sky-800 text-white p-10 rounded-2xl shadow-2xl flex flex-col relative overflow-hidden">
+            {/* Decorative background shapes */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-emerald-400/10 rounded-full blur-2xl z-0" />
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-sky-400/10 rounded-full blur-2xl z-0" />
+            <div className="relative z-10">
+              {/* Why Your Help Matters */}
+              <h2 className="text-3xl md:text-4xl font-extrabold mb-5 flex items-center gap-3">
+                {/* <LeafIcon className="w-9 h-9 text-lime-300" /> */}
+                Why Your Help Matters
+              </h2>
+              <ul className="space-y-5 mb-10">
                 {whyDonateItems.map((item, index) => (
                   <li key={index} className="flex items-start">
-                    <CheckIcon className="mr-3 mt-1 flex-shrink-0" />
-                    <span>{item}</span>
+                    <span className="flex-shrink-0 mt-1">
+                      <CheckIcon className="text-emerald-300" />
+                    </span>
+                    <span className="ml-4 text-lg leading-relaxed font-medium tracking-wide">
+                      {item}
+                    </span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="mt-auto py-6">
-                <h2 className="text-3xl font-bold mb-4">
-                  Tax Exemption Details
-                </h2>
-                <div>
-                <p className="leading-relaxed">
+            {/* Separation line */}
+            <div className="my-6">
+              <div className="w-full border-t border-dashed border-emerald-200 opacity-60" />
+            </div>
+
+            {/* Tax Exemption Details */}
+            <div className="relative z-10">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 flex items-center gap-2">
+                <svg
+                  className="w-7 h-7 text-amber-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+                  />
+                </svg>
+                Tax Exemption Details
+              </h2>
+              <div className="bg-white/10 rounded-xl p-5 shadow-inner">
+                <p className="leading-relaxed text-base md:text-lg">
                   Your contribution is eligible for a{" "}
-                  <span className="font-semibold">50% tax exemption </span>
+                  <span className="font-semibold text-amber-200">
+                    50% tax exemption
+                  </span>{" "}
                   under Section 80G of the Income Tax Act, 1961.
                 </p>
-                <p className="leading-relaxed mt-2">
+                <p className="leading-relaxed mt-3 text-base">
                   All donations are subject to the applicable Donation Terms
                   &amp; Conditions of
-                  <span className="font-semibold"> World Green Line</span>.
+                  <span className="font-semibold text-lime-200">
+                    {" "}
+                    World Green Line
+                  </span>
+                  .
                 </p>
-                </div>
+              </div>
             </div>
           </div>
 
@@ -234,13 +251,6 @@ const App = () => {
             )}
           </div>
         </div>
-
-        {/* <footer className="text-center mt-12 text-gray-500 text-sm">
-          <p>
-            A registered non-profit organization. Donations are tax-deductible
-            under Section 80G.
-          </p>
-        </footer> */}
       </div>
     </div>
   );
