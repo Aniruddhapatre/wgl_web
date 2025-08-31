@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Leaf, Video, Loader2 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://18.207.183.5:5000';
 
 export default function FeaturedProject() {
   const [mediaItems, setMediaItems] = useState([]);
