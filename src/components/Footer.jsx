@@ -27,6 +27,7 @@ const Footer = () => {
     terms: "/docs/Donation T&C.pdf",
     Refund: "/docs/Refund Policy.pdf",
     cookies: "/docs/Cookies Policy.pdf",
+    docs: "/docs/Annual Report (2024).pdf",
   };
 
   // Prevent body scroll when modal is open
@@ -120,23 +121,25 @@ const Footer = () => {
     Resources
   </h3>
   <ul className="space-y-3">
-    {resourcesLinks.map((link, index) => (
-      <li key={index}>
-        <a
-          href={link.href}
-          onClick={(e) => {
-            if (link.onClick) {
-              e.preventDefault(); // stop default navigation
-              link.onClick();     // open PDF popup
-            }
-          }}
-          className="text-gray-400 hover:text-lime-400 flex items-start gap-2"
-        >
-          <span className="mt-0.5">•</span> <span>{link.text}</span>
-        </a>
-      </li>
-    ))}
-  </ul>
+  {resourcesLinks.map((link, index) => (
+    <li key={index}>
+      <a
+        href={link.href}
+        onClick={(e) => {
+          if (link.onClick) {
+            e.preventDefault();
+            setOpenPDF(link.onClick); // 👈 open correct modal PDF
+          }
+        }}
+        className="text-gray-400 hover:text-lime-400 flex items-start gap-2"
+        
+      >
+        <span className="mt-0.5">•</span> <span>{link.text}</span>
+      </a>
+    </li>
+  ))}
+</ul>
+
 </div>
 
 
@@ -218,7 +221,8 @@ const Footer = () => {
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           onClick={(e) => e.target === e.currentTarget && setOpenPDF(null)}
         >
-          <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-hidden relative flex flex-col">
+          <div className="bg-white rounded-xl w-[70%] h-[80vh] max-w-4xl overflow-hidden relative flex flex-col">
+
             <div className="flex justify-between items-center p-4 border-b bg-gray-500">
               <h3 className="font-bold capitalize text-lg">
                 {openPDF.replace("-", " ")}
