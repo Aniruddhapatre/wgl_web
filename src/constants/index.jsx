@@ -11,7 +11,7 @@ export const navItems = [
 
 export const resourcesLinks = [
   { href: "#", text: "Getting Started" },
-  { href: "#", text: "Documentation", onClick: "docs" }, 
+  { href: "#", text: "Annual Report", onClick: "docs" },
   { href: "#", text: "Tutorials" },
   { href: "#", text: "Community Forums" },
 ];
