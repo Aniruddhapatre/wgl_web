@@ -199,7 +199,7 @@ export default function ArticlesList() {
       <div className="container mx-auto px-4 py-16 sm:py-24 relative z-10">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-lime-300 mb-4">
-            reports & articles
+            Reports & Articles
           </h1>
           <p className="text-gray-200 text-lg max-w-3xl mx-auto">
             Discover the latest insights and stories about environmental conservation, 

@@ -1,11 +1,12 @@
 const teamData = [
-  { name: "Pritiranjan Dash", title: "Founder & President", image: "images/team/PRITI_RANJAN_DASH_President_Founder.jpg" },
+  { name: "Priti Ranjan Dash", title: "Founder & President", image: "images/team/PRITI_RANJAN_DASH_President_Founder.jpg" },
   { name: "Vishal Kumar", title: "Vice President", image: "images/team/VISHAL_KUMAR_Vice_President.jpg" },
   { name: "Avinash Prasad", title: "Secretary", image: "images/team/AVINASH_PRASAD_Secretary.jpg" },
   { name: "Devnarayan Kushwaha", title: "Treasurer", image: "images/team/DEV_NARAYAN_KUSHWAHA_treasurer.jpg" },
   { name: "Kriti Rajoria", title: "Member", image: "images/team/RAJORIA_Member.jpg" },
   { name: "Subrat Kumar Acharya", title: "Member", image: "images/team/SUBRAT_KUMAR_ACHARYA_Member.jpg" },
   { name: "Bharat Sahoo", title: "Member", image: "images/team/BHARAT_SAHOO_Member.jpg" },
+  { name: "Rajesh Prasad Mahato", title: "Member", image: "images/team/Rajesh Prasad Mahto Member (2).jpg" },
 ];
 
 // --- Team Card ---
@@ -24,7 +25,7 @@ const TeamCard = ({ member }) => (
 // --- Main Section ---
 const TeamSection = () => {
   const firstRow = teamData.slice(0, 4); // first 4
-  const secondRow = teamData.slice(4, 7); // next 3
+  const secondRow = teamData.slice(4, 8); // next 3
 
   return (
     <section className="relative py-16 sm:py-24 px-4">

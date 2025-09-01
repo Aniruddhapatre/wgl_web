@@ -11,10 +11,20 @@ export const navItems = [
 
 export const resourcesLinks = [
   { href: "#", text: "Getting Started" },
-  { href: "#", text: "Documentation" },
+  { 
+    href: "#", 
+    text: "Annual Report", 
+    onClick: () => {
+      window.open("/docs/Annual Report (2024).pdf", "docWindow", "width=800,height=600");
+    } 
+  },
   { href: "#", text: "Tutorials" },
   { href: "#", text: "Community Forums" },
 ];
+
+
+
+
 
 export const platformLinks = [
   { href: "#about", text: "About Us" },

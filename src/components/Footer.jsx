@@ -14,6 +14,8 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { resourcesLinks, platformLinks } from "../constants";
 import logo from "/images/logo.svg";
 
+
+
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
 const Footer = () => {
@@ -114,22 +116,29 @@ const Footer = () => {
 
         {/* Resources */}
         <div>
-          <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-lime-500/30 inline-block">
-            Resources
-          </h3>
-          <ul className="space-y-3">
-            {resourcesLinks.map((link, index) => (
-              <li key={index}>
-                <a
-                  href={link.href}
-                  className="text-gray-400 hover:text-lime-400 flex items-start gap-2"
-                >
-                  <span className="mt-0.5">•</span> <span>{link.text}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+  <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-lime-500/30 inline-block">
+    Resources
+  </h3>
+  <ul className="space-y-3">
+    {resourcesLinks.map((link, index) => (
+      <li key={index}>
+        <a
+          href={link.href}
+          onClick={(e) => {
+            if (link.onClick) {
+              e.preventDefault(); // stop default navigation
+              link.onClick();     // open PDF popup
+            }
+          }}
+          className="text-gray-400 hover:text-lime-400 flex items-start gap-2"
+        >
+          <span className="mt-0.5">•</span> <span>{link.text}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
 
         {/* Contact */}
         <div className="space-y-5">
@@ -255,5 +264,7 @@ const Footer = () => {
     </footer>
   );
 };
+
+
 
 export default Footer;
