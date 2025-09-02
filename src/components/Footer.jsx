@@ -221,7 +221,7 @@ const Footer = () => {
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           onClick={(e) => e.target === e.currentTarget && setOpenPDF(null)}
         >
-          <div className="bg-white rounded-xl w-[70%] h-[80vh] max-w-4xl overflow-hidden relative flex flex-col">
+          <div className="bg-white rounded-xl w-[70%] h-[80vh]  w-[95%] sm:w-[90%] max-w-4xl overflow-hidden relative flex flex-col">
 
             <div className="flex justify-between items-center p-4 border-b bg-gray-500">
               <h3 className="font-bold capitalize text-lg">
