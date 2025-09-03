@@ -27,7 +27,7 @@ module.exports.handler = serverless(app);
 // Configurations
 // ===================
 app.use(cors({
-  origin: [process.env.FRONTEND_URL, "http://18.207.183.5:5173"],
+  origin: [process.env.FRONTEND_URL, "http://210.79.129.153:5173"],
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));

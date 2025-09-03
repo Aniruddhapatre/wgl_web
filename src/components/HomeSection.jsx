@@ -32,11 +32,12 @@ const HomeSection = () => {
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col justify-center top-28 items-start text-left text-white px-6 md:px-32 ">
         <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold sm:mb-4 drop-shadow-lg">
-          Imagine a world where forests breathe again
- <br /> because of you
+          Alone we can do little, together 
+
+ <br />we can save everything.
         </h1>
-        <p className="text-base sm:text-lg lg:text-xl max-w-2xl font-bold">
-          Join World Green Line. Be the one who stood for the big family.
+        <p className="text-base sm:text-lg lg:text-xl max-w-2xl ">
+          No single voice can silence climate change, but together, we are thunder. World Green Line unites people across borders, faiths, and generations for one shared home—Earth. Add your voice, your strength, your hope. Join us, and let’s stand as one for our planetJoin World Green Line. Be the one who stood for the big family.
         </p>
 
         <div className="mt-6 flex gap-4">

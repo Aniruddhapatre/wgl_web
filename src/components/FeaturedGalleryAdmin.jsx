@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, Trash2, Video, Image, Loader2 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://18.207.183.5:5000';
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://210.79.129.153:5000';
 
 // Supported file types
 const SUPPORTED_IMAGE_TYPES = [
