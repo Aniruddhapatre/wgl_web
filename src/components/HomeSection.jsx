@@ -32,9 +32,9 @@ const HomeSection = () => {
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col justify-center top-28 items-start text-left text-white px-6 md:px-32 ">
         <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold sm:mb-4 drop-shadow-lg">
-          Alone we can do little, together 
+          Alone we can do little, 
 
- <br />we can save everything.
+ <br />together we can save everything.
         </h1>
         <p className="text-base sm:text-lg lg:text-xl max-w-2xl ">
  Join World Green Line and let's stand for our planet        </p>
