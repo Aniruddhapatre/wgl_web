@@ -37,8 +37,7 @@ const HomeSection = () => {
  <br />we can save everything.
         </h1>
         <p className="text-base sm:text-lg lg:text-xl max-w-2xl ">
-          No single voice can silence climate change, but together, we are thunder. World Green Line unites people across borders, faiths, and generations for one shared home—Earth. Add your voice, your strength, your hope. Join us, and let’s stand as one for our planetJoin World Green Line. Be the one who stood for the big family.
-        </p>
+ Join World Green Line and let's stand for our planet        </p>
 
         <div className="mt-6 flex gap-4">
           <button
