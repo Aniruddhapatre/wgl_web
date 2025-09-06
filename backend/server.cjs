@@ -27,7 +27,7 @@ module.exports.handler = serverless(app);
 // Configurations
 // ===================
 app.use(cors({
-  origin: [process.env.FRONTEND_URL, "http://210.79.129.153:5173"],
+  origin: [process.env.FRONTEND_URL, "https://worldgreenline.org", "https://www.worldgreenline.org"],
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
