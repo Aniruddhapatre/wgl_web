@@ -32,10 +32,8 @@ const HomeSection = () => {
       <div className="relative z-20 h-full flex flex-col justify-center top-28 items-start text-left text-white px-6 md:px-32 ">
         <h1 className="text-4xl md:text-5xl xl:text-7xl font-bold sm:mb-4 drop-shadow-lg capitalize md:uppercase">
           Alone We Can Do Little,
-          <span className="hidden md:inline">
             <br />
-          </span>
-          <span className="md:inline">Together We Can Save Everything.</span>
+          Together We Can Save Everything.
         </h1>
         <p className="text-base sm:text-lg lg:text-xl max-w-2xl ">
           {/* We can’t do this alone — and we don’t have to. When we come together,
