@@ -14,8 +14,6 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { resourcesLinks, platformLinks } from "../constants";
 import logo from "/images/logo.svg";
 
-
-
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
 const Footer = () => {
@@ -52,8 +50,8 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
         {/* Company Info */}
         <div>
-          <div className="flex items-center gap-3">
-            <img src={logo} alt="logo" className="w-24 h-16 scale-[1.2]" />
+          <div className="flex items-center select-none gap-3">
+            <img src={logo} alt="logo" className="w-24 h-16 scale-[1.2] " />
             <span className="text-xl font-bold text-lime-400">
               World Green Line
             </span>
@@ -65,30 +63,45 @@ const Footer = () => {
           <div className="flex mt-2 gap-4">
             <a
               href="https://www.facebook.com/worldgreenline.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit our Facebook page"
               className="text-gray-400 hover:text-lime-400"
             >
               <Facebook size={20} />
             </a>
             <a
               href="https://twitter.com/worldgreenline"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit our Twitter page"
               className="text-gray-400 hover:text-lime-400"
             >
               <Twitter size={20} />
             </a>
             <a
               href="https://www.instagram.com/worldgreenline_org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit our Instagram page"
               className="text-gray-400 hover:text-lime-400"
             >
               <Instagram size={20} />
             </a>
              <a
               href="https://www.youtube.com/channel/UCWh-uZA4MlCi13THFZk70vg"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit our YouTube channel"
               className="text-gray-400 hover:text-lime-400"
             >
               <Youtube size={20} />
             </a>
             <a
               href="https://www.linkedin.com/company/worldgreenline/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit our LinkedIn page"
               className="text-gray-400 hover:text-lime-400"
             >
               <Linkedin size={20} />
@@ -117,31 +130,28 @@ const Footer = () => {
 
         {/* Resources */}
         <div>
-  <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-lime-500/30 inline-block">
-    Resources
-  </h3>
-  <ul className="space-y-3">
-  {resourcesLinks.map((link, index) => (
-    <li key={index}>
-      <a
-        href={link.href}
-        onClick={(e) => {
-          if (link.onClick) {
-            e.preventDefault();
-            setOpenPDF(link.onClick); // 👈 open correct modal PDF
-          }
-        }}
-        className="text-gray-400 hover:text-lime-400 flex items-start gap-2"
-        
-      >
-        <span className="mt-0.5">•</span> <span>{link.text}</span>
-      </a>
-    </li>
-  ))}
-</ul>
-
-</div>
-
+          <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-lime-500/30 inline-block">
+            Resources
+          </h3>
+          <ul className="space-y-3">
+            {resourcesLinks.map((link, index) => (
+              <li key={index}>
+                <a
+                  href={link.href}
+                  onClick={(e) => {
+                    if (link.onClick) {
+                      e.preventDefault();
+                      setOpenPDF(link.onClick);
+                    }
+                  }}
+                  className="text-gray-400 hover:text-lime-400 flex items-start gap-2"
+                >
+                  <span className="mt-0.5">•</span> <span>{link.text}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {/* Contact */}
         <div className="space-y-5">
@@ -167,7 +177,7 @@ const Footer = () => {
           <div className="flex items-start gap-3">
             <Phone className="text-lime-400 w-5 h-5" />
             <a
-              href="tel:+91 9006613222"
+              href="tel:+919006613222"
               className="text-gray-400 hover:text-lime-400 text-sm"
             >
               +91 900 661 3222
@@ -182,7 +192,6 @@ const Footer = () => {
           <span>
             © {new Date().getFullYear()} World Green Line. All rights reserved.
           </span>
-          {/* <span className="hidden sm:inline">|</span> */}
           <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-sm text-gray-500 mt-2 sm:mt-0">
             <button
               onClick={() => setOpenPDF("privacy")}
@@ -190,14 +199,12 @@ const Footer = () => {
             >
               Privacy Policy
             </button>
-            {/* <span className="hidden sm:inline">|</span> */}
             <button
               onClick={() => setOpenPDF("Refund")}
               className="hover:text-lime-400 whitespace-nowrap"
             >
               Refund Policy
             </button>
-            {/* <span className="hidden sm:inline">|</span> */}
             <button
               onClick={() => setOpenPDF("terms")}
               className="hover:text-lime-400 whitespace-nowrap"
@@ -211,7 +218,7 @@ const Footer = () => {
               Cookies Policy
             </button>
           </div>
-          <span>Designed with ♥ in India</span>
+          <span>Made with ♥ in India</span>
         </div>
       </div>
 
@@ -222,7 +229,6 @@ const Footer = () => {
           onClick={(e) => e.target === e.currentTarget && setOpenPDF(null)}
         >
           <div className="bg-white rounded-xl w-[70%] h-[80vh]  w-[95%] sm:w-[90%] max-w-4xl overflow-hidden relative flex flex-col">
-
             <div className="flex justify-between items-center p-4 border-b bg-gray-500">
               <h3 className="font-bold capitalize text-lg">
                 {openPDF.replace("-", " ")}
@@ -252,7 +258,7 @@ const Footer = () => {
                     key={`page_${index + 1}`}
                     pageNumber={index + 1}
                     width={Math.min(800, window.innerWidth - 100)}
-                    renderTextLayer={false} // optional: speeds up + cleaner
+                    renderTextLayer={false}
                     renderAnnotationLayer={false}
                   />
                 ))}
@@ -268,7 +274,5 @@ const Footer = () => {
     </footer>
   );
 };
-
-
 
 export default Footer;

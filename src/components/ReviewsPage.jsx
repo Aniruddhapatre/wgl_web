@@ -161,7 +161,7 @@ const ReviewsPage = () => {
   };
 
   return (
-    <section id="reviews" className="py-16 px-4 sm:px-16 text-white">
+    <section id="reviews" className="py-16 px-4 sm:px-16 text-white select-none">
       <div className="text-center max-w-6xl mx-auto">
         <h2 className="text-3xl text-lime-300 font-bold mb-2">
           What people say about us

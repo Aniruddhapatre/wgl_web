@@ -35,7 +35,7 @@ const values = [
 
 
   return (
-    <section className="relative text-white px-4 sm:px-16 py-16">
+    <section className="relative text-white px-4 sm:px-16 py-16 ">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="text-center mb-12">
@@ -45,7 +45,7 @@ const values = [
           <div className="h-1 w-24 bg-lime-400 mx-auto mt-4 rounded-full" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 select-none">
           {/* Mission & Vision Card */}
           <div className="relative group">
             <div className="absolute -right-1 sm:-right-2 -bottom-1 sm:-bottom-2 w-full h-full bg-gradient-to-br from-[#146434] to-[#21d368] rounded-xl opacity-0 scale-95 group-hover:opacity-30 group-hover:scale-100 transition-all duration-500 blur-md"></div>

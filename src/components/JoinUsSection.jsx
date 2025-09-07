@@ -13,10 +13,10 @@ const JoinUsSection = () => {
   return (
     <div>
       <div className="text-center  pb-10">
-        <h3 className="text-3xl font-bold text-lime-300 mb-3">
+        <h3 className="text-3xl font-bold text-lime-300 mb-3 select-none">
           Ready to Make a Difference?
         </h3>
-         <p className="text-gray-300 max-w-2xl sm:mx-auto mx-4">
+         <p className="text-gray-300 max-w-2xl sm:mx-auto mx-4 select-none">
           If you're passionate about our cause, let us know what position
           you're interested in by using the form below. We're always looking
           for dedicated individuals to join our team.

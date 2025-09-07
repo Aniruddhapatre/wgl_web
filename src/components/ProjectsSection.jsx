@@ -56,7 +56,7 @@ const ImagePopup = ({ project, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 backdrop-blur-sm bg-black/10 flex items-center justify-center z-50 p-3"
+      className="fixed inset-0 backdrop-blur-sm bg-black/10 flex items-center justify-center z-50 p-3 "
       onClick={handleOutsideClick} // Added click-outside handler
     >
       <div className="backdrop-blur bg-black/60 border border-white/40 rounded-lg w-full shadow-2xl max-w-6xl lg:max-h-[95vh] max-h-[50vh] overflow-hidden transition-all duration-300 flex flex-col">
@@ -426,7 +426,7 @@ const ProjectsSection = () => {
   }
 
   return (
-    <section id="projects" className="px-4 sm:px-16 py-16">
+    <section id="projects" className="px-4 sm:px-16 py-16 select-none">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-3xl sm:text-4xl font-bold text-lime-300 text-center">

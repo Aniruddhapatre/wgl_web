@@ -133,7 +133,7 @@ const TiltImage = ({ src, alt, className }) => {
 
 export default function ImpactSection() {
   return (
-    <section className=" text-white py-16 px-4 sm:px-16">
+    <section className=" text-white py-16 px-4 sm:px-16 select-none">
       <div className="max-w-6xl mx-auto">
         {/* Title Section (Unchanged) */}
         <div className="text-center mb-12">
