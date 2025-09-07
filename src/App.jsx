@@ -30,6 +30,7 @@ import ArticlesList from "./components/articles/ArticlesList";
 import ArticlesPost from "./components/articles/ArticlesPost";
 import ArticlesAdmin from "./components/articles/ArticlesAdmin";
 import JoinUsSection from "./components/JoinUsSection";
+import InfiniteScroller from "./components/InfiniteScroller";
 // import ParticleBackground from "./components/ParticleBackground";
 
 const HomePage = () => (
@@ -51,6 +52,8 @@ const HomePage = () => (
     <section id="Reviews">
       <ReviewsPage />
     </section>
+
+    <InfiniteScroller />
 
     <JoinUsSection />
 

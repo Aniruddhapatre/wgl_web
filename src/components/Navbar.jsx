@@ -69,7 +69,7 @@ const Navbar = () => {
                         onClick={() => handleNavClick("/Articles")}
                         className="block w-full text-left px-4 py-2 text-sm hover:bg-green-700"
                       >
-                        Reports & Articles
+                        Media
                       </button>
                     </div>
                   </li>
@@ -132,7 +132,7 @@ const Navbar = () => {
                             className="block w-full text-left px-2 py-2 hover:bg-green-700 rounded transition-all focus:outline-none"
                             onClick={() => handleNavClick("/Articles")}
                           >
-                            Reports & Articles
+                            Media
                           </button>
                         </div>
                       </li>
