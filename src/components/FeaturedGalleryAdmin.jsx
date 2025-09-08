@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, Trash2, Video, Image, Loader2, File } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_BASE ;
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 // Supported file types
 const SUPPORTED_IMAGE_TYPES = [
@@ -76,17 +76,8 @@ export default function MediaGallery() {
     setError(null);
 
     try {
-      const IMAGE_LIMIT = 10 * 1024 * 1024;   // 10 MB
-      const VIDEO_LIMIT = 500 * 1024 * 1024;  // 500 MB
-
       const formData = new FormData();
       files.forEach(file => {
-        if (SUPPORTED_IMAGE_TYPES.includes(file.type) && file.size > IMAGE_LIMIT) {
-          throw new Error(`Image ${file.name} exceeds 10MB limit`);
-        }
-        if (SUPPORTED_VIDEO_TYPES.includes(file.type) && file.size > VIDEO_LIMIT) {
-          throw new Error(`Video ${file.name} exceeds 500MB limit`);
-        }
         formData.append('media', file);
       });
 
@@ -109,7 +100,7 @@ export default function MediaGallery() {
       setMediaItems(prev => [...newItems, ...prev]);
     } catch (err) {
       console.error('Upload error:', err);
-      setError(err.message || 'Failed to upload files. Please check the format and size (max 10MB for images, 500MB for videos).');
+      setError(err.message || 'Failed to upload files. Please check the format and type.');
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -205,8 +196,8 @@ export default function MediaGallery() {
           )}
         </button>
         <p className="text-sm text-gray-400 mt-2">
-          Supports images (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) up to 10MB <br />
-          and videos (MP4, MOV, AVI, MKV, WEBM) up to 500MB
+          Supports images (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) <br />
+          and videos (MP4, MOV, AVI, MKV, WEBM)
         </p>
       </div>
 
