@@ -14,6 +14,10 @@ const SUPPORTED_VIDEO_TYPES = [
   'video/x-matroska', 'video/webm'
 ];
 
+// Size limits
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024;   // 10 MB
+const MAX_VIDEO_SIZE = 500 * 1024 * 1024;  // 500 MB
+
 export default function MediaGallery() {
   const [mediaItems, setMediaItems] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -27,12 +31,9 @@ export default function MediaGallery() {
     setError(null);
     
     try {
-      console.log('Fetching media from:', `${API_BASE}/api/media`);
       const response = await fetch(`${API_BASE}/api/media`);
-      
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('Server error response:', errorData);
         throw new Error(
           errorData.error || 
           errorData.message || 
@@ -41,14 +42,9 @@ export default function MediaGallery() {
       }
 
       const data = await response.json();
-      console.log('Received media items:', data.length);
       setMediaItems(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error('Fetch error details:', {
-        message: err.message,
-        stack: err.stack
-      });
-      setError(err.message || 'Failed to load media. Please check the console for details.');
+      setError(err.message || 'Failed to load media.');
     } finally {
       setIsFetching(false);
     }
@@ -62,14 +58,20 @@ export default function MediaGallery() {
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
-    // Validate file types
-    const invalidFiles = files.filter(file => 
-      ![...SUPPORTED_IMAGE_TYPES, ...SUPPORTED_VIDEO_TYPES].includes(file.type)
-    );
-
-    if (invalidFiles.length > 0) {
-      setError(`Unsupported file types: ${invalidFiles.map(f => f.name).join(', ')}`);
-      return;
+    // Validate file type + size
+    for (const file of files) {
+      if (SUPPORTED_IMAGE_TYPES.includes(file.type) && file.size > MAX_IMAGE_SIZE) {
+        setError(`Image "${file.name}" exceeds 10 MB limit.`);
+        return;
+      }
+      if (SUPPORTED_VIDEO_TYPES.includes(file.type) && file.size > MAX_VIDEO_SIZE) {
+        setError(`Video "${file.name}" exceeds 500 MB limit.`);
+        return;
+      }
+      if (![...SUPPORTED_IMAGE_TYPES, ...SUPPORTED_VIDEO_TYPES].includes(file.type)) {
+        setError(`Unsupported file type: ${file.name}`);
+        return;
+      }
     }
 
     setIsUploading(true);
@@ -99,8 +101,7 @@ export default function MediaGallery() {
       const newItems = Array.isArray(result) ? result : [result];
       setMediaItems(prev => [...newItems, ...prev]);
     } catch (err) {
-      console.error('Upload error:', err);
-      setError(err.message || 'Failed to upload files. Please check the format and type.');
+      setError(err.message || 'Failed to upload files.');
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -131,8 +132,7 @@ export default function MediaGallery() {
 
       await fetchMedia();
     } catch (err) {
-      console.error('Delete error:', err);
-      setError(err.message || 'Failed to delete item. Please try again.');
+      setError(err.message || 'Failed to delete item.');
     } finally {
       setIsDeleting(false);
     }
@@ -196,8 +196,8 @@ export default function MediaGallery() {
           )}
         </button>
         <p className="text-sm text-gray-400 mt-2">
-          Supports images (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) <br />
-          and videos (MP4, MOV, AVI, MKV, WEBM)
+          Supports images (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) — max 10 MB <br />
+          and videos (MP4, MOV, AVI, MKV, WEBM) — max 500 MB
         </p>
       </div>
 
