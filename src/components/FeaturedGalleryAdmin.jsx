@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Trash2, Video, Image, Loader2 } from 'lucide-react';
+import { Upload, Trash2, Video, Image, Loader2, File } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://210.79.129.153:5000';
+const API_BASE = import.meta.env.VITE_API_BASE ;
 
 // Supported file types
 const SUPPORTED_IMAGE_TYPES = [
@@ -23,36 +23,36 @@ export default function MediaGallery() {
   const fileInputRef = useRef(null);
 
   const fetchMedia = async () => {
-  setIsFetching(true);
-  setError(null);
-  
-  try {
-    console.log('Fetching media from:', `${API_BASE}/api/media`);
-    const response = await fetch(`${API_BASE}/api/media`);
+    setIsFetching(true);
+    setError(null);
     
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error('Server error response:', errorData);
-      throw new Error(
-        errorData.error || 
-        errorData.message || 
-        `Server error: ${response.status}`
-      );
-    }
+    try {
+      console.log('Fetching media from:', `${API_BASE}/api/media`);
+      const response = await fetch(`${API_BASE}/api/media`);
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Server error response:', errorData);
+        throw new Error(
+          errorData.error || 
+          errorData.message || 
+          `Server error: ${response.status}`
+        );
+      }
 
-    const data = await response.json();
-    console.log('Received media items:', data.length);
-    setMediaItems(Array.isArray(data) ? data : []);
-  } catch (err) {
-    console.error('Fetch error details:', {
-      message: err.message,
-      stack: err.stack
-    });
-    setError(err.message || 'Failed to load media. Please check the console for details.');
-  } finally {
-    setIsFetching(false);
-  }
-};
+      const data = await response.json();
+      console.log('Received media items:', data.length);
+      setMediaItems(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Fetch error details:', {
+        message: err.message,
+        stack: err.stack
+      });
+      setError(err.message || 'Failed to load media. Please check the console for details.');
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   useEffect(() => {
     fetchMedia();
@@ -75,7 +75,7 @@ export default function MediaGallery() {
     setIsUploading(true);
     setError(null);
 
-     try {
+    try {
       const IMAGE_LIMIT = 10 * 1024 * 1024;   // 10 MB
       const VIDEO_LIMIT = 500 * 1024 * 1024;  // 500 MB
 
@@ -109,7 +109,7 @@ export default function MediaGallery() {
       setMediaItems(prev => [...newItems, ...prev]);
     } catch (err) {
       console.error('Upload error:', err);
-      setError(err.message || 'Failed to upload files. Please check the format and size (max 100MB).');
+      setError(err.message || 'Failed to upload files. Please check the format and size (max 10MB for images, 500MB for videos).');
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -205,7 +205,8 @@ export default function MediaGallery() {
           )}
         </button>
         <p className="text-sm text-gray-400 mt-2">
-          Supports images (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) and videos (MP4, MOV, AVI, MKV, WEBM) up to 100MB
+          Supports images (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) up to 10MB <br />
+          and videos (MP4, MOV, AVI, MKV, WEBM) up to 500MB
         </p>
       </div>
 
