@@ -75,11 +75,17 @@ export default function MediaGallery() {
     setIsUploading(true);
     setError(null);
 
-    try {
+     try {
+      const IMAGE_LIMIT = 10 * 1024 * 1024;   // 10 MB
+      const VIDEO_LIMIT = 500 * 1024 * 1024;  // 500 MB
+
       const formData = new FormData();
       files.forEach(file => {
-        if (file.size > 100 * 1024 * 1024) {
-          throw new Error(`File ${file.name} exceeds 100MB limit`);
+        if (SUPPORTED_IMAGE_TYPES.includes(file.type) && file.size > IMAGE_LIMIT) {
+          throw new Error(`Image ${file.name} exceeds 10MB limit`);
+        }
+        if (SUPPORTED_VIDEO_TYPES.includes(file.type) && file.size > VIDEO_LIMIT) {
+          throw new Error(`Video ${file.name} exceeds 500MB limit`);
         }
         formData.append('media', file);
       });

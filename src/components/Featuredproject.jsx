@@ -112,6 +112,7 @@ export default function FeaturedProject() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-5 w-full">
           <div className="flex justify-center items-center gap-3 mb-2">
+            <Leaf className="text-green-600" size={32} />
             <h1 className="text-3xl sm:text-4xl font-bold text-lime-300">
               Daily Glimpses of World Green Line
             </h1>
@@ -121,7 +122,7 @@ export default function FeaturedProject() {
           </p>
         </div>
 
-        <div className="h-[400px] md:h-[550px] w-full relative group">
+<div className="w-full aspect-video md:h-[550px] relative group">
           <div className="w-full h-full rounded-2xl bg-black overflow-hidden shadow-2xl border-4 border-white relative">
             {mediaItems.length > 0 ? (
               mediaItems[currentIndex]?.type === "video" ? (
@@ -190,7 +191,7 @@ export default function FeaturedProject() {
 
           {/* Thumbnail Navigation */}
           {mediaItems.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 rounded-xl p-2 flex gap-2 z-20 backdrop-blur-sm">
+<div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/50 rounded-lg p-1 sm:p-2 flex gap-1 sm:gap-2 z-20 backdrop-blur-sm">
               {mediaItems.map((media, index) => (
                 <div
                   key={media.public_id || index}
@@ -210,7 +211,7 @@ export default function FeaturedProject() {
                     <img
                       src={media.url}
                       alt={`Thumbnail ${index + 1}`}
-                      className="w-14 h-14 md:w-16 md:h-16 object-cover"
+                      className="w-7 h-7 sm:w-8 sm:h-8 md:w-14 md:h-10 object-cover"
                       loading="lazy"
                       onError={(e) => {
                         e.target.onerror = null;
