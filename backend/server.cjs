@@ -7,34 +7,36 @@ const path = require('path');
 const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
-const serverless = require("serverless-http");
-
-
-
 
 const app = express();
 
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK", time: new Date().toISOString() });
-});
-
-// Export for Vercel
-module.exports = app;
-module.exports.handler = serverless(app);
-
-
 // ===================
-// Configurations
+// CORS (Fixed for domain)
 // ===================
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "https://worldgreenline.org",
+  "https://www.worldgreenline.org"
+];
+
 app.use(cors({
-  origin: [process.env.FRONTEND_URL, "https://worldgreenline.org", "https://www.worldgreenline.org"],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, origin || true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  },
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ===================
 // Razorpay
+// ===================
 let razorpay;
 try {
   razorpay = new Razorpay({
@@ -43,10 +45,11 @@ try {
   });
 } catch (error) {
   console.error('Failed to initialize Razorpay:', error);
-  process.exit(1);
 }
 
+// ===================
 // Cloudinary
+// ===================
 try {
   cloudinary.config({
     cloud_name: process.env.VITE_CLOUDINARY_CLOUD_NAME,
@@ -57,13 +60,14 @@ try {
   console.log('Cloudinary configured successfully');
 } catch (error) {
   console.error('Cloudinary configuration failed:', error);
-  process.exit(1);
 }
 
 const CLOUDINARY_MEDIA_FOLDER = 'media_gallery';
 const UPLOAD_PRESET = process.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'wgl_images';
 
-// Multer for documents
+// ===================
+// Multer
+// ===================
 const docStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, 'uploads');
@@ -79,13 +83,12 @@ const docStorage = multer.diskStorage({
 });
 const docUpload = multer({ storage: docStorage });
 
-// Multer for media
 const mediaUpload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedTypes = [
-      'image/jpeg', 'image/png', 'image/gif', 
+      'image/jpeg', 'image/png', 'image/gif',
       'video/mp4', 'video/quicktime', 'video/x-msvideo'
     ];
     if (allowedTypes.includes(file.mimetype)) cb(null, true);
@@ -93,7 +96,9 @@ const mediaUpload = multer({
   }
 });
 
-// EmailJS config
+// ===================
+// EmailJS
+// ===================
 const getEmailJSConfig = () => ({
   serviceId: process.env.VITE_EMAILJS_SERVICE_ID || '',
   templateId: process.env.VITE_EMAILJS_TEMPLATE_ID || '',
@@ -101,8 +106,10 @@ const getEmailJSConfig = () => ({
 });
 
 // ===================
-// Razorpay Endpoints
+// Routes
 // ===================
+
+// Razorpay
 app.post('/create-order', async (req, res) => {
   try {
     const { amount, currency = 'INR', receipt = 'donation_receipt' } = req.body;
@@ -118,9 +125,7 @@ app.post('/verify-payment', (req, res) => {
   res.json({ success: true });
 });
 
-// ===================
-// Application Endpoint
-// ===================
+// Application
 app.post('/submit-application', docUpload.single('resume'), async (req, res) => {
   try {
     const { serviceId, templateId, publicKey } = getEmailJSConfig();
@@ -158,15 +163,16 @@ app.post('/submit-application', docUpload.single('resume'), async (req, res) => 
   }
 });
 
-// ===================
-// Media Gallery Endpoints
-// ===================
+// Media
 app.get('/api/media', async (req, res) => {
   try {
-    console.log('Fetching media from Cloudinary...');
     const [images, videos] = await Promise.all([
-      cloudinary.api.resources({ type: 'upload', prefix: `${CLOUDINARY_MEDIA_FOLDER}/`, max_results: 500, resource_type: 'image' }),
-      cloudinary.api.resources({ type: 'upload', prefix: `${CLOUDINARY_MEDIA_FOLDER}/`, max_results: 500, resource_type: 'video' })
+      cloudinary.api.resources({
+        type: 'upload', prefix: `${CLOUDINARY_MEDIA_FOLDER}/`, max_results: 500, resource_type: 'image'
+      }),
+      cloudinary.api.resources({
+        type: 'upload', prefix: `${CLOUDINARY_MEDIA_FOLDER}/`, max_results: 500, resource_type: 'video'
+      })
     ]);
 
     const allMedia = [...images.resources, ...videos.resources];
@@ -178,7 +184,6 @@ app.get('/api/media', async (req, res) => {
       created_at: item.created_at
     })));
   } catch (err) {
-    console.error('Cloudinary API error:', err);
     res.status(500).json({ error: 'Failed to fetch media', details: err.message });
   }
 });
@@ -190,7 +195,13 @@ app.post('/api/media', mediaUpload.array('media', 10), async (req, res) => {
     const uploadResults = await Promise.all(req.files.map(file => {
       return new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream(
-          { resource_type: file.mimetype.startsWith('video') ? 'video' : 'image', folder: CLOUDINARY_MEDIA_FOLDER, upload_preset: UPLOAD_PRESET, use_filename: true, unique_filename: true },
+          {
+            resource_type: file.mimetype.startsWith('video') ? 'video' : 'image',
+            folder: CLOUDINARY_MEDIA_FOLDER,
+            upload_preset: UPLOAD_PRESET,
+            use_filename: true,
+            unique_filename: true
+          },
           (error, result) => error ? reject(error) : resolve(result)
         ).end(file.buffer);
       });
@@ -215,9 +226,7 @@ app.delete('/api/media/:public_id', async (req, res) => {
   }
 });
 
-// ===================
-// Health Check
-// ===================
+// Health
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
@@ -230,7 +239,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Error Handling
+// Global Error Handler
 app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: err.message });
 });
@@ -238,5 +247,5 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
