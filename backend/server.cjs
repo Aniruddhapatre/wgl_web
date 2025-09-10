@@ -57,21 +57,17 @@ try {
     api_secret: process.env.VITE_CLOUDINARY_API_SECRET,
     secure: true
   });
-  console.log('✅ Cloudinary configured successfully');
+  console.log('Cloudinary configured successfully');
 } catch (error) {
-  console.error('❌ Cloudinary configuration failed:', error);
+  console.error('Cloudinary configuration failed:', error);
 }
 
 const CLOUDINARY_MEDIA_FOLDER = 'media_gallery';
 const UPLOAD_PRESET = process.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'wgl_images';
 
 // ===================
-// Multer (Limits for Images & Videos)
+// Multer
 // ===================
-const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
-const MAX_FILES = 10; // Max 10 files at once
-
-// For documents
 const docStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, 'uploads');
@@ -87,10 +83,9 @@ const docStorage = multer.diskStorage({
 });
 const docUpload = multer({ storage: docStorage });
 
-// For media (images + videos)
 const mediaUpload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: MAX_FILE_SIZE },
+  limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedTypes = [
       'image/jpeg', 'image/png', 'image/gif',
@@ -173,18 +168,10 @@ app.get('/api/media', async (req, res) => {
   try {
     const [images, videos] = await Promise.all([
       cloudinary.api.resources({
-        type: 'upload',
-        prefix: `${CLOUDINARY_MEDIA_FOLDER}/`,
-        max_results: 500,
-        resource_type: 'image',
-        max_file_size: MAX_FILE_SIZE
+        type: 'upload', prefix: `${CLOUDINARY_MEDIA_FOLDER}/`, max_results: 500, resource_type: 'image'
       }),
       cloudinary.api.resources({
-        type: 'upload',
-        prefix: `${CLOUDINARY_MEDIA_FOLDER}/`,
-        max_results: 500,
-        resource_type: 'video',
-        max_file_size: MAX_FILE_SIZE
+        type: 'upload', prefix: `${CLOUDINARY_MEDIA_FOLDER}/`, max_results: 500, resource_type: 'video'
       })
     ]);
 
@@ -201,7 +188,7 @@ app.get('/api/media', async (req, res) => {
   }
 });
 
-app.post('/api/media', mediaUpload.array('media', MAX_FILES), async (req, res) => {
+app.post('/api/media', mediaUpload.array('media', 10), async (req, res) => {
   try {
     if (!req.files.length) return res.status(400).json({ error: 'No files uploaded' });
 
