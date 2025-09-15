@@ -202,7 +202,7 @@ const InternshipForm = ({
         name="name"
         value={formData.name}
         onChange={handleInputChange}
-        placeholder="e.g., Vishal"
+        placeholder="e.g., Rohan Sharma"
         required
         disabled={isSubmitting}
       />
@@ -211,7 +211,7 @@ const InternshipForm = ({
         name="location"
         value={formData.location}
         onChange={handleInputChange}
-        placeholder="e.g., B.S city, india"
+        placeholder="e.g. Noida, India"
         // required
         disabled={isSubmitting}
       />
