@@ -202,7 +202,7 @@ const InternshipForm = ({
         name="name"
         value={formData.name}
         onChange={handleInputChange}
-        placeholder="e.g., Vishal"
+        placeholder="e.g., Rohan Kapoor"
         required
         disabled={isSubmitting}
       />
@@ -211,7 +211,7 @@ const InternshipForm = ({
         name="location"
         value={formData.location}
         onChange={handleInputChange}
-        placeholder="e.g., B.S city, india"
+        placeholder="e.g., Sector 7, Noida, india"
         // required
         disabled={isSubmitting}
       />
@@ -377,7 +377,7 @@ const VolunteerForm = ({
         name="name"
         value={formData.name}
         onChange={handleInputChange}
-        placeholder="e.g., Vishal"
+        placeholder="e.g., Rohan Kapoor"
         required
         disabled={isSubmitting}
       />
@@ -386,7 +386,7 @@ const VolunteerForm = ({
         name="location"
         value={formData.location}
         onChange={handleInputChange}
-        placeholder="e.g., B.S city, india"
+        placeholder="e.g., Sector 7, Noida, india"
         // required
         disabled={isSubmitting}
       />
@@ -551,7 +551,7 @@ const OtherForm = ({
         name="name"
         value={formData.name}
         onChange={handleInputChange}
-        placeholder="e.g., Vishal"
+        placeholder="e.g., Rohan Kapoor"
         required
         disabled={isSubmitting}
       />
@@ -560,7 +560,7 @@ const OtherForm = ({
         name="location"
         value={formData.location}
         onChange={handleInputChange}
-        placeholder="e.g., B.S city, india"
+        placeholder="e.g., Sector 7, Noida, india"
         required
         disabled={isSubmitting}
       />
