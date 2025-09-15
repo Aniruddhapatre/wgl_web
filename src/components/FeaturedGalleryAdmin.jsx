@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Trash2, Video, Image, Loader2, File } from 'lucide-react';
+import { Upload, Trash2, Video, Image, Loader2, File, AlertCircle } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -24,6 +24,7 @@ export default function MediaGallery() {
   const [isFetching, setIsFetching] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState(null);
+  const [galleryType, setGalleryType] = useState('empty'); // 'empty', 'image', 'video'
   const fileInputRef = useRef(null);
 
   const fetchMedia = async () => {
@@ -43,6 +44,15 @@ export default function MediaGallery() {
 
       const data = await response.json();
       setMediaItems(Array.isArray(data) ? data : []);
+
+      // Determine gallery type based on existing media
+      if (data.length === 0) {
+        setGalleryType('empty');
+      } else {
+        const firstItemType = getFileType(data[0]);
+        setGalleryType(firstItemType === 'video' ? 'video' : 'image');
+      }
+
     } catch (err) {
       setError(err.message || 'Failed to load media.');
     } finally {
@@ -57,6 +67,28 @@ export default function MediaGallery() {
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
+
+    // Check if files match the current gallery type
+    if (galleryType !== 'empty') {
+      const isTryingToUploadImage = files.some(file => 
+        SUPPORTED_IMAGE_TYPES.includes(file.type)
+      );
+      const isTryingToUploadVideo = files.some(file => 
+        SUPPORTED_VIDEO_TYPES.includes(file.type)
+      );
+
+      if (galleryType === 'image' && isTryingToUploadVideo) {
+        setError('Cannot upload videos to an image gallery. Please delete all images first to upload videos.');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+
+      if (galleryType === 'video' && isTryingToUploadImage) {
+        setError('Cannot upload images to a video gallery. Please delete all videos first to upload images.');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+    }
 
     // Validate file type + size
     for (const file of files) {
@@ -100,6 +132,13 @@ export default function MediaGallery() {
       const result = await response.json();
       const newItems = Array.isArray(result) ? result : [result];
       setMediaItems(prev => [...newItems, ...prev]);
+      
+      // Update gallery type based on what was uploaded
+      if (galleryType === 'empty') {
+        const uploadedType = SUPPORTED_VIDEO_TYPES.includes(files[0].type) ? 'video' : 'image';
+        setGalleryType(uploadedType);
+      }
+
     } catch (err) {
       setError(err.message || 'Failed to upload files.');
     } finally {
@@ -108,8 +147,8 @@ export default function MediaGallery() {
     }
   };
 
-  const handleDelete = async (publicId) => {
-    if (!publicId || !window.confirm('Are you sure you want to delete this media item?')) {
+  const handleDelete = async (item) => {
+    if (!item.public_id || !window.confirm('Are you sure you want to delete this media item?')) {
       return;
     }
 
@@ -117,7 +156,7 @@ export default function MediaGallery() {
     setError(null);
 
     try {
-      const response = await fetch(`${API_BASE}/api/media/${encodeURIComponent(publicId)}`, {
+      const response = await fetch(`${API_BASE}/api/media/${encodeURIComponent(item.public_id)}`, {
         method: 'DELETE'
       });
 
@@ -130,9 +169,22 @@ export default function MediaGallery() {
         );
       }
 
-      await fetchMedia();
+      // Update local state
+      setMediaItems(prev => {
+        const newItems = prev.filter(media => media.public_id !== item.public_id);
+        
+        // Update gallery type if all media is deleted
+        if (newItems.length === 0) {
+          setGalleryType('empty');
+        }
+        
+        return newItems;
+      });
+
     } catch (err) {
       setError(err.message || 'Failed to delete item.');
+      // Re-fetch to ensure sync with server
+      await fetchMedia();
     } finally {
       setIsDeleting(false);
     }
@@ -140,10 +192,48 @@ export default function MediaGallery() {
 
   const getFileType = (item) => {
     if (item.resource_type === 'video') return 'video';
-    const extension = item.url.split('.').pop().toLowerCase();
+    if (item.resource_type === 'image') return 'image';
+    
+    const extension = item.url?.split('.').pop().toLowerCase();
     return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'tiff', 'bmp', 'ico'].includes(extension) 
       ? 'image' 
       : 'file';
+  };
+
+  const getAcceptTypes = () => {
+    switch (galleryType) {
+      case 'image':
+        return SUPPORTED_IMAGE_TYPES.join(',');
+      case 'video':
+        return SUPPORTED_VIDEO_TYPES.join(',');
+      case 'empty':
+      default:
+        return [...SUPPORTED_IMAGE_TYPES, ...SUPPORTED_VIDEO_TYPES].join(',');
+    }
+  };
+
+  const getGalleryTypeMessage = () => {
+    switch (galleryType) {
+      case 'image':
+        return 'Image Gallery - Only images can be uploaded';
+      case 'video':
+        return 'Video Gallery - Only videos can be uploaded';
+      case 'empty':
+      default:
+        return 'Empty Gallery - Upload images or videos to begin';
+    }
+  };
+
+  const getUploadDescription = () => {
+    switch (galleryType) {
+      case 'image':
+        return 'Images only (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) — max 10 MB';
+      case 'video':
+        return 'Videos only (MP4, MOV, AVI, MKV, WEBM) — max 500 MB';
+      case 'empty':
+      default:
+        return 'Supports images (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) — max 10 MB and videos (MP4, MOV, AVI, MKV, WEBM) — max 500 MB';
+    }
   };
 
   return (
@@ -163,13 +253,23 @@ export default function MediaGallery() {
         </div>
       )}
 
+      {/* Gallery Type Indicator */}
+      {mediaItems.length > 0 && (
+        <div className="mb-4 p-3 bg-blue-900/30 rounded-lg flex items-center">
+          <AlertCircle className="w-5 h-5 mr-2 text-blue-400" />
+          <p className="text-sm">
+            {getGalleryTypeMessage()}
+          </p>
+        </div>
+      )}
+
       <div className="mb-6">
         <input
           type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
           className="hidden"
-          accept={[...SUPPORTED_IMAGE_TYPES, ...SUPPORTED_VIDEO_TYPES].join(',')}
+          accept={getAcceptTypes()}
           multiple
           disabled={isUploading || isFetching}
         />
@@ -196,8 +296,7 @@ export default function MediaGallery() {
           )}
         </button>
         <p className="text-sm text-gray-400 mt-2">
-          Supports images (JPEG, PNG, GIF, WEBP, SVG, TIFF, BMP, ICO) — max 10 MB <br />
-          and videos (MP4, MOV, AVI, MKV, WEBM) — max 500 MB
+          {getUploadDescription()}
         </p>
       </div>
 
@@ -251,14 +350,14 @@ export default function MediaGallery() {
                     <div className="text-center p-4">
                       <File className="w-12 h-12 mx-auto text-gray-400" />
                       <p className="text-xs mt-2 text-gray-300 truncate">
-                        {item.url.split('/').pop()}
+                        {item.url?.split('/').pop()}
                       </p>
                     </div>
                   </div>
                 )}
 
                 <button
-                  onClick={() => handleDelete(item.public_id)}
+                  onClick={() => handleDelete(item)}
                   disabled={isDeleting}
                   className={`absolute top-2 right-2 p-1.5 rounded-full ${
                     isDeleting
@@ -276,7 +375,7 @@ export default function MediaGallery() {
 
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
                   <p className="text-xs text-white truncate">
-                    {(item.public_id || item.url.split('/').pop().split('.')[0])}
+                    {(item.public_id || item.url?.split('/').pop()?.split('.')[0])}
                   </p>
                   <p className="text-xs text-gray-300">
                     {type} • {formatBytes(item.bytes)}
