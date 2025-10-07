@@ -276,7 +276,7 @@ const DonationForm = ({ amount, status, onAmountChange, onStatusChange }) => {
 
       try {
         const backendUrl =
-          import.meta.env.VITE_BACKEND_URL;
+          import.meta.env.VITE_API_BASE;
 
         // Create order
         const orderResponse = await fetch(`${backendUrl}/create-order`, {
