@@ -276,7 +276,7 @@ const DonationForm = ({ amount, status, onAmountChange, onStatusChange }) => {
 
       try {
         const backendUrl =
-          import.meta.env.VITE_BACKEND_URL || "http://210.79.129.153:5000";
+          import.meta.env.VITE_BACKEND_URL;
 
         // Create order
         const orderResponse = await fetch(`${backendUrl}/create-order`, {
